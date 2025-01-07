@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input placeholder="請輸入商品名稱">
+
+    <button onclick="addProduct()">新增商品</button>
+
+    <div class="product"></div>
+
+    <script>
+        let product = [];
+        function addProduct(){
+           const input = document.querySelector('input').value
+            product.push(input);
+            console.log(product);
+            
+            let html =''
+
+            for (let i = 0; i<product.length; i++){
+                html += `<p>${product[i]}</p>`;
+            }
+
+            document.querySelector('.product').innerHTML = html
+        }
+
+    </script>
+</body>
+</html>
