@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI 計算機</title>
+    <style>
+        /* 設定基本頁面樣式 */
+        body {
+            /* 使用微軟正黑體作為主要字體，如果沒有則使用 Arial 或 sans-serif */
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            /* 設定漸層背景，從淺灰色漸變到藍灰色 */
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            /* 移除預設的邊距 */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 主要容器樣式 */
+        .container {
+            /* 使用 flexbox 進行置中對齊 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* 設定最小高度為視窗高度，確保內容置中 */
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 計算機卡片容器樣式 */
+        .calculator-box {
+            /* 設定白色背景和內距 */
+            background: white;
+            padding: 30px;
+            /* 設定圓角和陰影效果 */
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            /* 設定固定寬度 */
+            width: 300px;
+        }
+
+        /* 標題樣式 */
+        h1 {
+            /* 設定標題顏色和對齊方式 */
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        /* 輸入框群組樣式 */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        /* 輸入框樣式 */
+        input {
+            /* 設定輸入框尺寸和邊框 */
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            /* 添加過渡效果 */
+            transition: all 0.3s ease;
+            /* 確保padding不會影響整體寬度 */
+            box-sizing: border-box;
+        }
+
+        /* 輸入框焦點狀態 */
+        input:focus {
+            /* 改變邊框顏色和添加陰影 */
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52,152,219,0.3);
+        }
+
+        /* 輸入框預設文字樣式 */
+        input::placeholder {
+            color: #95a5a6;
+        }
+
+        /* 按鈕樣式 */
+        button {
+            /* 設定按鈕尺寸和顏色 */
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            /* 添加過渡效果 */
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        /* 按鈕懸浮效果 */
+        button:hover {
+            /* 改變背景色並添加上浮效果 */
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 按鈕點擊效果 */
+        button:active {
+            /* 取消上浮效果並減少陰影 */
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator-box">
+            <h1>BMI 計算機</h1>
+            <div class="input-group">
+                <input class="inputHeight" type="number" placeholder="請輸入身高（公分）" id="height">
+            </div>
+            <div class="input-group">
+                <input class="inputWeight" type="number" placeholder="請輸入體重（公斤）" id="weight">
+            </div>
+            <button onclick="calculateBMI()">計算 BMI</button>
+            <p class="bmi-result">BMI:</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            // 獲取輸入的身高和體重值
+            let height = document.querySelector('#height').value
+            height = Number(height);
+            height = height / 100;
+            let weight = document.querySelector('#weight').value;
+            weight = Number(weight);
+                
+            let bmi = weight / (height)**2;
+
+            bmi = Math.round(bmi * 100) / 100;
+            console.log(bmi);
+
+            // 顯示BMI結果
+            document.querySelector('.bmi-result').innerHTML = `BMI: ${bmi}`;
+        }
+    </script>
+</body>
+</html>

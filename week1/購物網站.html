@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS</title>
+    <style>
+        /* 設置按鈕的基本樣式 */
+        button{
+            /* 設置按鈕的基本尺寸 */
+            width: 100px;
+            height: 40px;
+            /* 設置按鈕背景為白色 */
+            background-color: rgb(255, 255, 255);
+            /* 設置圓角效果 */
+            border-radius: 10px;
+            /* 當滑鼠移到按鈕上時顯示手型指標 */
+            cursor: pointer;
+            /* 設置淺灰色邊框 */
+            border: 2px solid #ddd;
+            /* 添加陰影效果：向右偏移0px，向下偏移2px，模糊4px，黑色20%透明度 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            /* 設置所有屬性變化的過渡動畫，持續0.1秒，使用ease緩動函數 */
+            transition: all 0.1s ease;
+        }
+        
+        /* 當按鈕被按下時的樣式 */
+        button:active {
+            /* 添加內陰影效果，創造凹陷感 */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            /* 按鈕向下位移2px，製造按下的視覺效果 */
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- 時鐘即時顯示 -->
+    <h1 id="time_clock" style=" color: #17a266;"></h1>
+    <script>
+         // 定義一個函式用來更新時間顯示
+         function updateTime() {
+            // 建立一個新的 Date 物件,取得目前的日期和時間
+            const now = new Date();
+            
+            // 從 Date 物件中取得年份
+            const year = now.getFullYear();
+            
+            // 取得月份(由於 getMonth() 回傳 0-11,所以要加 1)
+            // padStart(2, '0') 確保數字都是兩位數,如果是個位數就在前面補 0
+            const month = String(now.getMonth()+1).padStart(2, '0');
+            
+            // 取得日期並補零
+            const date = String(now.getDate()).padStart(2, '0');
+            
+            // 取得小時並補零(24小時制)
+            const hours = String(now.getHours()).padStart(2, '0');
+            
+            // 取得分鐘並補零
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            
+            // 取得秒數並補零
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            // 使用模板字串組合日期時間
+            // 格式為: YYYY/MM/DD HH:mm:ss
+            const dateTimeString = `${year}/${month}/${date} ${hours}:${minutes}:${seconds}`;
+            
+            // 找到 ID 為 'choice' 的元素,更新其文字內容為現在的時間
+            document.getElementById('time_clock').textContent = dateTimeString;
+        }
+
+        // 立即執行一次 updateTime(),確保頁面載入時就顯示時間
+        updateTime();
+
+        // 設定計時器,每 1000 毫秒(1秒)執行一次 updateTime()
+        // setInterval 會回傳一個 interval ID,可以用來停止計時器
+        setInterval(updateTime, 1000);
+    </script>
+
+    <!-- 根據時間打招呼 -->
+    <h1 id="hello" style=" color: #17a266;"></h1>
+    <script>
+        const hour = new Date().getHours();
+        if (hour < 12) {
+            document.getElementById('hello').innerHTML = "早上好 ,good morning";
+        } else if (hour < 18) {
+            document.getElementById('hello').innerHTML = "下午好 ,good afternoon";
+        } else {
+            document.getElementById('hello').innerHTML = "晚上好 ,good evening";
+        }
+        
+    </script>
+
+   <!-- 創建一個按鈕元素 -->
+   <!-- onclick 屬性定義了按鈕被點擊時要執行的 JavaScript 代碼 -->
+   <button onclick="
+        alert('目前購物車總額:' + cart.totalprice);
+        showCart();
+   ">購物車總額</button>
+   <button onclick="
+        if(window.confirm('確定要清空購物車嗎?')){
+            cart.totalprice = 0;
+            cart.totalnum = 0;
+            cart.product1.num = 0;
+            cart.product2.num = 0;
+            alert('已清空購物車');
+            console.log('已清空購物車');
+            localStorage.removeItem('cart');
+            showCart();
+        }else{
+            alert('已取消清空購物車');
+            console.log('已取消清空購物車');
+        }
+   ">清空購物車</button>
+
+    <br><br>
+    <img src="https://imgur.disp.cc/41/4R3EZFJ.jpeg" style="width: 300px;">
+    <br>
+    <h3>溫水佳樹</h3>
+    <p>請選擇 剪刀 石頭 布</p>
+
+    <script>
+        const CHOICES = {
+            SCISSORS: '剪刀',
+            ROCK: '石頭',
+            PAPER: '布'
+        };
+
+        // 隨機產生電腦的選擇
+        function getComputerChoice() {
+            // 產生 0-2 的隨機整數
+            const randomNum = Math.floor(Math.random() * 3);
+            // 根據隨機數返回對應的選擇
+            if (randomNum === 0) return CHOICES.SCISSORS;
+            if (randomNum === 1) return CHOICES.ROCK;
+            return CHOICES.PAPER;
+        }
+
+        // 進行遊戲的主要函數，接收玩家的選擇作為參數
+        function playGame(playerChoice) {
+            // 獲取電腦的選擇
+            const computerChoice = getComputerChoice();
+            console.log('電腦選擇:', computerChoice);
+
+            let result;
+            // 判斷遊戲結果
+            if (playerChoice === computerChoice) {
+                // 如果選擇相同，則平局
+                result = '平局';
+            } else if (
+                // 判斷玩家獲勝的情況：
+                // 剪刀贏布、石頭贏剪刀、布贏石頭
+                (playerChoice === CHOICES.SCISSORS && computerChoice === CHOICES.PAPER) ||
+                (playerChoice === CHOICES.ROCK && computerChoice === CHOICES.SCISSORS) ||
+                (playerChoice === CHOICES.PAPER && computerChoice === CHOICES.ROCK)
+            ) {
+                result = '贏了';
+            } else {
+                // 其他情況則為玩家輸了
+                result = '輸了';
+            }
+
+            // 顯示遊戲結果
+            alert(`你選擇${playerChoice} 電腦出${computerChoice} 此局${result}`);
+        }
+    </script>
+
+    <button onclick="playGame(CHOICES.SCISSORS)">剪刀</button>
+    <button onclick="playGame(CHOICES.ROCK)">石頭</button>
+    <button onclick="playGame(CHOICES.PAPER)">布</button>
+
+    <br><br><br>
+    <img src="https://truth.bahamut.com.tw/s01/202408/forum/76136/7a2c22f637de46fee28f79b7bd0a9af5.JPG" style="width: 300px;">
+    <br>
+    <h3>八奈見杏菜</h3>
+    <h3>$5000/1s
+    <button onclick="
+        alert('已加入購物車');
+        cart.totalprice += 5000;
+        cart.totalnum ++;
+        cart.product1.num ++;
+        showCart();
+        saveCart();
+        ">加入購物車</button></h3>
+
+    <br><br>
+    <img src="https://i.pinimg.com/736x/24/bd/8d/24bd8d205bb24aca85100994e989c507.jpg" style="width: 300px;">
+    <br>
+    <h3>馬剃天愛星</h3>
+    <h3>$4000/1s
+    <button onclick="
+        alert('已加入購物車');
+        cart.totalprice += 4000;
+        cart.totalnum ++;
+        cart.product2.num ++;
+        showCart();
+        saveCart();
+        ">加入購物車</button></h3>
+
+    <p class="cart"></p>
+
+   <script>
+            // 從localStorage讀取購物車資料，並將其從JSON字串轉換為JavaScript物件
+            let cart = JSON.parse(localStorage.getItem('cart'));
+
+            // 如果localStorage中沒有購物車資料(cart為null)，則初始化一個新的購物車物件
+            if (cart === null) {
+            cart = {
+                totalprice : 0,    // 購物車總金額
+                totalnum : 0,      // 購物車商品總數量
+                product1 : {       // 第一個商品的資訊
+                    num : 0,       // 商品數量
+                    name : '八奈見杏菜',  // 商品名稱
+                    price : 5000,  // 商品單價
+                },
+                product2 : {       // 第二個商品的資訊
+                    num : 0,       // 商品數量
+                    name : '馬剃天愛星',  // 商品名稱
+                    price : 4000,  // 商品單價
+                },
+            };
+            }
+            
+            showCart();
+
+            // 顯示購物車內容的函式
+            function showCart(){
+            document.querySelector('.cart').innerHTML = `
+                    目前購物車總額:${cart.totalprice}
+                    <br>目前商品總數:${cart.totalnum}
+                    <br>${cart.product1.name}:${cart.product1.num}
+                    <br>${cart.product2.name}:${cart.product2.num}
+            `;
+            }
+
+            // 儲存購物車資料到localStorage的函式
+            function saveCart(){
+            // 將購物車物件轉換為JSON字串
+            const cartData = JSON.stringify(cart);
+            // 將JSON字串儲存到localStorage，使用'cart'作為key
+            localStorage.setItem('cart', cartData);
+            }
+
+   </script>
+</body>
+</html>
