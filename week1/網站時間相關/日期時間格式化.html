@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日期時間格式化</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .time {
+            font-size: 2em;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .date {
+            font-size: 1.5em;
+            text-align: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="date" id="date"></div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <script>
+        // 補0函數
+        const addZero = function(num, digits) {
+            let numString = String(num);
+            while(numString.length < digits) {
+                numString = '0' + numString;
+            }
+            return numString;
+        }
+
+        // 更新時間和日期的函數
+        function updateDateTime() {
+            // 創建一個新的日期物件，獲取當前時間
+            const now = new Date();
+            
+            // 獲取年份（例如：2025）
+            const year = now.getFullYear();
+            // 獲取月份（要加1是因為 getMonth() 返回 0-11，0代表一月，11代表十二月）
+            const month = now.getMonth() + 1;
+            // 獲取日期（1-31）
+            const day = now.getDate();
+            
+            // 創建星期陣列，用於將數字轉換為中文星期名稱
+            // now.getDay() 會返回 0-6 的數字
+            // 0 = 星期日
+            // 1 = 星期一
+            // 2 = 星期二
+            // 3 = 星期三
+            // 4 = 星期四
+            // 5 = 星期五
+            // 6 = 星期六
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            // 使用 getDay() 獲取星期幾（0-6），然後從陣列中取得對應的中文名稱
+            const weekday = weekdays[now.getDay()];
+            
+            // 格式化時間
+            // 獲取小時（0-23）
+            const hours = now.getHours();
+            // 獲取分鐘（0-59）
+            const minutes = now.getMinutes();
+            // 獲取秒數（0-59）
+            const seconds = now.getSeconds();
+            
+            // 組合日期字串：yyyy-mm-dd 星期x
+            // 使用 addZero 函數確保月份和日期都是兩位數
+            const dateStr = `${year}-${addZero(month,2)}-${addZero(day,2)} ${weekday}`;
+            
+            // 組合時間字串：hh:mm:ss
+            // 使用 addZero 函數確保時、分、秒都是兩位數
+            const timeStr = `${addZero(hours,2)}:${addZero(minutes,2)}:${addZero(seconds,2)}`;
+            
+            // 更新頁面上的顯示內容
+            // 將日期更新到 id 為 'date' 的元素中
+            document.getElementById('date').textContent = dateStr;
+            // 將時間更新到 id 為 'time' 的元素中
+            document.getElementById('time').textContent = timeStr;
+        }
+
+        // 網頁載入時立即執行一次，顯示當前時間
+        updateDateTime();
+        
+        // 設定每1000毫秒（1秒）執行一次 updateDateTime 函數
+        // 這樣時間顯示就會每秒更新一次
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>

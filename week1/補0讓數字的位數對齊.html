@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>補0讓數字的位數對齊</title>
+</head>
+<body>
+    <section>
+        <h1>歌曲清單</h1>
+        <div id="list"></div>
+    </section>
+
+    <script>
+        // 定義一個函數，用於在數字前面補0
+        // num: 要處理的數字
+        // digits: 要補足的位數（例如：若digits為2，則1會變成"01"）
+        const addZero = function(num,digits){
+            // 將數字轉換為字串，方便處理
+            let numString = String(num);
+            // 當字串長度小於指定位數時，在前面補0
+            while(numString.length < digits){ 
+                numString = '0' + numString;
+            }
+            // 返回補0後的字串
+            return numString;
+        }
+
+        // 定義歌曲清單陣列，每個元素包含歌名和歌手
+        const songs = [
+            "Shape of You - Ed Sheeran",
+            "Butter - BTS",
+            "Bad Guy - Billie Eilish",
+            "Blinding Lights - The Weeknd",
+            "Stay With Me - Sam Smith",
+            "Perfect - Ed Sheeran",
+            "Dynamite - BTS",
+            "Rolling in the Deep - Adele",
+            "Uptown Funk - Mark Ronson ft. Bruno Mars",
+            "Someone Like You - Adele"
+        ]
+
+        // 使用迴圈遍歷歌曲清單，創建並顯示每首歌
+        for (let i = 0; i < songs.length; i++) {
+            // 創建新的段落元素
+            const paragraph = document.createElement('p');
+            // 設置段落內容：編號（補0）+ 歌曲資訊
+            // 例如："01. Shape of You - Ed Sheeran"
+            paragraph.textContent = addZero(i+1,2) + '. ' + songs[i];
+            // 將段落添加到ID為"list"的元素中
+            document.getElementById('list').appendChild(paragraph);
+        }
+    </script>
+</body>
+</html>
