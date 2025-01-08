@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>setInterval 示例</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+        .demo {
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>setInterval 示例</h1>
+
+    <!-- 示例1：簡單計數器 -->
+    <div class="demo">
+        <h3>示例1：簡單計數器</h3>
+        <p>計數：<span id="counter">0</span></p>
+        <button onclick="startCounter()">開始計數</button>
+        <button onclick="stopCounter()">停止計數</button>
+    </div>
+
+    <!-- 示例2：變色方塊 -->
+    <div class="demo">
+        <h3>示例2：變色方塊</h3>
+        <div id="colorBox" style="width: 100px; height: 100px; background-color: red;"></div>
+        <button onclick="startColorChange()">開始變色</button>
+        <button onclick="stopColorChange()">停止變色</button>
+    </div>
+
+    <script>
+        // 示例1：計數器
+        let count = 0;
+        let counterInterval; // 用來存儲 interval ID
+
+        function startCounter() {
+            // 如果已經在運行，就不要再次啟動
+            if (counterInterval) return;
+            
+            // 每1000毫秒（1秒）執行一次
+            counterInterval = setInterval(function() {
+                count++;
+                document.getElementById('counter').textContent = count;
+            }, 1000);
+        }
+
+        function stopCounter() {
+            // 清除 interval
+            clearInterval(counterInterval);
+            counterInterval = null;
+        }
+
+        // 示例2：變色方塊
+        let colorInterval;
+        const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+        let colorIndex = 0;
+
+        function startColorChange() {
+            if (colorInterval) return;
+            
+            // 每2000毫秒（2秒）變換一次顏色
+            colorInterval = setInterval(function() {
+                colorIndex = (colorIndex + 1) % colors.length;
+                document.getElementById('colorBox').style.backgroundColor = colors[colorIndex];
+            }, 2000);
+        }
+
+        function stopColorChange() {
+            clearInterval(colorInterval);
+            colorInterval = null;
+        }
+    </script>
+</body>
+</html>
