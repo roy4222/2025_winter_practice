@@ -6,28 +6,77 @@
     <title>Document</title>
 </head>
 <body>
-    <input placeholder="請輸入商品名稱">
+    <input placeholder="請輸入商品名稱" id="product_name">
+
+    <input placeholder="請輸入商品價格" id="product_price">
 
     <button onclick="addProduct()">新增商品</button>
 
-    <div class="product"></div>
+    <div class="product">
+
+    </div>
 
     <script>
+        // 建立一個空陣列來存放商品資料
+        // 每個商品都會包含 name 和 price 兩個屬性
         let product = [];
-        function addProduct(){
-           const input = document.querySelector('input').value
-            product.push(input);
-            console.log(product);
-            
-            let html =''
 
+        // 渲染商品列表的函數
+        // 這個函數會把所有商品資料轉換成 HTML 並顯示在網頁上
+        function rederProduct(){
+            // 初始化空字串來儲存 HTML 內容
+            let html = '';
+            // 使用 for 迴圈遍歷 product 陣列中的每個商品
             for (let i = 0; i<product.length; i++){
-                html += `<p>${product[i]}</p>`;
+                // 為每個商品建立 HTML 結構
+                // 包含商品名稱、價格和刪除按鈕
+                // 刪除按鈕會呼叫 removeProduct 函數，並傳入當前商品的索引
+                html += `
+                <div>${product[i].name}</div>
+                <div>${product[i].price}</div>
+                <button onclick="removeProduct(${i})">刪除</button>
+                `;
             }
-
+            // 使用 querySelector 選取 class 為 product 的元素
+            // 將生成的 HTML 內容更新到網頁上
             document.querySelector('.product').innerHTML = html
         }
 
+        // 新增商品的函數
+        // 當使用者點擊「新增商品」按鈕時會觸發這個函數
+        function addProduct(){
+           // 取得輸入框的元素
+           // #product_name 是商品名稱輸入框
+           // #product_price 是商品價格輸入框
+           const input_product = document.querySelector('#product_name')
+           const input_price = document.querySelector('#product_price')
+            // 建立新的商品物件並加入到 product 陣列中
+            // 使用 push 方法將新商品加入陣列末端
+            product.push({
+                name : input_product.value,    // 商品名稱
+                price : input_price.value      // 商品價格
+            });
+            // 清空輸入框的值，準備下一次輸入
+            input_product.value = "";
+            input_price.value = "";
+  
+            // 在控制台輸出目前的商品陣列，方便除錯
+            console.log(product);
+            // 重新渲染商品列表，顯示最新的商品資料
+            rederProduct();
+        }
+
+        // 刪除商品的函數
+        // i 參數代表要刪除的商品索引
+        function removeProduct(i){
+            // 使用 splice 方法從陣列中移除指定索引的商品
+            // 第一個參數是起始索引，第二個參數是要刪除的元素數量
+            product.splice(i,1);
+            // 在控制台輸出更新後的商品陣列，方便除錯
+            console.log(product);
+            // 重新渲染商品列表，更新顯示內容
+            rederProduct();  
+        }
     </script>
 </body>
 </html>
