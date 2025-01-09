@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多語言旅遊網站</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav>
+        <div class="logo">Travel Taiwan</div>
+        <div class="language-selector">
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="zh-TW">中文</option>
+                <option value="en-US">English</option>
+                <option value="ja-JP">日本語</option>
+            </select>
+        </div>
+    </nav>
+
+    <!-- 主要內容區 -->
+    <main>
+        <!-- 歡迎區塊 -->
+        <section class="hero">
+            <h1 data-lang-key="welcome">歡迎來到台灣</h1>
+            <p data-lang-key="subtitle">探索美食與文化的寶島</p>
+        </section>
+
+        <!-- 特色區塊 -->
+        <section class="features">
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/300x200" alt="美食" class="feature-image">
+                <h2 data-lang-key="food">美食天堂</h2>
+                <p data-lang-key="food-desc">從夜市小吃到米其林餐廳，體驗豐富的味覺饗宴</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/300x200" alt="文化" class="feature-image">
+                <h2 data-lang-key="culture">文化體驗</h2>
+                <p data-lang-key="culture-desc">探訪古蹟寺廟，感受傳統與現代的完美融合</p>
+            </div>
+            <div class="feature-card">
+                <img src="https://via.placeholder.com/300x200" alt="自然" class="feature-image">
+                <h2 data-lang-key="nature">自然風光</h2>
+                <p data-lang-key="nature-desc">從海岸到高山，盡覽台灣的自然美景</p>
+            </div>
+        </section>
+
+        <!-- 互動區塊 -->
+        <section class="interactive">
+            <div class="weather-widget">
+                <h3 data-lang-key="weather">即時天氣</h3>
+                <div id="weather-info">載入中...</div>
+            </div>
+            <div class="currency-converter">
+                <h3 data-lang-key="currency">貨幣換算</h3>
+                <input type="number" id="amount" placeholder="輸入金額">
+                <select id="currency">
+                    <option value="TWD">TWD</option>
+                    <option value="USD">USD</option>
+                    <option value="JPY">JPY</option>
+                </select>
+                <button onclick="convertCurrency()" data-lang-key="convert">換算</button>
+                <div id="conversion-result"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p data-lang-key="footer">© 2025 Travel Taiwan. All rights reserved.</p>
+    </footer>
+
+    <script src="translations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

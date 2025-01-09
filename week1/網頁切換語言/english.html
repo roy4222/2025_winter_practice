@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taiwanese Cuisine</title>
+    <style>
+        /* Basic page layout */
+        body {
+            font-family: Arial, sans-serif;                 /* Use Arial font for English */
+            max-width: 800px;                              /* Limit maximum width */
+            margin: 0 auto;                                /* Center horizontally */
+            padding: 20px;                                 /* Page padding */
+            line-height: 1.6;                              /* Line height */
+        }
+
+        /* Language selector dropdown style */
+        select {
+            padding: 5px;                                  /* Inner padding */
+            font-size: 16px;                              /* Font size */
+            margin-bottom: 20px;                          /* Bottom margin */
+        }
+
+        /* Heading style */
+        h1 {
+            color: #333;                                   /* Dark gray for heading */
+        }
+
+        /* Paragraph text style */
+        p {
+            color: #666;                                   /* Light gray for text */
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelect" onchange="changeLanguage()">
+        <option value="中文頁面.html">中文</option>
+        <option value="english.html" selected>English</option>
+        <option value="日本語.html">日本語</option>
+    </select>
+
+    <h1>Taiwanese Cuisine Culture</h1>
+    <p>Taiwanese cuisine is rich and diverse, from street food to fine dining, showcasing unique charm everywhere. Night markets are Taiwan's most distinctive food paradise, where oyster omelettes, stinky tofu, and bubble tea are must-try delicacies. Taiwan's beef noodle soup is world-renowned, featuring rich broth, chewy noodles, and tender beef that leaves a lasting impression. Traditional snacks like xiaolongbao (soup dumplings) and braised pork rice not only carry the nostalgia of locals but also represent Taiwanese people's dedication and passion for food.</p>
+
+    <script>
+        // Language switching function
+        function changeLanguage() {
+            // Get the language selector dropdown element
+            var select = document.getElementById('languageSelect');
+            // Redirect to the selected language page
+            window.location.href = select.value;
+        }
+    </script>
+</body>
+</html>

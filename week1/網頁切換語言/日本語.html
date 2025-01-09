@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台湾料理の紹介</title>
+    <style>
+        /* ページの基本レイアウト */
+        body {
+            font-family: 'Hiragino Kaku Gothic Pro', 'Meiryo', sans-serif;  /* 日本語フォント */
+            max-width: 800px;                                               /* 最大幅 */
+            margin: 0 auto;                                                 /* 水平方向の中央揃え */
+            padding: 20px;                                                  /* ページの余白 */
+            line-height: 1.6;                                              /* 行の高さ */
+        }
+
+        /* 言語選択ドロップダウンのスタイル */
+        select {
+            padding: 5px;                                                   /* 内部の余白 */
+            font-size: 16px;                                               /* フォントサイズ */
+            margin-bottom: 20px;                                           /* 下部の余白 */
+        }
+
+        /* 見出しのスタイル */
+        h1 {
+            color: #333;                                                    /* 濃いグレー */
+        }
+
+        /* 段落のスタイル */
+        p {
+            color: #666;                                                    /* 薄いグレー */
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelect" onchange="changeLanguage()">
+        <option value="中文頁面.html">中文</option>
+        <option value="english.html">English</option>
+        <option value="日本語.html" selected>日本語</option>
+    </select>
+
+    <h1>台湾料理文化</h1>
+    <p>台湾料理は、屋台料理から高級料理まで、豊かで多様な食文化を持ち、どこでもユニークな魅力を見せています。夜市は台湾で最も特徴的なグルメパラダイスで、牡蠣オムレツ、臭豆腐、タピオカミルクティーなどは必食の美味しさです。台湾の牛肉麺は世界的に有名で、濃厚なスープ、コシのある麺、柔らかい牛肉が印象的な一品です。小籠包や魯肉飯などの伝統的な軽食は、地元の人々の郷愁を運ぶだけでなく、台湾人の食への執着と情熱を表しています。</p>
+
+    <script>
+        // 言語切り替え機能
+        function changeLanguage() {
+            // 言語選択ドロップダウン要素を取得
+            var select = document.getElementById('languageSelect');
+            // 選択された言語のページへ移動
+            window.location.href = select.value;
+        }
+    </script>
+</body>
+</html>
