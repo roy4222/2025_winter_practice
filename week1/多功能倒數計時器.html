@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多功能倒數計時器</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #45b97c;
+            --bg-color: #f5f7fa;
+            --text-color: #2c3e50;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark-mode {
+            --primary-color: #64b5f6;
+            --secondary-color: #4cd137;
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d3436;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .timer-form {
+            background-color: var(--card-bg);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .timer-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .timer-card {
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .timer-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .timer-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin: 15px 0;
+            color: var(--secondary-color);
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+        }
+
+        button.delete-btn {
+            background-color: #e74c3c;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+
+        .add-timer-btn {
+            grid-column: 1 / -1;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .time-up {
+            animation: pulse 1s infinite;
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>多功能倒數計時器</h1>
+            <button onclick="toggleTheme()" id="themeToggle">切換深色模式</button>
+        </div>
+
+        <div class="timer-form">
+            <input type="text" id="timerTitle" placeholder="輸入計時器標題...">
+            <input type="datetime-local" id="dateInput">
+            <select id="notifyTime">
+                <option value="0">到點提醒</option>
+                <option value="5">提前 5 分鐘提醒</option>
+                <option value="15">提前 15 分鐘提醒</option>
+                <option value="30">提前 30 分鐘提醒</option>
+            </select>
+            <button onclick="addTimer()" class="add-timer-btn">新增計時器</button>
+        </div>
+
+        <div id="timerList">
+            <!-- 計時器會動態加入這裡 -->
+        </div>
+    </div>
+
+    <script>
+        // ===== 瀏覽器通知功能 =====
+        // 檢查瀏覽器是否支援通知功能，如果支援就請求使用者授權
+        if ('Notification' in window) {
+            Notification.requestPermission();
+        }
+
+        // ===== 主題切換功能 =====
+        // 切換深色/淺色主題
+        function toggleTheme() {
+            // 切換 body 的 dark-mode class
+            document.body.classList.toggle('dark-mode');
+            // 將主題設定儲存到 localStorage
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            // 更新切換按鈕的文字
+            updateThemeButton();
+        }
+
+        // 更新主題切換按鈕的文字
+        function updateThemeButton() {
+            const isDark = document.body.classList.contains('dark-mode');
+            document.getElementById('themeToggle').textContent = 
+                isDark ? '切換淺色模式' : '切換深色模式';
+        }
+
+        // ===== 計時器核心功能 =====
+        // 儲存所有計時器的陣列
+        let timers = [];
+
+        // 新增計時器
+        function addTimer() {
+            // 獲取使用者輸入的值
+            const title = document.getElementById('timerTitle').value || '未命名計時器';
+            const dueDate = new Date(document.getElementById('dateInput').value);
+            const notifyMinutes = parseInt(document.getElementById('notifyTime').value);
+
+            // 建立新的計時器物件
+            const timer = {
+                id: Date.now(),          // 使用當前時間戳作為唯一ID
+                title: title,            // 計時器標題
+                due: dueDate,            // 目標時間
+                notifyMinutes: notifyMinutes,  // 提前提醒時間（分鐘）
+                notified: false          // 是否已經發送過提醒
+            };
+
+            // 將新計時器加入陣列
+            timers.push(timer);
+            // 儲存到 localStorage
+            saveTimers();
+            // 重新渲染畫面
+            renderTimers();
+            
+            // 清空輸入欄位
+            document.getElementById('timerTitle').value = '';
+            document.getElementById('dateInput').value = '';
+        }
+
+        // 刪除計時器
+        function deleteTimer(id) {
+            // 從陣列中過濾掉指定 ID 的計時器
+            timers = timers.filter(timer => timer.id !== id);
+            // 儲存更新後的計時器列表
+            saveTimers();
+            // 重新渲染畫面
+            renderTimers();
+        }
+
+        // 渲染計時器列表
+        function renderTimers() {
+            const timerList = document.getElementById('timerList');
+            timerList.innerHTML = '';  // 清空現有內容
+
+            timers.forEach(timer => {
+                // 計算剩餘時間（毫秒）
+                const timeLeft = timer.due - new Date();
+                // 計算進度條百分比（最多 100%，最少 0%）
+                const progress = Math.max(0, Math.min(100, (timeLeft / (24 * 60 * 60 * 1000)) * 100));
+
+                // 創建計時器卡片元素
+                const timerElement = document.createElement('div');
+                timerElement.className = 'timer-card';
+                // 設定卡片內容
+                timerElement.innerHTML = `
+                    <h3>${timer.title}</h3>
+                    <div class="countdown ${timeLeft <= 0 ? 'time-up' : ''}" data-id="${timer.id}"></div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="timer-controls">
+                        <button onclick="deleteTimer(${timer.id})" class="delete-btn">刪除</button>
+                    </div>
+                `;
+                timerList.appendChild(timerElement);
+            });
+        }
+
+        // 更新所有計時器的倒數時間
+        function updateCountdowns() {
+            timers.forEach(timer => {
+                // 找到對應的倒數時間顯示元素
+                const element = document.querySelector(`[data-id="${timer.id}"]`);
+                if (element) {
+                    const timeLeft = timer.due - new Date();
+                    
+                    // 檢查是否需要發送提醒
+                    if (!timer.notified && timeLeft <= timer.notifyMinutes * 60 * 1000) {
+                        notify(timer.title);  // 發送通知
+                        timer.notified = true;  // 標記已提醒
+                        saveTimers();  // 儲存狀態
+                    }
+
+                    // 更新顯示的時間
+                    if (timeLeft <= 0) {
+                        element.textContent = '時間到！';
+                    } else {
+                        // 將毫秒轉換為天、時、分、秒
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                        element.textContent = `${days}天${hours}小時${minutes}分${seconds}秒`;
+                    }
+                }
+            });
+        }
+
+        // ===== 通知功能 =====
+        // 發送瀏覽器通知
+        function notify(title) {
+            if (Notification.permission === "granted") {
+                new Notification(`${title} 倒數提醒`, {
+                    body: '您設定的時間快到了！',
+                    icon: 'https://example.com/icon.png'
+                });
+            }
+        }
+
+        // ===== 資料持久化功能 =====
+        // 將計時器資料儲存到 localStorage
+        function saveTimers() {
+            localStorage.setItem('timers', JSON.stringify(timers));
+        }
+
+        // 從 localStorage 載入計時器資料
+        function loadTimers() {
+            const savedTimers = localStorage.getItem('timers');
+            if (savedTimers) {
+                // 解析儲存的 JSON 資料
+                timers = JSON.parse(savedTimers);
+                // 將字串時間轉換回 Date 物件
+                timers.forEach(timer => timer.due = new Date(timer.due));
+                // 重新渲染畫面
+                renderTimers();
+            }
+        }
+
+        // ===== 初始化功能 =====
+        function initialize() {
+            // 載入深色模式設定
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeButton();
+
+            // 載入已儲存的計時器
+            loadTimers();
+
+            // 設定預設日期時間為現在
+            const dateInput = document.getElementById('dateInput');
+            const now = new Date();
+            dateInput.value = now.toISOString().slice(0, 16);
+
+            // 開始定時更新倒數時間（每秒更新一次）
+            setInterval(updateCountdowns, 1000);
+        }
+
+        // 啟動應用
+        initialize();
+    </script>
+</body>
+</html>
