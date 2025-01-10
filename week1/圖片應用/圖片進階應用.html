@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>圖片進階應用</title>
+    <style>
+        .container {
+            text-align: center;
+            margin: 20px;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        #mainImage {
+            max-width: 600px;
+            height: auto;
+        }
+        /* 放大鏡效果 */
+        .magnifier {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            display: none;
+            background-repeat: no-repeat;
+            box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.85),
+                       0 0 7px 7px rgba(0, 0, 0, 0.25);
+        }
+        .thumb {
+            width: 100px;
+            margin: 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .thumb:hover {
+            border-color: #333;
+            transform: scale(1.1);
+        }
+        .selected {
+            border-color: #007bff;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 0 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.active {
+            background-color: #dc3545;
+        }
+        /* 進度條 */
+        .progress-bar {
+            width: 600px;
+            height: 5px;
+            background-color: #ddd;
+            margin: 10px auto;
+            position: relative;
+        }
+        .progress {
+            width: 0;
+            height: 100%;
+            background-color: #007bff;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <!-- 主要顯示的大圖 -->
+            <img id="mainImage" src="https://picsum.photos/600/400?random=1" alt="主圖">
+            <!-- 放大鏡效果 -->
+            <div class="magnifier"></div>
+            <!-- 進度條 -->
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+
+        <!-- 控制按鈕 -->
+        <div class="controls">
+            <button onclick="prevImage()">上一張</button>
+            <button onclick="toggleSlideshow()" id="playButton">自動播放</button>
+            <button onclick="nextImage()">下一張</button>
+            <button onclick="toggleMagnifier()" id="magnifierButton">開啟放大鏡</button>
+        </div>
+
+        <div>
+            <!-- 下方的縮圖列表 -->
+            <img class="thumb selected" src="https://picsum.photos/600/400?random=1" onclick="changeImage(this)" alt="縮圖1">
+            <img class="thumb" src="https://picsum.photos/600/400?random=2" onclick="changeImage(this)" alt="縮圖2">
+            <img class="thumb" src="https://picsum.photos/600/400?random=3" onclick="changeImage(this)" alt="縮圖3">
+            <img class="thumb" src="https://picsum.photos/600/400?random=4" onclick="changeImage(this)" alt="縮圖4">
+        </div>
+    </div>
+
+    <script>
+        // 全域變數定義
+        let currentIndex = 0;          // 當前顯示的圖片索引
+        let slideshowInterval = null;  // 自動播放的計時器
+        let magnifierEnabled = false;  // 放大鏡功能開關
+        let progressInterval = null;   // 進度條的計時器
+        let progress = 0;             // 進度條的當前進度（0-100）
+
+        /**
+         * 切換顯示的圖片
+         * @param {HTMLImageElement} thumbElement - 被點擊的縮圖元素
+         * @param {boolean} skipProgress - 是否跳過進度條重置（用於自動播放）
+         */
+        function changeImage(thumbElement, skipProgress = false) {
+            // 更新主圖：將主圖的來源改為被點擊的縮圖
+            document.getElementById('mainImage').src = thumbElement.src;
+            
+            // 更新縮圖狀態：移除所有縮圖的選中狀態，並為當前縮圖添加選中效果
+            document.querySelectorAll('.thumb').forEach(thumb => {
+                thumb.classList.remove('selected');
+            });
+            thumbElement.classList.add('selected');
+
+            // 更新當前圖片索引：找出當前縮圖在所有縮圖中的位置
+            currentIndex = Array.from(document.querySelectorAll('.thumb')).indexOf(thumbElement);
+
+            // 如果不是自動播放導致的圖片切換，則重置進度條
+            if (!skipProgress) {
+                resetProgress();
+            }
+        }
+
+        /**
+         * 切換到下一張圖片
+         */
+        function nextImage() {
+            const thumbs = document.querySelectorAll('.thumb');
+            // 使用模運算確保索引在合法範圍內循環
+            currentIndex = (currentIndex + 1) % thumbs.length;
+            changeImage(thumbs[currentIndex]);
+        }
+
+        /**
+         * 切換到上一張圖片
+         */
+        function prevImage() {
+            const thumbs = document.querySelectorAll('.thumb');
+            // 使用加上長度再模運算，確保負數索引也能正確循環
+            currentIndex = (currentIndex - 1 + thumbs.length) % thumbs.length;
+            changeImage(thumbs[currentIndex]);
+        }
+
+        /**
+         * 切換自動播放狀態
+         */
+        function toggleSlideshow() {
+            const playButton = document.getElementById('playButton');
+            if (slideshowInterval) {
+                // 如果正在播放，則停止播放並清除所有計時器
+                clearInterval(slideshowInterval);
+                slideshowInterval = null;
+                clearInterval(progressInterval);
+                progressInterval = null;
+                playButton.textContent = '自動播放';
+                playButton.classList.remove('active');
+            } else {
+                // 如果未在播放，則開始播放並設置進度條
+                resetProgress();
+                slideshowInterval = setInterval(nextImage, 3000); // 每3秒切換一次
+                playButton.textContent = '停止播放';
+                playButton.classList.add('active');
+            }
+        }
+
+        /**
+         * 重置並控制進度條
+         */
+        function resetProgress() {
+            // 重置進度和清除現有的進度條計時器
+            progress = 0;
+            clearInterval(progressInterval);
+            const progressBar = document.querySelector('.progress');
+            progressBar.style.width = '0%';
+            
+            // 如果在自動播放狀態，則啟動進度條動畫
+            if (slideshowInterval) {
+                progressInterval = setInterval(() => {
+                    progress += 1;
+                    // 30 代表更新 300 次（3秒，每0.1秒更新一次）
+                    progressBar.style.width = `${progress / 30 * 100}%`;
+                }, 100); // 每0.1秒更新一次進度條
+            }
+        }
+
+        /**
+         * 切換放大鏡功能的開關
+         */
+        function toggleMagnifier() {
+            magnifierEnabled = !magnifierEnabled;
+            const magnifierButton = document.getElementById('magnifierButton');
+            
+            if (magnifierEnabled) {
+                // 啟用放大鏡功能
+                magnifierButton.textContent = '關閉放大鏡';
+                magnifierButton.classList.add('active');
+                // 添加滑鼠事件監聽器
+                imageContainer.addEventListener('mousemove', handleMagnifier);
+                imageContainer.addEventListener('mouseenter', showMagnifier);
+                imageContainer.addEventListener('mouseleave', hideMagnifier);
+            } else {
+                // 停用放大鏡功能
+                magnifierButton.textContent = '開啟放大鏡';
+                magnifierButton.classList.remove('active');
+                // 移除滑鼠事件監聽器
+                imageContainer.removeEventListener('mousemove', handleMagnifier);
+                imageContainer.removeEventListener('mouseenter', showMagnifier);
+                imageContainer.removeEventListener('mouseleave', hideMagnifier);
+                hideMagnifier();
+            }
+        }
+
+        /**
+         * 處理放大鏡的移動和放大效果
+         * @param {MouseEvent} e - 滑鼠事件對象
+         */
+        function handleMagnifier(e) {
+            const mainImage = document.getElementById('mainImage');
+            const rect = mainImage.getBoundingClientRect();
+            
+            // 計算滑鼠在圖片上的相對位置
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // 設置放大鏡的位置（中心在滑鼠位置）
+            magnifier.style.left = `${x - magnifier.offsetWidth / 2}px`;
+            magnifier.style.top = `${y - magnifier.offsetHeight / 2}px`;
+
+            // 計算放大後的背景位置（3倍放大）
+            const bgX = x * 3;
+            const bgY = y * 3;
+            
+            // 設置放大鏡的背景
+            magnifier.style.backgroundImage = `url(${mainImage.src})`;
+            magnifier.style.backgroundSize = `${mainImage.offsetWidth * 3}px ${mainImage.offsetHeight * 3}px`;
+            magnifier.style.backgroundPosition = `-${bgX}px -${bgY}px`;
+        }
+
+        /**
+         * 顯示放大鏡
+         */
+        function showMagnifier() {
+            if (magnifierEnabled) {
+                magnifier.style.display = 'block';
+            }
+        }
+
+        /**
+         * 隱藏放大鏡
+         */
+        function hideMagnifier() {
+            magnifier.style.display = 'none';
+        }
+
+        // DOM 元素快取
+        const magnifier = document.querySelector('.magnifier');
+        const imageContainer = document.querySelector('.image-container');
+
+        /**
+         * 設置鍵盤快捷鍵
+         */
+        document.addEventListener('keydown', function(event) {
+            switch(event.key) {
+                case 'ArrowLeft':    // 左方向鍵：上一張
+                    prevImage();
+                    break;
+                case 'ArrowRight':   // 右方向鍵：下一張
+                    nextImage();
+                    break;
+                case ' ':            // 空格鍵：切換自動播放
+                    toggleSlideshow();
+                    break;
+                case 'm':            // m 鍵：切換放大鏡
+                    toggleMagnifier();
+                    break;
+            }
+        });
+    </script>
+</body>
+</html>
