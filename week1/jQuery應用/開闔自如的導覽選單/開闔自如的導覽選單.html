@@ -29,5 +29,19 @@
             </ul>
         </div>
     </section>
+
+    <script>
+        // 當網頁完全載入後執行以下程式碼
+        $(document).ready(function() {
+            // 選取所有在 .sidebar 和 .submenu 類別下的 h3 標題
+            // 並為它們添加點擊事件處理器
+            $('.sidebar h3, .submenu h3').click(function() {
+                // this 代表被點擊的 h3 元素
+                // next('ul') 選取緊接在 h3 後面的 ul 元素
+                // toggleClass('hidden') 切換 hidden 類別（有則移除，無則添加）
+                $(this).next('ul').toggleClass('hidden');
+            });
+        });
+    </script>
 </body>
 </html>
