@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>讀書會空位查詢</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .seminars {
+            background: white;
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .seminars:hover {
+            transform: translateY(-2px);
+        }
+
+        h2 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .check {
+            color: #007bff;
+            cursor: pointer;
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .check:hover {
+            text-decoration: underline;
+        }
+
+        .status {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .full {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <section>
+       <ul class="list">
+        <li class="seminars" id="js">
+            <h2>JavaScript 讀書會</h2>
+            <p class="check">確認剩餘空位狀況</p>
+            <div class="status"></div>
+        </li>
+        <li class="seminars" id="vue">
+            <h2>Vue.js 讀書會</h2>
+            <p class="check">確認剩餘空位狀況</p>
+            <div class="status"></div>
+        </li>
+        <li class="seminars" id="react">
+            <h2>React.js 讀書會</h2>
+            <p class="check">確認剩餘空位狀況</p>
+            <div class="status"></div>
+        </li>
+       </ul>
+    </section>
+
+    <script>
+        // 當文檔完全載入後執行
+        $(document).ready(function() {
+            // 為所有具有 .check 類的元素添加點擊事件監聽器
+            $('.check').click(function() {
+                // 獲取當前點擊元素的父元素（li.seminars）的 id 屬性
+                // 例如：'js', 'vue', 或 'react'
+                const seminar = $(this).parent().attr('id');
+                
+                // 找到同級的 .status div 元素，用於顯示結果
+                // siblings() 方法找到同級元素中類名為 .status 的元素
+                const statusDiv = $(this).siblings('.status');
+
+                // 顯示"查詢中"的載入狀態
+                // html() 設置內容
+                // addClass() 添加 loading 樣式
+                // show() 確保元素可見
+                statusDiv.html('查詢中...').addClass('loading').show();
+
+                // 發起 AJAX 請求
+                $.ajax({
+                    // 請求的目標 URL
+                    url: "seminars.json",
+                    // 期望從服務器返回的數據類型
+                    dataType: "json",
+                    // HTTP 請求方法
+                    method: "GET"
+                // 當請求成功時執行
+                }).done(function(data) {
+                    // 在返回的數據中查找對應的讀書會信息
+                    // find() 方法用於在數組中查找符合條件的第一個元素
+                    const seminarData = data.seminars.find(s => s.id === seminar);
+                    
+                    // 移除載入中的樣式
+                    statusDiv.removeClass('loading');
+
+                    // 如果找到對應的讀書會數據
+                    if (seminarData) {
+                        // 計算剩餘空位數
+                        const remaining = seminarData.total - seminarData.reserved;
+                        
+                        // 如果還有剩餘空位
+                        if (remaining > 0) {
+                            statusDiv
+                                // 設置顯示文字
+                                .html(`目前尚有 ${remaining} 個空位！`)
+                                // 移除 full 類（紅色背景）
+                                .removeClass('full')
+                                // 添加 available 類（綠色背景）
+                                .addClass('available');
+                        } else {
+                            // 如果沒有剩餘空位
+                            statusDiv
+                                .html('目前已額滿！')
+                                .removeClass('available')
+                                .addClass('full');
+                        }
+                    } else {
+                        // 如果找不到對應的讀書會數據
+                        statusDiv
+                            .html('無法找到讀書會資料')
+                            .removeClass('available full')
+                            .addClass('full');
+                    }
+
+                    // 使用淡入動畫效果顯示結果
+                    // hide() 先隱藏元素
+                    // fadeIn(300) 在 300 毫秒內淡入顯示
+                    statusDiv.hide().fadeIn(300);
+                
+                // 當請求失敗時執行
+                }).fail(function(jqXHR, textStatus, errorThrown) {
+                    // jqXHR: jQuery 的 XMLHttpRequest 對象
+                    // textStatus: 錯誤狀態描述
+                    // errorThrown: 錯誤信息
+                    
+                    // 顯示錯誤信息
+                    statusDiv
+                        .html('無法取得資料，請稍後再試')
+                        // 移除載入和可用狀態的樣式
+                        .removeClass('loading available')
+                        // 添加錯誤狀態樣式
+                        .addClass('full')
+                        // 使用動畫效果顯示錯誤信息
+                        .hide()
+                        .fadeIn(300);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
