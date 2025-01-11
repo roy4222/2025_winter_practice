@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>動畫功能</title>
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* 基本樣式 */
+        #box {
+            width: 200px;
+            margin: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: none; /* 初始隱藏選單 */
+        }
+
+        li {
+            padding: 10px 15px;
+            background-color: #f0f0f0;
+            margin-bottom: 2px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        li:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* 添加一個按鈕來觸發選單 */
+        #menuButton {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            text-align: center;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <button id="menuButton">點擊展開選單</button>
+    <div id="box">
+        <ul>
+            <li>首頁</li>
+            <li>最新消息</li>
+            <li>產品介紹</li>
+            <li>聯絡我們</li>
+        </ul>
+    </div>
+
+    <script>
+        // 當整個文檔載入完成後執行
+        $(document).ready(function() {
+            // 為選單按鈕添加點擊事件處理器
+            $('#menuButton').click(function() {
+                // slideToggle(300) 會在 300 毫秒內平滑地切換選單的顯示狀態
+                // 如果選單是隱藏的，就會向下滑動顯示
+                // 如果選單是顯示的，就會向上滑動隱藏
+                $('#box ul').slideToggle(300);
+                
+                // 獲取當前按鈕上的文字
+                var buttonText = $(this).text();
+                
+                // 使用三元運算符（?:）來切換按鈕文字
+                // 如果當前文字是"點擊展開選單"，就改成"點擊收合選單"
+                // 否則改回"點擊展開選單"
+                $(this).text(
+                    buttonText === "點擊展開選單" ? "點擊收合選單" : "點擊展開選單"
+                );
+            });
+
+            // 為選單中的每個項目添加點擊事件處理器
+            $('#box li').click(function() {
+                // 當點擊選單項目時，創建一個簡單的閃爍動畫效果
+                // fadeOut(100) 在 100 毫秒內讓元素淡出（消失）
+                // fadeIn(100) 在 100 毫秒內讓元素淡入（顯示）
+                // 這兩個效果連在一起會產生閃爍的視覺效果
+                $(this).fadeOut(100).fadeIn(100);
+            });
+        });
+    </script>
+</body>
+</html>
