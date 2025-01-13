@@ -2,47 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- viewport meta 標籤確保響應式設計在移動設備上正常運作 -->
+    <!-- width=device-width：設置視窗寬度為裝置寬度 -->
+    <!-- initial-scale=1.0：設置初始縮放比例為1，不放大也不縮小 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bootstrap Container 應用實例</title>
-    <!-- Bootstrap CSS -->
+    
+    <!-- 引入 Bootstrap 5.3.0 的 CSS 文件 -->
+    <!-- 使用 CDN 方式引入，確保快速載入和緩存優勢 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <style>
+        /* 自定義樣式，用於增強 Bootstrap 的基本樣式 */
+        /* header 區塊樣式 */
         .header {
-            background-color: #f8f9fa;
-            padding: 20px 0;
-            margin-bottom: 30px;
+            background-color: #f8f9fa;  /* 使用淺灰色背景 */
+            padding: 20px 0;            /* 上下內距 20px */
+            margin-bottom: 30px;        /* 下方外距 30px */
         }
+        
+        /* 特色區塊樣式 */
         .feature-section {
-            padding: 40px 0;
-            background-color: #e9ecef;
+            padding: 40px 0;            /* 上下內距 40px */
+            background-color: #e9ecef;  /* 使用淺灰色背景 */
         }
+        
+        /* 頁尾樣式 */
         .footer {
-            background-color: #343a40;
-            color: white;
-            padding: 20px 0;
-            margin-top: 30px;
+            background-color: #343a40;  /* 深色背景 */
+            color: white;               /* 白色文字 */
+            padding: 20px 0;            /* 上下內距 20px */
+            margin-top: 30px;           /* 上方外距 30px */
         }
+        
+        /* 卡片元件樣式 */
         .card {
-            margin-bottom: 20px;
+            margin-bottom: 20px;        /* 下方外距 20px */
         }
+        
+        /* 英雄區塊樣式 */
         .hero-section {
-            background-color: #6c757d;
-            color: white;
-            padding: 60px 0;
+            background-color: #6c757d;  /* 中灰色背景 */
+            color: white;               /* 白色文字 */
+            padding: 60px 0;            /* 上下內距 60px */
         }
+        
+        /* 內容區塊樣式 */
         .content-section {
-            padding: 30px 0;
+            padding: 30px 0;            /* 上下內距 30px */
         }
     </style>
 </head>
 <body>
-    <!-- 導航欄：使用 container 確保導航內容與頁面主體對齊 -->
+    <!-- 導航欄 -->
+    <!-- .navbar：Bootstrap 的導航欄組件 -->
+    <!-- .navbar-expand-lg：在大螢幕(lg = 992px)以上時展開導航項目 -->
+    <!-- .navbar-light：淺色導航欄 -->
+    <!-- .bg-light：淺色背景 -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- .container：固定寬度且居中的容器，會根據不同斷點改變最大寬度 -->
         <div class="container">
+            <!-- .navbar-brand：用於網站品牌/logo -->
             <a class="navbar-brand" href="#">網站名稱</a>
+            
+            <!-- 漢堡選單按鈕，在小螢幕時顯示 -->
+            <!-- data-bs-toggle="collapse"：指定此按鈕控制可折疊元素 -->
+            <!-- data-bs-target="#navbarNav"：指定要控制的目標元素ID -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+            
+            <!-- 可折疊的導航內容 -->
+            <!-- .collapse：可折疊元素 -->
+            <!-- .navbar-collapse：導航欄專用的折疊樣式 -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -59,9 +91,12 @@
         </div>
     </nav>
 
-    <!-- 全寬度橫幅：使用 container-fluid 實現邊對邊設計 -->
+    <!-- 英雄區塊 -->
+    <!-- 使用巢狀容器結構 -->
     <div class="hero-section">
+        <!-- .container-fluid：全寬度容器，會延伸到視窗邊緣 -->
         <div class="container-fluid">
+            <!-- .container：內容限制在固定寬度內 -->
             <div class="container">
                 <h1>歡迎來到我們的網站</h1>
                 <p>這是一個展示 Bootstrap 容器應用的示例頁面</p>
@@ -69,14 +104,17 @@
         </div>
     </div>
 
-    <!-- 主要內容區：使用 container 實現居中對齊的內容 -->
+    <!-- 主要內容區 -->
     <div class="content-section">
         <div class="container">
+            <!-- .row：創建一個新的行，使用 Bootstrap 的網格系統 -->
             <div class="row">
+                <!-- col-md-8：在中等設備(md = 768px)以上時佔據 8/12 的寬度 -->
                 <div class="col-md-8">
                     <h2>主要內容</h2>
                     <p>這裡使用 .container 來確保內容有適當的左右邊距，並且在不同設備上保持良好的閱讀體驗。</p>
                 </div>
+                <!-- col-md-4：在中等設備以上時佔據 4/12 的寬度 -->
                 <div class="col-md-4">
                     <h3>側邊欄</h3>
                     <p>側邊內容也在同一個容器中，保持對齊。</p>
@@ -85,13 +123,16 @@
         </div>
     </div>
 
-    <!-- 特色區塊：使用 container-fluid 和嵌套的 container -->
+    <!-- 特色區塊 -->
     <div class="feature-section">
         <div class="container-fluid">
             <div class="container">
                 <div class="row">
+                    <!-- col-md-4：在中等設備上每個卡片佔據 4/12 的寬度，即一行三個卡片 -->
                     <div class="col-md-4">
+                        <!-- .card：Bootstrap 的卡片元件 -->
                         <div class="card">
+                            <!-- .card-body：卡片的內容區域 -->
                             <div class="card-body">
                                 <h5 class="card-title">特色 1</h5>
                                 <p class="card-text">使用 container-fluid 作為背景，內部使用 container 來限制內容寬度。</p>
@@ -119,23 +160,29 @@
         </div>
     </div>
 
-    <!-- 響應式區塊：使用 container-sm -->
+    <!-- 響應式容器區塊 -->
+    <!-- .container-sm：在小螢幕(sm = 576px)以上時有固定寬度，小螢幕以下時為 100% 寬度 -->
+    <!-- .my-4：margin-top 和 margin-bottom 的工具類，值為 4 (1.5rem) -->
     <div class="container-sm my-4">
+        <!-- .alert：Bootstrap 的警告框元件 -->
+        <!-- .alert-info：信息類型的警告框，使用藍色主題 -->
         <div class="alert alert-info">
             <h4>響應式容器示例</h4>
             <p>在小螢幕上是全寬的，但在較大螢幕上會有固定寬度。適合用於表單或較窄的內容區域。</p>
         </div>
     </div>
 
-    <!-- 頁尾：使用 container-fluid 實現全寬設計 -->
+    <!-- 頁尾 -->
     <footer class="footer">
         <div class="container-fluid">
             <div class="container">
                 <div class="row">
+                    <!-- col-md-6：在中等設備上將頁尾分為兩等份 -->
                     <div class="col-md-6">
                         <h5>聯絡我們</h5>
                         <p>這是一個使用 container-fluid 的頁尾示例</p>
                     </div>
+                    <!-- .text-end：使文字右對齊 -->
                     <div class="col-md-6 text-end">
                         <p>© 2024 版權所有</p>
                     </div>
@@ -144,7 +191,8 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- 引入 Bootstrap 的 JavaScript 文件 -->
+    <!-- 包含了 Popper.js，用於下拉選單、提示框和彈出框等功能 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
