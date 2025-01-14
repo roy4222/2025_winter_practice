@@ -2,11 +2,13 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <!-- viewport meta tag 確保在移動設備上正確縮放 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bootstrap 進階網格系統教學</title>
-    <!-- Bootstrap CSS -->
+    <!-- 引入 Bootstrap 5.3.0 的 CSS 文件 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        /* 自定義樣式，用於展示網格系統的視覺效果 */
         .demo-col {
             background-color: #e9ecef;
             border: 1px solid #dee2e6;
@@ -42,67 +44,83 @@
     </style>
 </head>
 <body>
+    <!-- container 類別創建一個固定寬度的容器，在不同斷點有不同的最大寬度 -->
     <div class="container">
+        <!-- text-center 置中文字，my-4 上下外距為4個單位 -->
         <h1 class="text-center my-4">Bootstrap 進階網格系統應用</h1>
 
-        <!-- 巢狀網格系統 -->
+        <!-- 巢狀網格系統示例 -->
         <div class="section">
             <h2>1. 巢狀網格系統</h2>
             <div class="explanation">
                 在欄位中可以再次使用網格系統，創建更複雜的布局。巢狀網格也遵循12欄位系統的規則。
             </div>
+            <!-- row 建立新的網格行，內部可分為12等份 -->
             <div class="row">
+                <!-- col-sm-9: 小螢幕以上時佔9格寬度 -->
                 <div class="col-sm-9">
                     <div class="demo-col">
+                        <!-- 巢狀 row：在父級 col 內建立新的12格系統 -->
                         <div class="row">
+                            <!-- col-8 在極小螢幕佔8格，col-sm-6 在小螢幕以上佔6格 -->
                             <div class="col-8 col-sm-6">
                                 <div class="nested-col">巢狀欄位 1</div>
                             </div>
+                            <!-- col-4 在極小螢幕佔4格，col-sm-6 在小螢幕以上佔6格 -->
                             <div class="col-4 col-sm-6">
                                 <div class="nested-col">巢狀欄位 2</div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- col-sm-3: 小螢幕以上時佔3格寬度 -->
                 <div class="col-sm-3">
                     <div class="demo-col">主要欄位</div>
                 </div>
             </div>
         </div>
 
-        <!-- 欄位排序 -->
+        <!-- 欄位排序示例 -->
         <div class="section">
             <h2>2. 欄位排序</h2>
             <div class="explanation">
                 使用 order 類別來改變欄位的視覺順序，而不改變 HTML 結構。這對於響應式設計特別有用。
             </div>
+            <!-- row 包含三個等寬欄位，使用 order 類別控制顯示順序 -->
             <div class="row">
+                <!-- order-3 使此欄位顯示在第三位 -->
                 <div class="col order-3"><div class="demo-col">1. HTML中第一個 (顯示第三)</div></div>
+                <!-- order-1 使此欄位顯示在第一位 -->
                 <div class="col order-1"><div class="demo-col">2. HTML中第二個 (顯示第一)</div></div>
+                <!-- order-2 使此欄位顯示在第二位 -->
                 <div class="col order-2"><div class="demo-col">3. HTML中第三個 (顯示第二)</div></div>
             </div>
         </div>
 
-        <!-- 自動佈局欄位 -->
+        <!-- 自動佈局欄位示例 -->
         <div class="section">
             <h2>3. 自動佈局欄位</h2>
             <div class="explanation">
                 使用 col-auto 讓欄位根據內容自動調整寬度，非常適合處理不確定內容長度的情況。
             </div>
+            <!-- justify-content-center 使欄位在水平方向置中 -->
             <div class="row justify-content-center">
+                <!-- col-auto 根據內容自動調整寬度 -->
                 <div class="col-auto"><div class="demo-col">短文字</div></div>
                 <div class="col-auto"><div class="demo-col">較長的文字內容</div></div>
                 <div class="col-auto"><div class="demo-col">非常長的文字內容展示</div></div>
             </div>
         </div>
 
-        <!-- Gutters 間距控制 -->
+        <!-- Gutters 間距控制示例 -->
         <div class="section">
             <h2>4. Gutters 間距控制</h2>
             <div class="explanation">
                 使用 g-* 類別控制欄位間的間距。數字越大，間距越大（範圍：0-5）。
             </div>
+            <!-- g-5 設置最大的欄位間距 -->
             <div class="row g-5">
+                <!-- col-6 佔據半寬 -->
                 <div class="col-6">
                     <div class="demo-col">大間距欄位 1</div>
                 </div>
@@ -110,6 +128,7 @@
                     <div class="demo-col">大間距欄位 2</div>
                 </div>
             </div>
+            <!-- g-1 設置最小的欄位間距，mt-4 上方外距 -->
             <div class="row g-1 mt-4">
                 <div class="col-6">
                     <div class="demo-col">小間距欄位 1</div>
@@ -120,13 +139,20 @@
             </div>
         </div>
 
-        <!-- 混合響應式設計 -->
+        <!-- 混合響應式設計示例 -->
         <div class="section">
             <h2>5. 混合響應式設計</h2>
             <div class="explanation">
                 結合多種響應式類別實現複雜的布局變化。隨著螢幕尺寸變化，欄位會自動調整其寬度。
             </div>
             <div class="row">
+                <!-- 響應式斷點設定：
+                    col-12: 極小螢幕時佔12格（100%寬）
+                    col-sm-6: 小螢幕以上佔6格（50%寬）
+                    col-md-4: 中螢幕以上佔4格（33.33%寬）
+                    col-lg-3: 大螢幕以上佔3格（25%寬）
+                    col-xl-2: 特大螢幕以上佔2格（16.66%寬）
+                -->
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
                     <div class="demo-col">
                         <p class="mb-1">xs: 100%</p>
@@ -157,14 +183,16 @@
             </div>
         </div>
 
-        <!-- 對齊與分佈 -->
+        <!-- 對齊與分佈示例 -->
         <div class="section">
             <h2>6. 對齊與分佈</h2>
             <div class="explanation">
                 展示不同的對齊方式和內容分佈方式。
             </div>
             <h5 class="mt-3">垂直對齊 (align-items-*)</h5>
+            <!-- align-items-center 垂直置中對齊所有欄位 -->
             <div class="row align-items-center" style="height: 150px; background-color: #e9ecef;">
+                <!-- col-4 每個欄位佔3分之1寬度 -->
                 <div class="col-4">
                     <div class="demo-col">垂直置中</div>
                 </div>
@@ -177,7 +205,9 @@
             </div>
 
             <h5 class="mt-4">水平分佈 (justify-content-*)</h5>
+            <!-- justify-content-between 在欄位之間平均分配空間 -->
             <div class="row justify-content-between mb-3">
+                <!-- col-2 每個欄位佔6分之1寬度 -->
                 <div class="col-2">
                     <div class="demo-col">左側</div>
                 </div>
@@ -191,7 +221,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- 引入 Bootstrap 5.3.0 的 JavaScript 文件（包含 Popper.js） -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
