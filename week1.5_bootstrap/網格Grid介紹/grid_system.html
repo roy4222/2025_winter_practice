@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Grid System 教學</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .demo-col {
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        h2 {
+            color: #0d6efd;
+            margin-bottom: 1.5rem;
+        }
+        .explanation {
+            margin: 1rem 0;
+            padding: 1rem;
+            background-color: #e7f5ff;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Bootstrap Grid System 網格系統教學</h1>
+        
+        <!-- 
+        基本網格概念：
+        1. Bootstrap 使用 12 欄位系統
+        2. 必須包含在 .container 或 .container-fluid 內
+        3. 使用 .row 建立水平的欄位群組
+        4. 使用 .col-* 類別來定義欄位寬度（* 為 1-12 的數字）
+        5. 所有內容都必須放在欄位中，且欄位必須是 .row 的直接子元素
+        -->
+        <div class="section">
+            <h2>1. 基本網格概念</h2>
+            <div class="explanation">
+                Bootstrap 網格系統使用 12 欄位系統，可以根據需求分割成不同比例。
+            </div>
+            <div class="row">
+                <div class="col-4"><div class="demo-col">col-4</div></div>
+                <div class="col-4"><div class="demo-col">col-4</div></div>
+                <div class="col-4"><div class="demo-col">col-4</div></div>
+            </div>
+            <div class="row">
+                <div class="col-6"><div class="demo-col">col-6</div></div>
+                <div class="col-6"><div class="demo-col">col-6</div></div>
+            </div>
+        </div>
+
+        <!-- 
+        響應式網格設計：
+        Bootstrap 的響應式斷點(Breakpoints)：
+        1. xs (超小型) < 576px：.col-*
+        2. sm (小型) ≥ 576px：.col-sm-*
+        3. md (中型) ≥ 768px：.col-md-*
+        4. lg (大型) ≥ 992px：.col-lg-*
+        5. xl (超大型) ≥ 1200px：.col-xl-*
+        6. xxl (超超大型) ≥ 1400px：.col-xxl-*
+        
+        可以組合使用不同的中斷點類別，實現在不同螢幕尺寸下的最佳排版
+        例如：col-12 col-md-6 col-lg-3 代表：
+        - 小螢幕時佔12欄（100%寬度）
+        - 中螢幕時佔6欄（50%寬度）
+        - 大螢幕時佔3欄（25%寬度）
+        -->
+        <div class="section">
+            <h2>2. 響應式網格設計</h2>
+            <div class="explanation">
+                使用不同的中斷點(xs, sm, md, lg, xl)來實現響應式設計
+            </div>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-3"><div class="demo-col">在小螢幕時佔12欄，中螢幕6欄，大螢幕3欄</div></div>
+                <div class="col-12 col-md-6 col-lg-3"><div class="demo-col">在小螢幕時佔12欄，中螢幕6欄，大螢幕3欄</div></div>
+                <div class="col-12 col-md-6 col-lg-3"><div class="demo-col">在小螢幕時佔12欄，中螢幕6欄，大螢幕3欄</div></div>
+                <div class="col-12 col-md-6 col-lg-3"><div class="demo-col">在小螢幕時佔12欄，中螢幕6欄，大螢幕3欄</div></div>
+            </div>
+        </div>
+
+        <!-- 
+        欄位偏移：
+        1. offset-* 類別可以向右偏移指定的欄位數
+        2. 也可以配合響應式中斷點使用，如 offset-md-*
+        3. 偏移量也是基於12欄位系統
+        4. 常用於版面的微調和排版設計
+        -->
+        <div class="section">
+            <h2>3. 欄位偏移</h2>
+            <div class="explanation">
+                使用 offset 類別來偏移欄位位置
+            </div>
+            <div class="row">
+                <div class="col-md-4"><div class="demo-col">col-md-4</div></div>
+                <div class="col-md-4 offset-md-4"><div class="demo-col">col-md-4 offset-md-4</div></div>
+            </div>
+        </div>
+
+        <!-- 
+        巢狀網格：
+        1. 在任何 .col-* 內都可以新增 .row
+        2. 巢狀的 .row 內也是12欄位系統
+        3. 巢狀網格適合建立更複雜的版面配置
+        4. 每個巢狀 .row 都是獨立的12欄系統
+        -->
+        <div class="section">
+            <h2>4. 巢狀網格</h2>
+            <div class="explanation">
+                在欄位中可以再次使用 row 來建立巢狀網格
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="demo-col">
+                        <div class="row">
+                            <div class="col-8 col-sm-6"><div class="demo-col">巢狀 col-8 col-sm-6</div></div>
+                            <div class="col-4 col-sm-6"><div class="demo-col">巢狀 col-4 col-sm-6</div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 
+        垂直對齊：
+        1. align-items-start：頂部對齊
+        2. align-items-center：垂直置中
+        3. align-items-end：底部對齊
+        4. align-self-*：個別欄位的對齊方式
+        5. justify-content-*：水平對齊方式
+           - justify-content-start：靠左對齊
+           - justify-content-center：水平置中
+           - justify-content-end：靠右對齊
+           - justify-content-between：平均分配空間
+           - justify-content-around：環繞分配空間
+        -->
+        <div class="section">
+            <h2>5. 垂直對齊</h2>
+            <div class="explanation">
+                使用 align-items-* 類別來控制垂直對齊
+            </div>
+            <div class="row align-items-center" style="height: 100px; background-color: #fff;">
+                <div class="col"><div class="demo-col">置中對齊</div></div>
+                <div class="col"><div class="demo-col">置中對齊</div></div>
+                <div class="col"><div class="demo-col">置中對齊</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
