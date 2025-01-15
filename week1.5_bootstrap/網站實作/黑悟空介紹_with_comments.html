@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!-- 設定網頁語言為繁體中文 -->
+<html lang="zh-TW">
+<head>
+    <!-- 設定字符編碼為 UTF-8，確保中文字能正確顯示 -->
+    <meta charset="UTF-8">
+    <!-- 設定響應式視窗，使網頁在不同裝置上都能正確顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑悟空介紹</title>
+    <!-- 引入 Bootstrap 5 的 CSS 框架，用於網頁樣式和排版 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入 Ionicons 圖標庫，支援 ES 模組的現代瀏覽器 -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- 引入 Ionicons 圖標庫的備用方案，支援較舊的瀏覽器 -->
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <!-- 頁面頂部的大圖橫幅區域 -->
+    <header>
+        <!-- 
+            使用 img-fluid 類別使圖片具有響應式特性
+            - 圖片會自動調整大小以適應容器寬度
+            - 保持圖片原始比例
+            - 不會超出父容器的寬度
+        -->
+        <img src="https://cdn1.epicgames.com/spt-assets/ca9ef1bcf2f54043baac351366aec677/black-myth-wukong-1seg8.jpg" 
+             class="img-fluid" 
+             alt="黑悟空">
+    </header>
+
+    <!-- 主要內容區塊 -->
+    <!-- 
+        p-3: padding 設為 3 個單位（1rem = 16px）
+        bg-dark: 設定深色背景
+    -->
+    <section class="p-3 bg-dark">
+        <!-- 
+            container: Bootstrap 的容器類別
+            - 提供固定寬度的響應式容器
+            - 自動水平置中
+            - 在不同螢幕尺寸下有不同的最大寬度
+        -->
+        <div class="container">
+            <!-- 
+                row: Bootstrap 的網格系統行容器
+                - 使用 flexbox 進行排版
+                - 可容納多個 column（列）
+                - 自動處理列之間的間距
+            -->
+            <div class="row">
+                <!-- 
+                    col-md-8: 在中型螢幕（≥768px）以上時佔據 8/12 的寬度
+                    - 在小螢幕時會自動變為佔滿整行
+                    - md 表示 medium 斷點
+                    - 8 表示佔用 12 分之 8 的寬度
+                -->
+                <div class="col-md-8">
+                    <!-- 
+                        text-warning: 文字顏色設為警告色（黃色）
+                        mb-4: margin-bottom 設為 4 個單位
+                    -->
+                    <h2 class="text-warning mb-4"><strong>黑神話:悟空 世界觀介紹</strong></h2>
+                    <!-- 文字內容區塊，設定為白色 -->
+                    <div class="text-white">
+                        <!-- 遊戲簡介段落，底部有間距 -->
+                        <div class="mb-4">
+                            <p>《黑神話：悟空》的世界觀設定是基於中國古典名著《西遊記》，故事發生在唐僧及其徒弟成功取回佛經之後，屬於《西遊記》的後傳。遊戲的背景圍繞著孫悟空的隕落與復活展開，玩家將扮演「天命人」，踏上尋找和復活孫悟空的旅程。</p>
+                        </div>
+                        <!-- 故事背景段落 -->
+                        <div class="mb-4">
+                            <!-- 
+                                h5: 設定標題大小
+                                mb-3: 底部間距設為 3 個單位
+                            -->
+                            <h3 class="text-warning h5 mb-3"><strong>故事背景</strong></h3>
+                            <p>在遊戲中，孫悟空被封為「鬥戰勝佛」後選擇隱退，返回花果山。然而，天庭對他的行為感到威脅，派遣二郎神和天兵天將前來討伐。孫悟空在戰鬥中落敗，其肉身化為石卵，靈魂則被分為六根，隱藏在世間。玩家的任務是收集這六根，解救和復活孫悟空。</p>
+                        </div>
+                        <!-- 角色與勢力段落 -->
+                        <div class="mb-4">
+                            <h3 class="text-warning h5 mb-3"><strong>角色與勢力</strong></h3>
+                            <p>遊戲中涉及多個角色和勢力，包括天庭、妖王等。天庭的形象並非積極向上，反而呈現出一種複雜的權力鬥爭，反映了對傳統神話的重新解讀。玩家在遊戲中將面對各種妖怪和敵人，體驗豐富的戰鬥系統和故事情節。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                    col-md-4: 在中型螢幕以上時佔據 4/12 的寬度
+                    - 用於右側的下載區域
+                -->
+                <div class="col-md-4">
+                    <!-- 下載區域標題 -->
+                    <h2 class="text-warning text-center mb-4"><strong>DOWNLOAD</strong></h2>
+                    <!-- 
+                        嵌入 Steam 商店小工具
+                        - frameborder="0" 移除框架邊框
+                        - width="100%" 使框架寬度符合容器
+                    -->
+                    <iframe src="https://store.steampowered.com/widget/2358720/" 
+                            frameborder="0" 
+                            width="100%" 
+                            height="190"></iframe>
+                    <!-- 
+                        下載按鈕容器
+                        d-grid: 使用網格佈局
+                        gap-2: 設定網格間距
+                        mt-4: 上方間距設為 4 個單位
+                    -->
+                    <div class="d-grid gap-2 mt-4">
+                        <!-- 
+                            按鈕樣式設定：
+                            - btn-warning: 警告色按鈕（黃色）
+                            - btn-lg: 大型按鈕
+                            - fst-italic: 斜體文字
+                            - d-flex: 使用 flexbox 布局
+                            - align-items-center: 垂直居中對齊
+                            - justify-content-center: 水平居中對齊
+                        -->
+                        <button class="btn btn-warning btn-lg fst-italic d-flex align-items-center justify-content-center" type="button">
+                            PC 下載 
+                            <!-- 
+                                下載圖標
+                                ms-2: margin-start（左邊距）設為 2 個單位
+                            -->
+                            <ion-icon name="cloud-download-outline" class="ms-2"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 引入 Bootstrap 的 JavaScript 檔案，包含了 Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
