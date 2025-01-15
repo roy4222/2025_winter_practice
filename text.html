@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Text 文字樣式實例教學</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .text-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            background-color: #f8f9fa;
+        }
+        .demo-box {
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .bg-custom-dark {
+            background-color: #343a40;
+            color: white;
+            padding: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Bootstrap Text 文字樣式詳解</h1>
+
+        <!-- 1. 文字顏色 -->
+        <section class="text-section">
+            <h2 class="mb-4">1. 文字顏色</h2>
+            
+            <!-- 文字顏色說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字顏色類別：</strong><br>
+                text-{color}<br>
+                顏色選項：primary, secondary, success, danger, warning, info, light, dark, body, muted
+            </div>
+
+            <div class="demo-box">
+                <p class="text-primary">Primary 文字顏色</p>
+                <p class="text-secondary">Secondary 文字顏色</p>
+                <p class="text-success">Success 文字顏色</p>
+                <p class="text-danger">Danger 文字顏色</p>
+                <p class="text-warning">Warning 文字顏色</p>
+                <p class="text-info">Info 文字顏色</p>
+                <p class="text-light bg-custom-dark">Light 文字顏色</p>
+                <p class="text-dark">Dark 文字顏色</p>
+                <p class="text-muted">Muted 文字顏色</p>
+            </div>
+        </section>
+
+        <!-- 2. 文字對齊 -->
+        <section class="text-section">
+            <h2 class="mb-4">2. 文字對齊</h2>
+
+            <!-- 文字對齊說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字對齊類別：</strong><br>
+                text-{alignment}<br>
+                對齊選項：start, center, end<br>
+                響應式：text-{breakpoint}-{alignment}
+            </div>
+
+            <div class="demo-box">
+                <p class="text-start">靠左對齊文字</p>
+                <p class="text-center">置中對齊文字</p>
+                <p class="text-end">靠右對齊文字</p>
+                <!-- 響應式文字對齊 -->
+                <p class="text-start text-md-center text-lg-end">
+                    響應式對齊：在不同螢幕尺寸下改變對齊方式
+                </p>
+            </div>
+        </section>
+
+        <!-- 3. 文字修飾 -->
+        <section class="text-section">
+            <h2 class="mb-4">3. 文字修飾</h2>
+
+            <!-- 文字修飾說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字修飾類別：</strong><br>
+                - text-decoration-*：文字裝飾<br>
+                - font-weight-*：字重控制<br>
+                - font-style-*：字體樣式
+            </div>
+
+            <div class="demo-box">
+                <p class="text-decoration-underline">底線文字</p>
+                <p class="text-decoration-line-through">刪除線文字</p>
+                <p class="text-decoration-none">無裝飾文字</p>
+                <p class="fw-bold">粗體文字</p>
+                <p class="fw-normal">正常文字</p>
+                <p class="fw-light">細體文字</p>
+                <p class="fst-italic">斜體文字</p>
+            </div>
+        </section>
+
+        <!-- 4. 文字轉換 -->
+        <section class="text-section">
+            <h2 class="mb-4">4. 文字轉換</h2>
+
+            <!-- 文字轉換說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字轉換類別：</strong><br>
+                text-{transform}<br>
+                轉換選項：lowercase, uppercase, capitalize
+            </div>
+
+            <div class="demo-box">
+                <p class="text-lowercase">LOWERCASE 轉小寫</p>
+                <p class="text-uppercase">uppercase 轉大寫</p>
+                <p class="text-capitalize">capitalize 首字母大寫</p>
+            </div>
+        </section>
+
+        <!-- 5. 文字大小和字距 -->
+        <section class="text-section">
+            <h2 class="mb-4">5. 文字大小和字距</h2>
+
+            <!-- 文字大小和字距說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字大小和字距類別：</strong><br>
+                - fs-*：字體大小<br>
+                - lh-*：行高控制<br>
+                - letter-spacing：字距控制
+            </div>
+
+            <div class="demo-box">
+                <p class="fs-1">最大字體 (fs-1)</p>
+                <p class="fs-2">次大字體 (fs-2)</p>
+                <p class="fs-3">中等字體 (fs-3)</p>
+                <p class="fs-4">較小字體 (fs-4)</p>
+                <p class="fs-5">小字體 (fs-5)</p>
+                <p class="fs-6">最小字體 (fs-6)</p>
+
+                <!-- 行高展示 -->
+                <div class="lh-1 mb-3">
+                    這是較緊湊的行高 (lh-1)<br>
+                    第二行文字展示效果
+                </div>
+                <div class="lh-base mb-3">
+                    這是基本的行高 (lh-base)<br>
+                    第二行文字展示效果
+                </div>
+                <div class="lh-lg">
+                    這是較寬鬆的行高 (lh-lg)<br>
+                    第二行文字展示效果
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 文字截斷和換行 -->
+        <section class="text-section">
+            <h2 class="mb-4">6. 文字截斷和換行</h2>
+
+            <!-- 文字截斷和換行說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>文字截斷和換行類別：</strong><br>
+                - text-wrap/nowrap：文字換行控制<br>
+                - text-break：強制換行<br>
+                - text-truncate：文字截斷
+            </div>
+
+            <div class="demo-box">
+                <!-- 文字換行 -->
+                <div class="text-wrap mb-3" style="width: 200px;">
+                    這是一段可以自動換行的長文字，展示 text-wrap 的效果
+                </div>
+
+                <!-- 不換行 -->
+                <div class="text-nowrap bg-light overflow-hidden mb-3" style="width: 200px;">
+                    這是一段不會換行的長文字，展示 text-nowrap 的效果
+                </div>
+
+                <!-- 文字截斷 -->
+                <div class="text-truncate mb-3" style="width: 200px;">
+                    這是一段會被截斷的長文字，最後會顯示省略號...
+                </div>
+
+                <!-- 強制換行 -->
+                <div class="text-break">
+                    這是一段很長的文字，包含很長的英文字串aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 實用組合範例 -->
+        <section class="text-section">
+            <h2 class="mb-4">7. 實用組合範例</h2>
+
+            <!-- 文章標題樣式 -->
+            <article class="demo-box">
+                <h3 class="text-primary fw-bold mb-3">文章標題</h3>
+                <p class="text-muted fst-italic mb-2">發布日期：2025/01/15</p>
+                <p class="text-justify mb-3">
+                    這是文章內容，使用了多種文字樣式的組合。這段文字展示了如何組合使用不同的 Bootstrap 文字類別來達到理想的排版效果。
+                </p>
+                <div class="text-end">
+                    <a href="#" class="text-decoration-none">閱讀更多</a>
+                </div>
+            </article>
+
+            <!-- 警告訊息樣式 -->
+            <div class="demo-box">
+                <p class="text-danger fw-bold mb-2">錯誤訊息</p>
+                <p class="text-muted small">
+                    這是一個錯誤訊息的示例，使用了文字顏色和大小的組合。
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
