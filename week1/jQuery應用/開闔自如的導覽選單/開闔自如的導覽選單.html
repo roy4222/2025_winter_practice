@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>開闔自如的導覽選單</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 引入 jQuery 函式庫 -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <section>
+        <div class="sidebar">
+            <h3>1.Getting Started</h3>
+            <ul class="hidden">
+                <li><a href="#">首頁</a></li>
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">產品介紹</a></li>
+                <li><a href="#">聯絡我們</a></li>
+            </ul>
+        </div>
+        <div class="submenu">
+            <h3>2.How to use</h3>
+            <ul class="hidden">
+                <li><a href="#">基本使用方法</a></li>
+                <li><a href="#">進階使用方法</a></li>
+                <li><a href="#">回復到最初狀態</a></li>
+                <li><a href="#">製作外掛工具</a></li>
+            </ul>
+        </div>
+    </section>
+
+    <script>
+        // 當網頁完全載入後執行以下程式碼
+        $(document).ready(function() {
+            // 選取所有在 .sidebar 和 .submenu 類別下的 h3 標題
+            // 並為它們添加點擊事件處理器
+            $('.sidebar h3, .submenu h3').click(function() {
+                // this 代表被點擊的 h3 元素
+                // next('ul') 選取緊接在 h3 後面的 ul 元素
+                // toggleClass('hidden') 切換 hidden 類別（有則移除，無則添加）
+                $(this).next('ul').toggleClass('hidden');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>倒數計時器</title>
+</head>
+<body>
+    <section>
+        <h1>倒數計時器</h1>
+        <input type="datetime-local" id="dateInput">
+        <div id="countdown"></div>
+    </section>
+    <script>
+        // 計算倒數時間的函數，參數 due 是目標時間
+        function countDown(due) {
+            // 獲取當前時間
+            const now = new Date();
+
+            // 計算剩餘的毫秒數（目標時間 - 當前時間）
+            const rest = due.getTime() - now.getTime();
+            // 計算剩餘的天數（將毫秒轉換為天）
+            const days = Math.floor(rest / (1000 * 60 * 60 * 24));
+            // 計算剩餘的小時（取得天數後的餘數再轉換為小時）
+            const hours = Math.floor((rest % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            // 計算剩餘的分鐘（取得小時後的餘數再轉換為分鐘）
+            const minutes = Math.floor((rest % (1000 * 60 * 60)) / (1000 * 60));
+            // 計算剩餘的秒數（取得分鐘後的餘數再轉換為秒）
+            const seconds = Math.floor((rest % (1000 * 60)) / 1000);
+
+            // 返回格式化的時間字串
+            return `${days}天${hours}小時${minutes}分${seconds}秒`;
+        }
+
+        // 獲取日期時間輸入框元素
+        const dateInput = document.getElementById('dateInput');
+        
+
+        //資料持久化部分:
+
+        // 從 localStorage 讀取儲存的時間，如果沒有則使用當前時間
+        const savedDate = localStorage.getItem('targetDate');
+        let due = savedDate ? new Date(savedDate) : new Date();
+        
+        // 設定輸入框的值：優先使用儲存的時間，否則使用當前時間
+        if (savedDate) {
+            dateInput.value = savedDate.slice(0, 16);
+        } else {
+            const now = new Date();
+            dateInput.value = now.toISOString().slice(0, 16);
+        }
+        
+        
+        // 監聽日期時間輸入框的變更事件
+        dateInput.addEventListener('change', function() {
+            // 當使用者選擇新的時間時，更新目標時間
+            due = new Date(this.value);
+            // 將新選擇的時間儲存到 localStorage
+            localStorage.setItem('targetDate', due.toISOString());
+        });
+
+        // 設定定時器，每秒更新一次倒數時間顯示
+        setInterval(() => {
+            // 獲取倒數時間並更新到頁面上
+            document.getElementById('countdown').innerHTML = countDown(due);
+        }, 1000);  // 1000毫秒 = 1秒
+    </script>
+</body>
+</html>

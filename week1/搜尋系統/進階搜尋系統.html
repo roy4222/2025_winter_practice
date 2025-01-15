@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階搜尋系統</title>
+    <style>
+        /* 基本頁面樣式設定 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* 搜尋區塊樣式 */
+        .search-container {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        /* 搜尋歷史區塊樣式 */
+        .search-history {
+            margin-bottom: 20px;
+        }
+        /* 搜尋建議下拉選單樣式 */
+        .search-suggestions {
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 200px;
+            display: none;
+        }
+        /* 建議項目樣式 */
+        .suggestion-item {
+            padding: 8px;
+            cursor: pointer;
+        }
+        .suggestion-item:hover {
+            background: #f0f0f0;
+        }
+        /* 篩選器容器樣式 */
+        .filter-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        /* 搜尋結果區域樣式 */
+        .results {
+            margin-top: 20px;
+        }
+        /* 錯誤訊息樣式 */
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+        /* 歷史搜尋標籤樣式 */
+        .history-tag {
+            display: inline-block;
+            background: #e0e0e0;
+            padding: 5px 10px;
+            margin: 5px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 搜尋區塊 -->
+    <section class="search-container">
+        <h2>進階搜尋系統</h2>
+        <!-- 搜尋表單 -->
+        <form id="searchForm">
+            <div class="filter-container">
+                <!-- 關鍵字搜尋輸入框 -->
+                <div>
+                    <input type="text" id="search" placeholder="請輸入關鍵字" required>
+                    <div class="error" id="searchError">請輸入搜尋關鍵字</div>
+                    <!-- 搜尋建議下拉選單 -->
+                    <div class="search-suggestions" id="suggestions"></div>
+                </div>
+                <!-- 價格範圍輸入 -->
+                <div>
+                    <input type="number" id="minPrice" placeholder="最低價格">
+                    <input type="number" id="maxPrice" placeholder="最高價格">
+                </div>
+                <!-- 商品類別選擇 -->
+                <select id="category">
+                    <option value="">所有類別</option>
+                    <option value="電子">電子產品</option>
+                    <option value="服飾">服飾</option>
+                    <option value="食品">食品</option>
+                </select>
+                <input type="submit" value="搜尋">
+            </div>
+        </form>
+        
+        <!-- 搜尋歷史區塊 -->
+        <div class="search-history">
+            <h3>搜尋歷史</h3>
+            <div id="historyTags"></div>
+        </div>
+    </section>
+
+    <!-- 搜尋結果區塊 -->
+    <section class="results">
+        <div id="output"></div>
+        <div id="searchResults"></div>
+    </section>
+
+    <script>
+        // 模擬產品資料庫
+        const products = [
+            { name: 'iPhone 14', price: 25000, category: '電子' },
+            { name: '機械鍵盤', price: 2000, category: '電子' },
+            { name: '牛仔褲', price: 800, category: '服飾' },
+            { name: '運動鞋', price: 1500, category: '服飾' },
+            { name: '巧克力', price: 100, category: '食品' },
+            { name: '餅乾', price: 50, category: '食品' }
+        ];
+
+        // 從 localStorage 讀取搜尋歷史，如果沒有則初始化為空陣列
+        let searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+
+        // 更新搜尋歷史標籤的顯示
+        function updateHistoryTags() {
+            const historyContainer = document.getElementById('historyTags');
+            // 將每個歷史搜尋詞轉換為可點擊的標籤
+            historyContainer.innerHTML = searchHistory
+                .map(term => `<span class="history-tag" onclick="useHistoryTerm('${term}')">${term}</span>`)
+                .join('');
+        }
+
+        // 使用歷史搜尋詞進行搜尋
+        function useHistoryTerm(term) {
+            document.getElementById('search').value = term;
+            performSearch();
+        }
+
+        // 監聽搜尋輸入框的輸入事件，實現即時搜尋建議
+        document.getElementById('search').addEventListener('input', function(e) {
+            const value = e.target.value.toLowerCase();
+            // 過濾符合的產品名稱
+            const suggestions = products
+                .filter(product => product.name.toLowerCase().includes(value))
+                .map(product => product.name);
+            
+            const suggestionsDiv = document.getElementById('suggestions');
+            // 如果有輸入值且有建議結果，則顯示建議清單
+            if (value && suggestions.length > 0) {
+                suggestionsDiv.innerHTML = suggestions
+                    .map(suggestion => `<div class="suggestion-item" onclick="useSuggestion('${suggestion}')">${suggestion}</div>`)
+                    .join('');
+                suggestionsDiv.style.display = 'block';
+            } else {
+                suggestionsDiv.style.display = 'none';
+            }
+        });
+
+        // 使用搜尋建議進行搜尋
+        function useSuggestion(suggestion) {
+            document.getElementById('search').value = suggestion;
+            document.getElementById('suggestions').style.display = 'none';
+            performSearch();
+        }
+
+        // 處理表單提交事件
+        document.getElementById('searchForm').onsubmit = function(e) {
+            e.preventDefault(); // 防止表單提交刷新頁面
+            performSearch();
+        };
+
+        // 執行搜尋功能
+        function performSearch() {
+            // 獲取所有搜尋條件
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const minPrice = Number(document.getElementById('minPrice').value) || 0;
+            const maxPrice = Number(document.getElementById('maxPrice').value) || Infinity;
+            const category = document.getElementById('category').value;
+
+            // 表單驗證
+            const searchError = document.getElementById('searchError');
+            if (!searchTerm) {
+                searchError.style.display = 'block';
+                return;
+            }
+            searchError.style.display = 'none';
+
+            // 更新搜尋歷史
+            if (!searchHistory.includes(searchTerm)) {
+                searchHistory.unshift(searchTerm); // 新搜尋詞加到最前面
+                searchHistory = searchHistory.slice(0, 5); // 只保留最近5筆
+                localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                updateHistoryTags();
+            }
+
+            // 顯示搜尋中訊息
+            document.getElementById('output').innerHTML = `『 ${searchTerm} 』搜尋中...`;
+
+            // 根據所有條件過濾產品
+            const results = products.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchTerm);
+                const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+                const matchesCategory = !category || product.category === category;
+                return matchesSearch && matchesPrice && matchesCategory;
+            });
+
+            // 延遲顯示結果，模擬實際搜尋過程
+            setTimeout(() => {
+                // 根據搜尋結果生成 HTML
+                const resultsHTML = results.length > 0
+                    ? results.map(product => `
+                        <div style="border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 4px;">
+                            <h3>${product.name}</h3>
+                            <p>價格: $${product.price}</p>
+                            <p>類別: ${product.category}</p>
+                        </div>
+                    `).join('')
+                    : '<p>沒有找到符合的結果</p>';
+
+                // 更新結果顯示
+                document.getElementById('output').innerHTML = `找到 ${results.length} 個結果：`;
+                document.getElementById('searchResults').innerHTML = resultsHTML;
+            }, 500);
+        }
+
+        // 頁面載入時初始化搜尋歷史
+        updateHistoryTags();
+
+        // 點擊頁面其他地方時關閉搜尋建議
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#search') && !e.target.closest('#suggestions')) {
+                document.getElementById('suggestions').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

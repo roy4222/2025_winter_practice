@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階導覽選單示例</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .sidebar {
+            width: 250px;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .menu-item {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .submenu {
+            margin-left: 20px;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item.active {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .arrow {
+            display: inline-block;
+            margin-right: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow.rotated {
+            transform: rotate(90deg);
+        }
+
+        /* 動畫效果 */
+        .fade-enter {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .fade-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        /* 麵包屑導航 */
+        .breadcrumb {
+            padding: 10px;
+            background-color: #e9ecef;
+            margin-bottom: 20px;
+        }
+
+        /* 搜尋框 */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* 反白效果 */
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <!-- 麵包屑導航 -->
+    <div class="breadcrumb"></div>
+
+    <!-- 搜尋框 -->
+    <div class="search-box">
+        <input type="text" placeholder="搜尋選單項目...">
+    </div>
+
+    <div class="sidebar">
+        <div class="menu-item">
+            <span class="arrow">▶</span>產品分類
+            <div class="submenu">
+                <div class="menu-item">手機</div>
+                <div class="menu-item">筆電</div>
+                <div class="menu-item">
+                    <span class="arrow">▶</span>配件
+                    <div class="submenu">
+                        <div class="menu-item">耳機</div>
+                        <div class="menu-item">充電器</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="menu-item">
+            <span class="arrow">▶</span>關於我們
+            <div class="submenu">
+                <div class="menu-item">公司簡介</div>
+                <div class="menu-item">聯絡方式</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // 1. 選單動畫效果處理
+            $('.menu-item').click(function(e) {
+                // 防止事件冒泡到父層選單，避免觸發父選單的點擊事件
+                e.stopPropagation(); 
+                
+                // 獲取當前選單項目下的子選單和箭頭元素
+                const submenu = $(this).children('.submenu');
+                const arrow = $(this).children('.arrow');
+                
+                // 切換箭頭的旋轉狀態（加上或移除 rotated 類別）
+                arrow.toggleClass('rotated');
+                
+                // 使用 jQuery 的 slideToggle 效果，在 300 毫秒內平滑展開/收合子選單
+                submenu.slideToggle(300);
+                
+                // 切換當前選單項目的活動狀態
+                $(this).toggleClass('active');
+            });
+
+            // 2. 麵包屑導航功能
+            // 更新麵包屑導航的函數
+            function updateBreadcrumb() {
+                const activePath = [];
+                // 找出所有帶有 active 類別的選單項目
+                $('.menu-item.active').each(function() {
+                    // 複製元素，移除所有子元素，只保留文字內容
+                    activePath.push($(this).clone().children().remove().end().text().trim());
+                });
+                // 用 > 符號連接路徑並更新到麵包屑區域
+                $('.breadcrumb').html(activePath.join(' > '));
+            }
+
+            // 綁定點擊事件到更新麵包屑函數
+            $('.menu-item').on('click', updateBreadcrumb);
+
+            // 3. 搜尋功能實現
+            $('.search-box input').on('input', function() {
+                // 獲取搜尋文字並轉為小寫
+                const searchText = $(this).val().toLowerCase();
+                
+                // 移除所有現有的高亮標記
+                $('.menu-item').removeClass('highlight');
+                
+                if (searchText) {
+                    // 當搜尋框有文字時
+                    $('.menu-item').each(function() {
+                        // 獲取選單項目的純文字內容（不含子元素）
+                        const text = $(this).clone().children().remove().end().text().toLowerCase();
+                        if (text.includes(searchText)) {
+                            // 如果找到匹配項，添加高亮效果
+                            $(this).addClass('highlight');
+                            // 展開包含匹配項的父選單
+                            $(this).parents('.submenu').show();
+                            $(this).parents('.menu-item').addClass('active');
+                        }
+                    });
+                } else {
+                    // 當搜尋框為空時，重置選單狀態
+                    $('.submenu').hide();
+                    $('.menu-item').removeClass('active');
+                }
+            });
+
+            // 4. 選單狀態記憶功能
+            // 儲存選單狀態到 localStorage
+            const saveMenuState = () => {
+                const state = {};
+                // 遍歷所有選單項目，記錄其狀態
+                $('.menu-item').each(function(index) {
+                    state[index] = {
+                        isActive: $(this).hasClass('active'),        // 是否處於活動狀態
+                        isVisible: $(this).children('.submenu').is(':visible')  // 子選單是否可見
+                    };
+                });
+                // 將狀態物件轉為 JSON 字串並儲存
+                localStorage.setItem('menuState', JSON.stringify(state));
+            };
+
+            // 從 localStorage 載入選單狀態
+            const loadMenuState = () => {
+                // 讀取並解析儲存的狀態
+                const state = JSON.parse(localStorage.getItem('menuState'));
+                if (state) {
+                    // 如果有儲存的狀態，套用到選單
+                    $('.menu-item').each(function(index) {
+                        if (state[index].isActive) {
+                            $(this).addClass('active');
+                        }
+                        if (state[index].isVisible) {
+                            $(this).children('.submenu').show();
+                        }
+                    });
+                }
+            };
+
+            // 為所有選單項目的點擊事件綁定儲存狀態功能
+            $('.menu-item').on('click', saveMenuState);
+            
+            // 頁面載入時恢復先前儲存的選單狀態
+            loadMenuState();
+        });
+    </script>
+</body>
+</html>

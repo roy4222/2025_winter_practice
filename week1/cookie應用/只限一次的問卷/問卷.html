@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>只限一次作答的問卷</title>
+    <!-- 引入 js-cookie 函式庫，用於處理 cookie 的讀寫 -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+</head>
+<body>
+    <section>
+        <p>您會去電影院看電影嗎?</p>
+        <!-- 表單提交後會跳轉到 thankyou.html -->
+        <form id="form" action="thankyou.html" onsubmit="return handleSubmit()"> <!-- onsubmit 屬性指定表單提交事件的處理函式 -->
+            <!-- required 屬性確保至少選擇一個選項 -->
+            <input type="radio" name="frequency" value="more_than_weekly" required>每周1次以上<br>
+            <input type="radio" name="frequency" value="more_than_monthly" required>每月1次以上<br>
+            <input type="radio" name="frequency" value="more_than_yearly" required>每年1次以上<br>
+            <input type="submit" value="送出" id="submit">
+        </form>
+        <br>
+        <button id='removeCookie' onclick="removeCookie()">刪除 cookie</button> <!-- onclick 屬性指定按鈕被點擊時的事件處理函式 -->
+    </section>
+
+    <script>
+        // 處理表單提交
+        function handleSubmit() {
+            // 檢查 cookie 中是否已有 'answered' 標記
+            if(Cookies.get('answered')==='yes') {
+                // 如果已經回答過，顯示提示訊息
+                window.alert('您已經回答過了');
+                // 返回 false 阻止表單提交
+                return false;
+            }else{
+                // 如果是第一次回答
+                // 設置一個名為 'answered' 的 cookie
+                // 值設為 'yes'
+                // expires: 7 表示這個 cookie 會在7天後過期
+                Cookies.set('answered','yes',{expires:7});
+                // 返回 true 允許表單提交
+                return true;
+            }
+        }
+
+        // 刪除 cookie
+        function removeCookie() {
+            Cookies.remove('answered'); // 刪除名為 'answered' 的 cookie
+        }
+    </script>
+</body>
+</html>

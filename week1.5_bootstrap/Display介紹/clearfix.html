@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Clearfix 清除浮動實例教學</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .clearfix-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+        }
+        .demo-box {
+            background-color: #fff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+        }
+        .float-box {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            background-color: #6c757d;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .content-box {
+            padding: 1rem;
+            background-color: #e9ecef;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Bootstrap Clearfix 清除浮動詳解</h1>
+
+        <!-- 1. 基本 Clearfix 使用 -->
+        <section class="clearfix-section">
+            <h2 class="mb-4">1. 基本 Clearfix 使用</h2>
+            
+            <!-- Clearfix 說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>Clearfix 基本說明：</strong><br>
+                - clearfix 類別用於清除浮動元素的影響<br>
+                - 當容器內有浮動元素時，容器可能無法正確包含這些元素<br>
+                - 使用 clearfix 可以確保容器正確包含所有浮動元素
+            </div>
+
+            <!-- 沒有使用 Clearfix -->
+            <div class="demo-box mb-4">
+                <h5>未使用 Clearfix：</h5>
+                <div class="float-box float-start">
+                    左浮動元素
+                </div>
+                <div class="float-box float-end">
+                    右浮動元素
+                </div>
+            </div>
+
+            <!-- 使用 Clearfix -->
+            <div class="demo-box clearfix">
+                <h5>使用 Clearfix：</h5>
+                <div class="float-box float-start">
+                    左浮動元素
+                </div>
+                <div class="float-box float-end">
+                    右浮動元素
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 常見問題解決 -->
+        <section class="clearfix-section">
+            <h2 class="mb-4">2. 常見問題解決</h2>
+
+            <!-- 問題說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>常見問題說明：</strong><br>
+                - 浮動元素會造成父容器高度塌陷<br>
+                - 後續元素可能會受到浮動影響<br>
+                - Clearfix 可以解決這些問題
+            </div>
+
+            <!-- 高度塌陷問題 -->
+            <div class="demo-box">
+                <h5>高度塌陷問題：</h5>
+                <div style="border: 2px dashed #dc3545;">
+                    <div class="float-box float-start">
+                        浮動元素
+                    </div>
+                </div>
+                <div class="content-box">
+                    後續內容（受影響）
+                </div>
+            </div>
+
+            <!-- Clearfix 解決方案 -->
+            <div class="demo-box">
+                <h5>Clearfix 解決方案：</h5>
+                <div style="border: 2px dashed #28a745;" class="clearfix">
+                    <div class="float-box float-start">
+                        浮動元素
+                    </div>
+                </div>
+                <div class="content-box">
+                    後續內容（正常顯示）
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 實際應用場景 -->
+        <section class="clearfix-section">
+            <h2 class="mb-4">3. 實際應用場景</h2>
+
+            <!-- 應用場景說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>應用場景說明：</strong><br>
+                - 圖文混排布局<br>
+                - 多列布局<br>
+                - 導航欄設計
+            </div>
+
+            <!-- 圖文混排示例 -->
+            <div class="demo-box clearfix">
+                <h5>圖文混排：</h5>
+                <img src="https://picsum.photos/150/150?random=1" 
+                     class="float-start me-3 mb-3" alt="示例圖片">
+                <p>
+                    這是一段示例文字，展示圖文混排的效果。圖片浮動到左側，
+                    文字自然環繞在圖片周圍。使用 clearfix 確保容器能正確包含
+                    浮動的圖片元素。這種布局在文章、部落格等內容中非常常見。
+                    通過使用 Bootstrap 的 float 類別和 clearfix，
+                    我們可以輕鬆實現這種效果。
+                </p>
+            </div>
+
+            <!-- 導航欄示例 -->
+            <div class="demo-box">
+                <h5>導航欄：</h5>
+                <nav class="clearfix mb-3" style="background-color: #e9ecef; padding: 1rem;">
+                    <div class="float-start">
+                        <strong>網站名稱</strong>
+                    </div>
+                    <div class="float-end">
+                        <a href="#" class="me-3">首頁</a>
+                        <a href="#" class="me-3">關於</a>
+                        <a href="#">聯絡我們</a>
+                    </div>
+                </nav>
+            </div>
+        </section>
+
+        <!-- 4. 最佳實踐 -->
+        <section class="clearfix-section">
+            <h2 class="mb-4">4. 最佳實踐</h2>
+            
+            <div class="alert alert-warning">
+                <h5>重要提醒：</h5>
+                <ul class="mb-0">
+                    <li>優先考慮使用 Flexbox 或 Grid 進行布局</li>
+                    <li>只在處理舊版瀏覽器或特定場景時使用 float</li>
+                    <li>記得在浮動元素的父容器上添加 clearfix</li>
+                    <li>注意 clearfix 對響應式設計的影響</li>
+                    <li>合理使用 margin 和 padding 調整間距</li>
+                </ul>
+            </div>
+
+            <!-- 現代布局對比 -->
+            <div class="demo-box">
+                <h5>現代布局方案（推薦）：</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="p-3 bg-primary text-white">Flex 項目 1</div>
+                    <div class="p-3 bg-primary text-white">Flex 項目 2</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

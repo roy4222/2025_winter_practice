@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顯示易讀的日期時間形式</title>
+</head>
+<body>
+    <p>最後連線的日期時間: <span id="last-connection-time"></span></p>
+
+    <script>
+        const now = new Date(); // 取得目前的日期和時間
+
+        const year = now.getFullYear(); // 年
+
+        const month = now.getMonth() + 1; // 月份是從 0 開始
+
+        const day = now.getDate(); // 日
+
+        const hours = now.getHours(); // 小時
+
+        const minutes = now.getMinutes(); // 分
+
+        const seconds = now.getSeconds(); // 秒
+
+        let am_pm='' // 上午或下午
+
+        if (hours < 12) {
+            am_pm = '上午';
+        } else {
+            am_pm = '下午';
+        }
+
+
+
+        const lastConnectionTime = `${year} 年 ${month} 月 ${day} 日 ${am_pm} ${hours%12} 時 ${minutes} 分 ${seconds} 秒`; // 格式化日期和時間
+
+        document.getElementById('last-connection-time').textContent = lastConnectionTime; // 將最後連線的日期時間顯示在畫面上
+
+    </script>
+</body>
+</html>

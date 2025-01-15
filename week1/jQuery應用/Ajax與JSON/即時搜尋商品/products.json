@@ -1,0 +1,44 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "iPhone 15 Pro",
+            "category": "手機",
+            "price": 34900,
+            "description": "最新款 iPhone，搭載 A17 Pro 晶片",
+            "stock": 50
+        },
+        {
+            "id": 2,
+            "name": "Samsung Galaxy S23",
+            "category": "手機",
+            "price": 27900,
+            "description": "Samsung 旗艦機種，高性能相機",
+            "stock": 30
+        },
+        {
+            "id": 3,
+            "name": "MacBook Air M2",
+            "category": "筆電",
+            "price": 39900,
+            "description": "輕薄筆電，搭載 M2 晶片",
+            "stock": 25
+        },
+        {
+            "id": 4,
+            "name": "AirPods Pro",
+            "category": "配件",
+            "price": 7990,
+            "description": "主動降噪真無線耳機",
+            "stock": 100
+        },
+        {
+            "id": 5,
+            "name": "iPad Air",
+            "category": "平板",
+            "price": 19900,
+            "description": "多功能平板電腦",
+            "stock": 40
+        }
+    ]
+}

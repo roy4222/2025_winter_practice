@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階 RSS Feed 閱讀器</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .feed-item {
+            transition: transform 0.2s;
+        }
+        .feed-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        .error-message {
+            display: none;
+            color: #dc3545;
+            padding: 20px;
+            text-align: center;
+        }
+        .favorite {
+            color: gold;
+        }
+        .read {
+            opacity: 0.6;
+        }
+        .search-box {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1000;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .toolbar {
+            margin-bottom: 20px;
+        }
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .update-time {
+            font-size: 0.8em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">進階 RSS Feed 閱讀器</h1>
+        
+        <!-- 工具列 -->
+        <div class="toolbar row">
+            <div class="col-md-4">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="搜尋文章...">
+                    <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <select id="feedSource" class="form-select">
+                    <!-- RSS 來源選項 -->
+                </select>
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group w-100">
+                    <button id="loadFeed" class="btn btn-primary">
+                        <i class="bi bi-arrow-repeat"></i> 載入新聞
+                    </button>
+                    <button id="showFavorites" class="btn btn-warning">
+                        <i class="bi bi-star"></i> 收藏文章
+                    </button>
+                    <button id="showUnread" class="btn btn-success">
+                        <i class="bi bi-book"></i> 未讀文章
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 過濾選項 -->
+        <div class="filter-options mb-3">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary active" data-filter="all">全部</button>
+                <button type="button" class="btn btn-outline-primary" data-filter="unread">未讀</button>
+                <button type="button" class="btn btn-outline-primary" data-filter="favorite">收藏</button>
+            </div>
+            <span class="update-time ms-3">
+                上次更新: <span id="lastUpdate">從未更新</span>
+            </span>
+        </div>
+
+        <!-- 載入動畫 -->
+        <div id="loading" class="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">載入中...</span>
+            </div>
+            <p class="mt-2">正在載入 RSS Feed...</p>
+        </div>
+
+        <!-- 錯誤訊息 -->
+        <div id="error" class="error-message">
+            <p>無法載入 RSS Feed，請稍後再試。</p>
+        </div>
+
+        <!-- RSS 內容顯示區域 -->
+        <div id="feedContent" class="row"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 儲存文章狀態
+            let articles = [];
+            // 自動更新計時器
+            let updateTimer;
+            // 載入本地儲存的收藏和閱讀狀態
+            const favorites = JSON.parse(localStorage.getItem('rss_favorites') || '[]');
+            const readArticles = JSON.parse(localStorage.getItem('rss_read') || '[]');
+
+            // 初始化 RSS 來源
+            initializeFeedSources();
+            
+            // 綁定事件處理器
+            bindEventHandlers();
+            
+            // 開始自動更新
+            startAutoUpdate();
+
+            /**
+             * 初始化 RSS 來源列表
+             */
+            function initializeFeedSources() {
+                const sources = [
+                    {
+                        group: "新聞",
+                        feeds: [
+                            { name: "公視新聞", url: "https://news.pts.org.tw/xml/newsfeed.xml" },
+                            { name: "報導者", url: "https://www.twreporter.org/a/rss2.xml" },
+                            { name: "INSIDE", url: "https://www.inside.com.tw/feed/articles" }
+                        ]
+                    },
+                    {
+                        group: "科技",
+                        feeds: [
+                            { name: "iThome", url: "https://www.ithome.com.tw/rss" },
+                            { name: "科技新報", url: "https://technews.tw/feed/" },
+                            { name: "癮科技", url: "https://www.cool3c.com/rss" }
+                        ]
+                    }
+                ];
+
+                const $select = $('#feedSource');
+                sources.forEach(group => {
+                    const $optgroup = $('<optgroup>').attr('label', group.group);
+                    group.feeds.forEach(feed => {
+                        $optgroup.append($('<option>').val(feed.url).text(feed.name));
+                    });
+                    $select.append($optgroup);
+                });
+            }
+
+            /**
+             * 綁定所有事件處理器
+             */
+            function bindEventHandlers() {
+                // 載入按鈕點擊事件
+                $('#loadFeed').click(loadRSSFeed);
+
+                // 搜尋功能
+                $('#searchInput').on('input', filterArticles);
+                $('#clearSearch').click(function() {
+                    $('#searchInput').val('').trigger('input');
+                });
+
+                // 收藏按鈕事件
+                $('#showFavorites').click(function() {
+                    $('.filter-options button[data-filter="favorite"]').click();
+                });
+
+                // 未讀文章按鈕事件
+                $('#showUnread').click(function() {
+                    $('.filter-options button[data-filter="unread"]').click();
+                });
+
+                // 過濾按鈕事件
+                $('.filter-options button').click(function() {
+                    $('.filter-options button').removeClass('active');
+                    $(this).addClass('active');
+                    filterArticles();
+                });
+            }
+
+            /**
+             * 載入 RSS Feed
+             */
+            function loadRSSFeed() {
+                const feedUrl = $('#feedSource').val();
+                const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}`;
+
+                $('#loading').show();
+                $('#error').hide();
+
+                $.ajax({
+                    url: apiUrl,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status === 'ok') {
+                            articles = response.items;
+                            updateLastUpdateTime();
+                            displayArticles();
+                        } else {
+                            showError();
+                        }
+                    },
+                    error: showError,
+                    complete: function() {
+                        $('#loading').hide();
+                    }
+                });
+            }
+
+            /**
+             * 顯示文章列表
+             */
+            function displayArticles() {
+                const $content = $('#feedContent').empty();
+                const searchTerm = $('#searchInput').val().toLowerCase();
+                const filter = $('.filter-options button.active').data('filter');
+
+                articles.forEach((item, index) => {
+                    // 檢查是否符合過濾條件
+                    if (!matchesFilter(item, filter, searchTerm)) return;
+
+                    const isRead = readArticles.includes(item.link);
+                    const isFavorite = favorites.includes(item.link);
+                    
+                    const card = `
+                        <div class="col-md-6 mb-4">
+                            <div class="card feed-item ${isRead ? 'read' : ''}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">${item.title}</h5>
+                                        <button class="btn btn-link favorite-btn" data-index="${index}">
+                                            <i class="bi bi-star${isFavorite ? '-fill favorite' : ''}"></i>
+                                        </button>
+                                    </div>
+                                    <p class="card-text text-muted small">${new Date(item.pubDate).toLocaleString()}</p>
+                                    <p class="card-text">${item.description}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <a href="${item.link}" target="_blank" class="btn btn-outline-primary btn-sm read-more">
+                                            閱讀更多
+                                        </a>
+                                        <div class="share-buttons">
+                                            <button class="btn btn-outline-secondary btn-sm" onclick="shareOnFacebook('${item.link}')">
+                                                <i class="bi bi-facebook"></i>
+                                            </button>
+                                            <button class="btn btn-outline-info btn-sm" onclick="shareOnTwitter('${item.link}', '${item.title}')">
+                                                <i class="bi bi-twitter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    $content.append(card);
+                });
+
+                // 綁定收藏按鈕事件
+                $('.favorite-btn').click(function() {
+                    const index = $(this).data('index');
+                    toggleFavorite(articles[index].link);
+                    displayArticles(); // 重新顯示以更新UI
+                });
+
+                // 綁定閱讀更多按鈕事件
+                $('.read-more').click(function() {
+                    const link = $(this).attr('href');
+                    markAsRead(link);
+                });
+            }
+
+            /**
+             * 檢查文章是否符合過濾條件
+             */
+            function matchesFilter(item, filter, searchTerm) {
+                // 搜尋詞過濾
+                if (searchTerm && !item.title.toLowerCase().includes(searchTerm) && 
+                    !item.description.toLowerCase().includes(searchTerm)) {
+                    return false;
+                }
+
+                // 狀態過濾
+                switch (filter) {
+                    case 'unread':
+                        return !readArticles.includes(item.link);
+                    case 'favorite':
+                        return favorites.includes(item.link);
+                    default:
+                        return true;
+                }
+            }
+
+            /**
+             * 切換文章收藏狀態
+             */
+            function toggleFavorite(link) {
+                const index = favorites.indexOf(link);
+                if (index === -1) {
+                    favorites.push(link);
+                } else {
+                    favorites.splice(index, 1);
+                }
+                localStorage.setItem('rss_favorites', JSON.stringify(favorites));
+            }
+
+            /**
+             * 標記文章為已讀
+             */
+            function markAsRead(link) {
+                if (!readArticles.includes(link)) {
+                    readArticles.push(link);
+                    localStorage.setItem('rss_read', JSON.stringify(readArticles));
+                }
+            }
+
+            /**
+             * 更新最後更新時間
+             */
+            function updateLastUpdateTime() {
+                const now = new Date();
+                $('#lastUpdate').text(now.toLocaleString());
+            }
+
+            /**
+             * 開始自動更新
+             */
+            function startAutoUpdate() {
+                // 每5分鐘更新一次
+                updateTimer = setInterval(loadRSSFeed, 5 * 60 * 1000);
+            }
+
+            /**
+             * 過濾文章
+             */
+            function filterArticles() {
+                displayArticles();
+            }
+
+            /**
+             * 顯示錯誤訊息
+             */
+            function showError() {
+                $('#error').show();
+                $('#feedContent').empty();
+            }
+        });
+
+        // 社群分享功能
+        function shareOnFacebook(url) {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, 
+                       'facebook-share', 'width=580,height=296');
+        }
+
+        function shareOnTwitter(url, title) {
+            window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+                       'twitter-share', 'width=550,height=235');
+        }
+    </script>
+</body>
+</html>

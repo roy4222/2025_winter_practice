@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>台灣美食介紹</title>
+    <style>
+        /* 基本頁面布局 */
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;  /* 使用微軟正黑體 */
+            max-width: 800px;                               /* 限制最大寬度 */
+            margin: 0 auto;                                 /* 水平置中 */
+            padding: 20px;                                  /* 頁面邊距 */
+            line-height: 1.6;                               /* 行高 */
+        }
+
+        /* 語言選擇下拉選單樣式 */
+        select {
+            padding: 5px;                                   /* 內部間距 */
+            font-size: 16px;                               /* 字體大小 */
+            margin-bottom: 20px;                           /* 下方間距 */
+        }
+
+        /* 標題樣式 */
+        h1 {
+            color: #333;                                    /* 深灰色標題 */
+        }
+
+        /* 段落文字樣式 */
+        p {
+            color: #666;                                    /* 淺灰色文字 */
+        }
+    </style>
+</head>
+<body>
+    <select id="languageSelect" onchange="changeLanguage()">
+        <option value="中文頁面.html" selected>中文</option>
+        <option value="english.html">English</option>
+        <option value="日本語.html">日本語</option>
+    </select>
+
+    <h1>台灣美食文化</h1>
+    <p>台灣美食文化豐富多元，從街邊小吃到精緻料理，處處展現出獨特的魅力。夜市是台灣最具特色的美食天堂，蚵仔煎、臭豆腐、珍珠奶茶等都是不可錯過的美味。台灣的牛肉麵更是聞名世界，湯頭濃郁，麵條有勁，配上細嫩的牛肉，讓人回味無窮。小籠包、滷肉飯這些傳統小吃，不僅承載著在地人的思鄉情，更代表著台灣人對美食的執著與熱情。</p>
+
+    <script>
+        // 語言切換功能
+        function changeLanguage() {
+            // 獲取語言選擇下拉選單元素
+            const select = document.getElementById('languageSelect');
+            // 將網頁導向到選擇的語言頁面
+            window.location.href = select.value;
+        }
+    </script>
+</body>
+</html>

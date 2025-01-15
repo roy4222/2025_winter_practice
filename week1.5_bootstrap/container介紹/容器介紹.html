@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Container 介紹</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .demo-container {
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #dee2e6;
+        }
+        .content {
+            background-color: #e9ecef;
+            padding: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Bootstrap Container 類型介紹</h1>
+        
+        <!-- .container 示範 -->
+        <div class="demo-container">
+            <h2>1. .container</h2>
+            <p>固定寬度容器，在不同螢幕寬度下會有不同的最大寬度：</p>
+            <ul>
+                <li>小於 576px: 100%</li>
+                <li>≥576px: 540px</li>
+                <li>≥768px: 720px</li>
+                <li>≥992px: 960px</li>
+                <li>≥1200px: 1140px</li>
+                <li>≥1400px: 1320px</li>
+            </ul>
+            <div class="container">
+                <div class="content">
+                    這是 .container 的內容
+                </div>
+            </div>
+        </div>
+
+        <!-- .container-fluid 示範 -->
+        <div class="demo-container">
+            <h2>2. .container-fluid</h2>
+            <p>流體容器，寬度始終是 100%，會延伸至視窗的整個寬度</p>
+            <div class="container-fluid">
+                <div class="content">
+                    這是 .container-fluid 的內容
+                </div>
+            </div>
+        </div>
+
+        <!-- .container-{breakpoint} 示範 -->
+        <div class="demo-container">
+            <h2>3. .container-{breakpoint}</h2>
+            <p>響應式容器，在特定斷點之前是 100% 寬度，之後變為固定寬度</p>
+            <div class="container-sm">
+                <div class="content">
+                    這是 .container-sm 的內容 (576px 以上固定寬度)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>世界時鐘</title>
+    <style>
+        /* 整體頁面樣式設定 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;  /* 置中對齊 */
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        /* 時鐘容器：使用CSS Grid建立響應式布局 */
+        .clock-container {
+            display: grid;
+            /* 自動調整欄位寬度，最小250px，自動填滿可用空間 */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;  /* 時鐘之間的間距 */
+            margin-top: 20px;
+        }
+        /* 單個時鐘卡片的樣式 */
+        .clock {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;  /* 圓角效果 */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);  /* 陰影效果 */
+            text-align: center;
+        }
+        /* 城市名稱樣式 */
+        .city {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        /* 時間顯示樣式 */
+        .time {
+            font-size: 1.5em;
+            color: #666;
+        }
+        /* 標題樣式 */
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>世界時鐘</h1>
+    <!-- 時鐘容器：包含多個城市的時鐘 -->
+    <div class="clock-container">
+        <!-- 每個城市的時鐘區塊 -->
+        <div class="clock">
+            <div class="city">台北</div>
+            <div class="time" id="taipei"></div>
+        </div>
+        <div class="clock">
+            <div class="city">東京</div>
+            <div class="time" id="tokyo"></div>
+        </div>
+        <div class="clock">
+            <div class="city">紐約</div>
+            <div class="time" id="new-york"></div>
+        </div>
+        <div class="clock">
+            <div class="city">倫敦</div>
+            <div class="time" id="london"></div>
+        </div>
+        <div class="clock">
+            <div class="city">巴黎</div>
+            <div class="time" id="paris"></div>
+        </div>
+        <div class="clock">
+            <div class="city">雪梨</div>
+            <div class="time" id="sydney"></div>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 格式化時間函數
+         * @param {Date} date - 日期物件
+         * @returns {string} - 格式化後的時間字串，格式為：年月日 上午/下午 時分秒
+         */
+        function formatTime(date) {
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const seconds = date.getSeconds();
+            // 判斷上午/下午
+            const ampm = hours >= 12 ? '下午' : '上午';
+            
+            // 組合時間字串
+            // hours % 12 計算12小時制的時間，若結果為0則顯示12
+            // padStart(2, '0') 確保分鐘和秒數都是兩位數
+            return `${date.getFullYear()}年 ${date.getMonth() + 1}月 ${date.getDate()}日 
+                    ${ampm} ${hours % 12 || 12}時 ${minutes.toString().padStart(2, '0')}分 
+                    ${seconds.toString().padStart(2, '0')}秒`;
+        }
+
+        /**
+         * 更新所有時鐘的函數
+         * 使用瀏覽器的時區轉換功能來計算不同時區的時間
+         */
+        function updateClocks() {
+            // 取得當前時間
+            const now = new Date();
+
+            // 定義各城市的時區
+            // 使用IANA時區資料庫的標準時區名稱
+            const timeZones = {
+                'taipei': 'Asia/Taipei',      // UTC+8
+                'tokyo': 'Asia/Tokyo',        // UTC+9
+                'new-york': 'America/New_York', // UTC-5
+                'london': 'Europe/London',    // UTC+0
+                'paris': 'Europe/Paris',      // UTC+1
+                'sydney': 'Australia/Sydney'  // UTC+11
+            };
+
+            // 遍歷每個城市並更新時間
+            for (const [city, timezone] of Object.entries(timeZones)) {
+                // 使用toLocaleString將當前時間轉換為目標時區的時間
+                const cityTime = new Date(now.toLocaleString('en-US', {timeZone: timezone}));
+                // 更新對應城市的時間顯示
+                document.getElementById(city).textContent = formatTime(cityTime);
+            }
+        }
+
+        // 頁面載入時立即更新一次時間
+        updateClocks();
+        
+        // 設定定時器，每秒更新一次時間
+        setInterval(updateClocks, 1000);
+    </script>
+</body>
+</html>

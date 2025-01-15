@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Stacks 堆疊系統實例教學</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .stack-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+        }
+        .demo-box {
+            background-color: #fff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #dee2e6;
+        }
+        .stack-item {
+            padding: 1rem;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            margin: 0.5rem;
+        }
+        .colored-item {
+            padding: 1rem;
+            color: white;
+            margin: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Bootstrap Stacks 堆疊系統詳解</h1>
+
+        <!-- 1. 垂直堆疊 -->
+        <section class="stack-section">
+            <h2 class="mb-4">1. 垂直堆疊 (Vertical Stack)</h2>
+            
+            <!-- 垂直堆疊說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>垂直堆疊說明：</strong><br>
+                - vstack: 創建垂直堆疊<br>
+                - gap-{size}: 控制堆疊間距<br>
+                - 默認為垂直排列的彈性容器
+            </div>
+
+            <!-- 基本垂直堆疊 -->
+            <div class="demo-box">
+                <div class="vstack gap-3">
+                    <div class="stack-item">第一個項目</div>
+                    <div class="stack-item">第二個項目</div>
+                    <div class="stack-item">第三個項目</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 水平堆疊 -->
+        <section class="stack-section">
+            <h2 class="mb-4">2. 水平堆疊 (Horizontal Stack)</h2>
+
+            <!-- 水平堆疊說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>水平堆疊說明：</strong><br>
+                - hstack: 創建水平堆疊<br>
+                - gap-{size}: 控制水平間距<br>
+                - 可以與垂直對齊類配合使用
+            </div>
+
+            <!-- 基本水平堆疊 -->
+            <div class="demo-box">
+                <div class="hstack gap-3">
+                    <div class="stack-item">左側項目</div>
+                    <div class="stack-item">中間項目</div>
+                    <div class="stack-item">右側項目</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 堆疊間距控制 -->
+        <section class="stack-section">
+            <h2 class="mb-4">3. 堆疊間距控制</h2>
+
+            <!-- 間距控制說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>間距控制說明：</strong><br>
+                - gap-{0-5}: 預設間距大小<br>
+                - gap-{breakpoint}-{size}: 響應式間距<br>
+                - 可以使用自定義 CSS 設置精確間距
+            </div>
+
+            <!-- 不同間距示例 -->
+            <div class="demo-box">
+                <h5>小間距：</h5>
+                <div class="vstack gap-2 mb-3">
+                    <div class="stack-item">間距 2</div>
+                    <div class="stack-item">間距 2</div>
+                </div>
+
+                <h5>大間距：</h5>
+                <div class="vstack gap-4">
+                    <div class="stack-item">間距 4</div>
+                    <div class="stack-item">間距 4</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 組合應用 -->
+        <section class="stack-section">
+            <h2 class="mb-4">4. 組合應用</h2>
+
+            <!-- 組合應用說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>組合應用說明：</strong><br>
+                - 結合垂直和水平堆疊<br>
+                - 使用對齊和間距類<br>
+                - 創建複雜的布局結構
+            </div>
+
+            <!-- 組合堆疊示例 -->
+            <div class="demo-box">
+                <div class="vstack gap-3">
+                    <div class="hstack gap-3">
+                        <div class="colored-item bg-primary">左上</div>
+                        <div class="colored-item bg-secondary">右上</div>
+                    </div>
+                    <div class="hstack gap-3">
+                        <div class="colored-item bg-success">左下</div>
+                        <div class="colored-item bg-danger">右下</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 響應式堆疊 -->
+        <section class="stack-section">
+            <h2 class="mb-4">5. 響應式堆疊</h2>
+
+            <!-- 響應式說明 -->
+            <div class="alert alert-info mb-3">
+                <strong>響應式堆疊說明：</strong><br>
+                - 使用響應式類控制堆疊行為<br>
+                - 可以根據螢幕大小改變布局<br>
+                - 結合其他響應式工具
+            </div>
+
+            <!-- 響應式堆疊示例 -->
+            <div class="demo-box">
+                <div class="d-sm-none">
+                    <div class="vstack gap-3">
+                        <div class="stack-item">小螢幕垂直項目 1</div>
+                        <div class="stack-item">小螢幕垂直項目 2</div>
+                    </div>
+                </div>
+                <div class="d-none d-sm-block">
+                    <div class="hstack gap-3">
+                        <div class="stack-item">大螢幕水平項目 1</div>
+                        <div class="stack-item">大螢幕水平項目 2</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 實際應用場景 -->
+        <section class="stack-section">
+            <h2 class="mb-4">6. 實際應用場景</h2>
+
+            <!-- 表單布局 -->
+            <div class="demo-box">
+                <h5>表單布局：</h5>
+                <div class="vstack gap-3">
+                    <div class="hstack gap-3">
+                        <input type="text" class="form-control" placeholder="名字">
+                        <input type="text" class="form-control" placeholder="姓氏">
+                    </div>
+                    <input type="email" class="form-control" placeholder="電子郵件">
+                    <button class="btn btn-primary">提交</button>
+                </div>
+            </div>
+
+            <!-- 卡片布局 -->
+            <div class="demo-box">
+                <h5>卡片布局：</h5>
+                <div class="hstack gap-3">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">卡片 1</h5>
+                            <p class="card-text">使用堆疊創建卡片布局</p>
+                        </div>
+                    </div>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">卡片 2</h5>
+                            <p class="card-text">水平堆疊多個卡片</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 最佳實踐 -->
+        <section class="stack-section">
+            <h2 class="mb-4">7. 最佳實踐</h2>
+            
+            <div class="alert alert-warning">
+                <h5>重要提醒：</h5>
+                <ul class="mb-0">
+                    <li>根據內容選擇適當的堆疊方向</li>
+                    <li>合理使用間距控制布局</li>
+                    <li>考慮響應式設計需求</li>
+                    <li>注意堆疊項目的對齊方式</li>
+                    <li>結合其他 Bootstrap 工具優化布局</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

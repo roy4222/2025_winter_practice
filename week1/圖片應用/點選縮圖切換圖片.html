@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>點選縮圖切換圖片</title>
+    <style>
+        .container {
+            text-align: center;
+            margin: 20px;
+        }
+        #mainImage {
+            max-width: 600px;
+            margin-bottom: 20px;
+        }
+        .thumb {  /* 縮圖的樣式 */
+            width: 100px;
+            margin: 5px;
+            cursor: pointer;  /* 滑鼠移到縮圖上會變成手指形狀 */
+            border: 2px solid transparent;  /* 透明邊框 */
+        }
+        .thumb:hover {  /* 滑鼠移到縮圖上時的效果 */
+            border-color: #333;  /* 顯示邊框 */
+        }
+        .selected {  /* 被選中的縮圖樣式 */
+            border-color: #007bff;  /* 藍色邊框 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 主要顯示的大圖 -->
+        <img id="mainImage" src="https://picsum.photos/600/400?random=1" alt="主圖">
+        <div>
+            <!-- 下方的縮圖列表 -->
+            <img class="thumb selected" src="https://picsum.photos/600/400?random=1" onclick="changeImage(this)" alt="縮圖1">
+            <img class="thumb" src="https://picsum.photos/600/400?random=2" onclick="changeImage(this)" alt="縮圖2">
+            <img class="thumb" src="https://picsum.photos/600/400?random=3" onclick="changeImage(this)" alt="縮圖3">
+            <img class="thumb" src="https://picsum.photos/600/400?random=4" onclick="changeImage(this)" alt="縮圖4">
+        </div>
+    </div>
+
+    <script>
+        /**
+         * 切換圖片的函式
+         * @param {HTMLImageElement} thumbElement - 被點擊的縮圖元素
+         */
+        function changeImage(thumbElement) {
+            // 1. 更新主圖
+            // 獲取 id 為 'mainImage' 的圖片元素，並將其 src 屬性設為被點擊縮圖的 src
+            document.getElementById('mainImage').src = thumbElement.src;
+            
+            // 2. 更新縮圖的選中狀態
+            // 使用 querySelectorAll 選取所有 class 包含 'thumb' 的元素
+            // forEach 遍歷每個縮圖，移除其 'selected' 類別
+            document.querySelectorAll('.thumb').forEach(thumb => {
+                thumb.classList.remove('selected');
+            });
+            
+            // 3. 標記當前選中的縮圖
+            // 為被點擊的縮圖添加 'selected' 類別，使其顯示藍色邊框
+            thumbElement.classList.add('selected');
+        }
+    </script>
+</body>
+</html>

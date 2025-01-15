@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 設置按鈕的基本樣式 */
+        button{
+            /* 設置按鈕的基本尺寸 */
+            width: 100px;
+            height: 40px;
+            /* 設置按鈕背景為白色 */
+            background-color: rgb(255, 255, 255);
+            /* 設置圓角效果 */
+            border-radius: 10px;
+            /* 當滑鼠移到按鈕上時顯示手型指標 */
+            cursor: pointer;
+            /* 設置淺灰色邊框 */
+            border: 2px solid #ddd;
+            /* 添加陰影效果：向右偏移0px，向下偏移2px，模糊4px，黑色20%透明度 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            /* 設置所有屬性變化的過渡動畫，持續0.1秒，使用ease緩動函數 */
+            transition: all 0.1s ease;
+            margin: 50px auto;
+            display: block;
+        }
+        
+        /* 當按鈕被按下時的樣式 */
+        button:active {
+            /* 添加內陰影效果，創造凹陷感 */
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            /* 按鈕向下位移2px，製造按下的視覺效果 */
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+    <button onclick="
+        const buttonElement =
+        document.querySelector('button');
+        if (buttonElement.innerHTML === '已訂閱 🔔') {
+            buttonElement.innerHTML = '訂閱';
+            console.log(buttonElement.innerHTML);
+        }else{
+            buttonElement.innerHTML = '已訂閱 🔔';
+            console.log(buttonElement.innerHTML);
+        }
+        ">訂閱</button>
+</body>
+</html>

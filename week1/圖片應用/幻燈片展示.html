@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>幻燈片展示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f0f0f0;
+        }
+
+        .slide {
+            position: relative;
+            width: 600px;
+            height: 400px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .image-box {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .image-box img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .image-box img.active {
+            opacity: 1;
+        }
+
+        .toolbar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .prev, .next {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .prev:hover, .next:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .counter {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <div class="slide">
+            <div class="image-box">
+                <img src="https://picsum.photos/600/400?random=1" alt="Image 1" class="active">
+                <img src="https://picsum.photos/600/400?random=2" alt="Image 2">
+                <img src="https://picsum.photos/600/400?random=3" alt="Image 3">
+                <img src="https://picsum.photos/600/400?random=4" alt="Image 4">
+            </div>
+            <div class="toolbar">
+                <div class="prev">上一張</div>
+                <div class="counter">1/4</div>
+                <div class="next">下一張</div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 獲取所有需要的DOM元素
+        const images = document.querySelectorAll('.image-box img');  // 獲取所有圖片元素
+        const prevBtn = document.querySelector('.prev');             // 獲取"上一張"按鈕
+        const nextBtn = document.querySelector('.next');             // 獲取"下一張"按鈕
+        let currentIndex = 0;                                        // 當前顯示的圖片索引，從0開始
+
+        /**
+         * 預先載入所有圖片函數
+         * 目的：提前下載所有圖片到瀏覽器緩存中，避免切換時的延遲
+         */
+        function preloadImages() {
+            // 所有圖片的URL陣列
+            const imageUrls = [
+                'https://picsum.photos/600/400?random=1',
+                'https://picsum.photos/600/400?random=2',
+                'https://picsum.photos/600/400?random=3',
+                'https://picsum.photos/600/400?random=4'
+            ];
+
+            // 遍歷每個URL並創建新的Image對象來預載
+            imageUrls.forEach(url => {
+                const img = new Image();    // 創建新的圖片對象
+                img.src = url;              // 設置src會觸發瀏覽器下載圖片
+            });
+        }
+
+        // 當頁面完全載入後，執行預載函數
+        window.addEventListener('load', preloadImages);
+
+        /**
+         * 切換到指定索引的圖片
+         * @param {number} index - 目標圖片的索引
+         */
+        function showImage(index) {
+            // 移除所有圖片的active類（使所有圖片隱藏）
+            images.forEach(img => img.classList.remove('active'));
+            
+            // 計算新的索引（處理循環切換）
+            // 例如：如果index為-1，則會切換到最後一張
+            // 如果index超過最大值，則會回到第一張
+            currentIndex = (index + images.length) % images.length;
+            
+            // 為當前索引的圖片添加active類（顯示當前圖片）
+            images[currentIndex].classList.add('active');
+            
+            // 更新計數器顯示（例：1/4）
+            document.querySelector('.counter').textContent = `${currentIndex + 1}/${images.length}`;
+        }
+
+        // 為"上一張"按鈕添加點擊事件監聽器
+        prevBtn.addEventListener('click', () => {
+            showImage(currentIndex - 1);    // 顯示上一張圖片
+        });
+
+        // 為"下一張"按鈕添加點擊事件監聽器
+        nextBtn.addEventListener('click', () => {
+            showImage(currentIndex + 1);    // 顯示下一張圖片
+        });
+
+        // 設置自動播放
+        setInterval(() => {
+            showImage(currentIndex + 1);    // 每隔一段時間自動顯示下一張
+        }, 3000);                          // 間隔時間為3000毫秒（3秒）
+    </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>初版搜尋系統</title>
+</head>
+<body>
+    <section>
+        <form action="#" id = "form">
+            <input type = 'text' placeholder = '請輸入關鍵字' id = 'search'>
+            <input type = 'submit' value = '搜尋'>
+        </form>
+        <p id = 'output'></p>
+    </section>
+
+    <script>
+        document.querySelector('#form').onsubmit = function(){
+            const search = document.querySelector('#search').value;
+            document.querySelector('#output').innerHTML = `『 ${search} 』搜尋中...`;
+            return false // 阻止表單提交
+        }
+    </script>
+</body>
+</html>

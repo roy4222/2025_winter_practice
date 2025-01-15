@@ -1,0 +1,22 @@
+{
+    "seminars": [
+        {
+            "id": "js",
+            "name": "JavaScript 讀書會",
+            "total": 30,
+            "reserved": 25
+        },
+        {
+            "id": "vue",
+            "name": "Vue.js 讀書會",
+            "total": 25,
+            "reserved": 10
+        },
+        {
+            "id": "react",
+            "name": "React.js 讀書會",
+            "total": 35,
+            "reserved": 20
+        }
+    ]
+}
