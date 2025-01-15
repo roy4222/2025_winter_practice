@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Display 實例教學</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 為了更好地展示效果，添加一些基本樣式 */
+        .demo-box {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .highlight {
+            background-color: #e9ecef;
+            padding: 0.5rem;
+        }
+    </style>
+</head>
+<body class="container mt-5">
+    <h1 class="mb-4">Bootstrap Display 屬性示例</h1>
+
+    <!-- 1. d-none 和 d-block 示例 -->
+    <section class="mb-5">
+        <h2>1. 基本顯示控制</h2>
+        <!-- d-none 會完全隱藏元素 -->
+        <div class="demo-box d-none">這個元素被完全隱藏 (d-none)</div>
+        <!-- d-block 會讓元素以區塊方式顯示 -->
+        <div class="demo-box d-block">這個元素會顯示為區塊元素 (d-block)</div>
+    </section>
+
+    <!-- 2. 響應式顯示控制 -->
+    <section class="mb-5">
+        <h2>2. 響應式顯示</h2>
+        <!-- 在小螢幕隱藏，中等螢幕顯示 -->
+        <div class="demo-box d-none d-md-block">
+            在中等尺寸螢幕(md)以上才會顯示
+        </div>
+        <!-- 在大螢幕隱藏，小螢幕顯示 -->
+        <div class="demo-box d-block d-lg-none">
+            只在大尺寸螢幕(lg)以下顯示
+        </div>
+    </section>
+
+    <!-- 3. inline 和 inline-block 示例 -->
+    <section class="mb-5">
+        <h2>3. 行內顯示</h2>
+        <div class="highlight">
+            <!-- d-inline 會讓元素以行內方式顯示 -->
+            <span class="d-inline p-2 bg-primary text-white">行內元素 1</span>
+            <span class="d-inline p-2 bg-success text-white">行內元素 2</span>
+        </div>
+        <div class="highlight mt-3">
+            <!-- d-inline-block 允許設置寬高的行內元素 -->
+            <div class="d-inline-block p-2 bg-warning" style="width: 100px;">
+                行內區塊 1
+            </div>
+            <div class="d-inline-block p-2 bg-info" style="width: 100px;">
+                行內區塊 2
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. flex 顯示示例 -->
+    <section class="mb-5">
+        <h2>4. Flex 布局</h2>
+        <!-- d-flex 創建 flex 容器 -->
+        <div class="demo-box d-flex justify-content-between">
+            <div class="p-2 bg-primary text-white">Flex 項目 1</div>
+            <div class="p-2 bg-success text-white">Flex 項目 2</div>
+            <div class="p-2 bg-warning">Flex 項目 3</div>
+        </div>
+    </section>
+
+    <!-- 5. 列印顯示控制 -->
+    <section class="mb-5">
+        <h2>5. 列印顯示控制</h2>
+        <!-- 只在列印時顯示 -->
+        <div class="demo-box d-none d-print-block">
+            這段文字只會在列印時顯示
+        </div>
+        <!-- 只在螢幕上顯示，列印時隱藏 -->
+        <div class="demo-box d-block d-print-none">
+            這段文字只會在螢幕上顯示，列印時會隱藏
+        </div>
+    </section>
+
+    <!-- Bootstrap JS 和相依套件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
