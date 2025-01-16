@@ -45,12 +45,13 @@
                 - col-8：使用 8 格寬度（共 12 格中的 8 格）
                 - offset-2：左側偏移 2 格，實現水平置中
             -->
-            <div class="col-8 offset-2">
+            <div class="col-6">
                 <!-- 
                     使用 Bootstrap 的 ratio 和 ratio-16x9 類別
                     - 自動維持 16:9 的影片比例
                     - 響應式調整大小
                 -->
+
                 <div class="ratio ratio-16x9">
                     <!-- 
                         YouTube 嵌入式影片 iframe
@@ -147,24 +148,39 @@
                         gap-2: 設定網格間距
                         mt-4: 上方間距設為 4 個單位
                     -->
+                    
                     <div class="d-grid gap-2 mt-4">
-                        <!-- 
-                            按鈕樣式設定：
-                            - btn-warning: 警告色按鈕（黃色）
-                            - btn-lg: 大型按鈕
-                            - fst-italic: 斜體文字
-                            - d-flex: 使用 flexbox 布局
-                            - align-items-center: 垂直居中對齊
-                            - justify-content-center: 水平居中對齊
-                        -->
-                        <button class="btn btn-warning btn-lg fst-italic d-flex align-items-center justify-content-center" type="button">
-                            PC 下載 
-                            <!-- 
-                                下載圖標
-                                ms-2: margin-start（左邊距）設為 2 個單位
-                            -->
-                            <ion-icon name="cloud-download-outline" class="ms-2"></ion-icon>
-                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-warning btn-lg dropdown-toggle w-100 fst-italic d-flex align-items-center justify-content-center" type="button" id="pcDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                Windows 下載
+                                <ion-icon name="cloud-download-outline" class="ms-2"></ion-icon>
+                            </button>
+                            <ul class="dropdown-menu w-100" aria-labelledby="pcDropdown">
+                                <li><a class="dropdown-item text-center" href="#">Windows 11</a></li>
+                                <li><a class="dropdown-item text-center" href="#">Windows 10</a></li>
+                                <li><a class="dropdown-item text-center" href="#">Windows 8</a></li>
+                                <li><a class="dropdown-item text-center" href="#">Windows 7</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <div class="btn-group w-100">
+                            <button type="button" class="btn btn-primary btn-lg fst-italic d-flex align-items-center justify-content-center text-center">
+                                MAC 下載
+                                <ion-icon name="cloud-download-outline" class="ms-2"></ion-icon>
+                            </button>
+                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item text-center" href="#">Intel</a></li>
+                                <li><a class="dropdown-item text-center" href="#">M1</a></li>
+                                <li><a class="dropdown-item text-center" href="#">M2</a></li>
+                                <li><a class="dropdown-item text-center" href="#">M3</a></li>
+                                <li><a class="dropdown-item text-center" href="#">M4</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -176,73 +192,67 @@
             <h2 class="text-center mb-4 fw-bold"><strong>章節介紹</strong></h2>
             <div class="row">
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://i.ytimg.com/vi/EpAwylpDyxQ/maxresdefault.jpg" alt="第一章：火照黑雲" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第一章：火照黑雲</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://i.ytimg.com/vi/EpAwylpDyxQ/maxresdefault.jpg" class="card-img-top" alt="第一章：火照黑雲" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第一章：火照黑雲</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://i1.ytimg.com/vi/8QCfXn8IxNM/hqdefault.jpg" alt="第二章：風起黃昏" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第二章：風起黃昏</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://i1.ytimg.com/vi/8QCfXn8IxNM/hqdefault.jpg" class="card-img-top" alt="第二章：風起黃昏" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第二章：風起黃昏</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://i.ytimg.com/vi/oje-JkEkZFc/sddefault.jpg" alt="第三章：夜生白露" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第三章：夜生白露</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://i.ytimg.com/vi/hZfKruSc04g/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBAHIG43XcgiWb_lJ2o14Z347jAsA" class="card-img-top" alt="第三章：夜生白露" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第三章：夜生白露</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://i.ytimg.com/vi/aX-IyovAbTw/maxresdefault.jpg" alt="第四章：曲度紫鴛" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第四章：曲度紫鴛</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://i.ytimg.com/vi/46Zp7VvGWnQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLA9UuJ-ZMmLk59izYPaHvS_CTLDmw" class="card-img-top" alt="第四章：曲度紫鴛" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第四章：曲度紫鴛</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <!-- 空白區塊 -->
-                <div class="col-sm-6 col-md-3 mb-4"></div> 
+                <div class="col-sm-6 col-md-3 mb-4"></div>
 
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://p26-sign.bdxiguaimg.com/tos-cn-i-0813/owdIg54EfXAjAMmXPFIJAwEAgDmkfnAM9AC5DD~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=0&channelId=0&customType=custom%2Fnone&from=0_large_image_list&imageType=video1609&isImmersiveScene=0&is_stream=0&lk3s=9d3f5bff&logId=20240914084025BE888773E5C9D8BDE2D1&requestFrom=0&x-expires=1757810425&x-signature=T6dFO9EmgFTJ%2FEnnFx1kmZdjlHQ%3D" alt="第五章：日落紅塵" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第五章：日落紅塵</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://p26-sign.bdxiguaimg.com/tos-cn-i-0813/owdIg54EfXAjAMmXPFIJAwEAgDmkfnAM9AC5DD~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=0&channelId=0&customType=custom%2Fnone&from=0_large_image_list&imageType=video1609&isImmersiveScene=0&is_stream=0&lk3s=9d3f5bff&logId=20240914084025BE888773E5C9D8BDE2D1&requestFrom=0&x-expires=1757810425&x-signature=T6dFO9EmgFTJ%2FEnnFx1kmZdjlHQ%3D" class="card-img-top" alt="第五章：日落紅塵" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第五章：日落紅塵</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
 
                 <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="border border-secondary rounded p-1">
-                        <div style="height: 200px; overflow: hidden;">
-                            <img src="https://s.yimg.com/ny/api/res/1.2/TqmP14PUVh0yQ_69NRhyqw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://s.yimg.com/os/creatr-uploaded-images/2024-08/4c4e7330-5f8a-11ef-9fef-799a5014c833" alt="第六章：未竟" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        </div>
-                        <div class="mt-3">
-                            <h4 class="text-center"><strong>第六章：未竟</strong></h4>
+                    <div class="card h-100">
+                        <img src="https://s.yimg.com/ny/api/res/1.2/TqmP14PUVh0yQ_69NRhyqw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://s.yimg.com/os/creatr-uploaded-images/2024-08/4c4e7330-5f8a-11ef-9fef-799a5014c833" class="card-img-top" alt="第六章：未竟" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>第六章：未竟</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
                         </div>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </section>
