@@ -190,76 +190,32 @@
     <section class="p-3 bg-light">
         <div class="container">
             <h2 class="text-center mb-4 fw-bold"><strong>章節介紹</strong></h2>
-            <div class="row">
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://i.ytimg.com/vi/EpAwylpDyxQ/maxresdefault.jpg" class="card-img-top" alt="第一章：火照黑雲" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第一章：火照黑雲</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://i1.ytimg.com/vi/8QCfXn8IxNM/hqdefault.jpg" class="card-img-top" alt="第二章：風起黃昏" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第二章：風起黃昏</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://i.ytimg.com/vi/hZfKruSc04g/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBAHIG43XcgiWb_lJ2o14Z347jAsA" class="card-img-top" alt="第三章：夜生白露" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第三章：夜生白露</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://i.ytimg.com/vi/46Zp7VvGWnQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLA9UuJ-ZMmLk59izYPaHvS_CTLDmw" class="card-img-top" alt="第四章：曲度紫鴛" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第四章：曲度紫鴛</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 空白區塊 -->
-                <div class="col-sm-6 col-md-3 mb-4"></div>
-
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://p26-sign.bdxiguaimg.com/tos-cn-i-0813/owdIg54EfXAjAMmXPFIJAwEAgDmkfnAM9AC5DD~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=0&channelId=0&customType=custom%2Fnone&from=0_large_image_list&imageType=video1609&isImmersiveScene=0&is_stream=0&lk3s=9d3f5bff&logId=20240914084025BE888773E5C9D8BDE2D1&requestFrom=0&x-expires=1757810425&x-signature=T6dFO9EmgFTJ%2FEnnFx1kmZdjlHQ%3D" class="card-img-top" alt="第五章：日落紅塵" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第五章：日落紅塵</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-3 mb-4">
-                    <div class="card h-100">
-                        <img src="https://s.yimg.com/ny/api/res/1.2/TqmP14PUVh0yQ_69NRhyqw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://s.yimg.com/os/creatr-uploaded-images/2024-08/4c4e7330-5f8a-11ef-9fef-799a5014c833" class="card-img-top" alt="第六章：未竟" style="height: 200px; object-fit: cover;">
-                        <div class="card-body d-flex flex-column">
-                            <h4 class="card-title text-center"><strong>第六章：未竟</strong></h4>
-                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id="chaptersContainer">
+                <!-- Cards will be dynamically loaded here -->
             </div>
+            <!-- Pagination controls -->
+            <nav aria-label="Chapter navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <button class="page-link" onclick="changePage('prev')" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </button>
+                    </li>
+                    <li class="page-item"><button class="page-link" onclick="goToPage(1)">1</button></li>
+                    <li class="page-item"><button class="page-link" onclick="goToPage(2)">2</button></li>
+                    <li class="page-item">
+                        <button class="page-link" onclick="changePage('next')" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </section>
 
-    <section class="bg-dark box-30 p-3">
+    <section class="box-30 p-3 bg-dark">
         <div class="container">
-            <h2 class="text-center text-warning fw-bold"><strong>魔王攻擊招式</strong></h2>
+            <h2 class="text-center mb-4 fw-bold text-warning"><strong>魔王攻擊招式</strong></h2>
             <table class="table table-striped table-hover">
                 <thead class="table-warning text-center fw-bold fs-5 ">
                     <tr>
@@ -377,5 +333,118 @@
 
     <!-- 引入 Bootstrap 的 JavaScript 檔案，包含了 Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // 定義所有章節的資料陣列，每個章節包含標題和圖片URL
+        const chapters = [
+            {
+                title: "第一章：火照黑雲",
+                image: "https://i.ytimg.com/vi/EpAwylpDyxQ/maxresdefault.jpg"
+            },
+            {
+                title: "第二章：風起黃昏",
+                image: "https://i1.ytimg.com/vi/8QCfXn8IxNM/hqdefault.jpg"
+            },
+            {
+                title: "第三章：夜生白露",
+                image: "https://i.ytimg.com/vi/hZfKruSc04g/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBAHIG43XcgiWb_lJ2o14Z347jAsA"
+            },
+            {
+                title: "第四章：曲度紫鴛",
+                image: "https://i.ytimg.com/vi/46Zp7VvGWnQ/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLA9UuJ-ZMmLk59izYPaHvS_CTLDmw"
+            },
+            {
+                title: "第五章：日落紅塵",
+                image: "https://p26-sign.bdxiguaimg.com/tos-cn-i-0813/owdIg54EfXAjAMmXPFIJAwEAgDmkfnAM9AC5DD~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=0&channelId=0&customType=custom%2Fnone&from=0_large_image_list&imageType=video1609&isImmersiveScene=0&is_stream=0&lk3s=9d3f5bff&logId=20240914084025BE888773E5C9D8BDE2D1&requestFrom=0&x-expires=1757810425&x-signature=T6dFO9EmgFTJ%2FEnnFx1kmZdjlHQ%3D"
+            },
+            {
+                title: "第六章：未竟",
+                image: "https://s.yimg.com/ny/api/res/1.2/TqmP14PUVh0yQ_69NRhyqw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://s.yimg.com/os/creatr-uploaded-images/2024-08/4c4e7330-5f8a-11ef-9fef-799a5014c833"
+            }
+        ];
+
+        // 設定分頁相關的常數和變數
+        const itemsPerPage = 4;  // 每頁顯示4個章節
+        let currentPage = 1;     // 當前頁碼，預設為第1頁
+        const totalPages = Math.ceil(chapters.length / itemsPerPage);  // 計算總頁數，無條件進位
+
+        /**
+         * 顯示指定頁碼的章節卡片
+         * @param {number} page - 要顯示的頁碼
+         */
+        function displayChapters(page) {
+            // 獲取容器元素
+            const container = document.getElementById('chaptersContainer');
+            
+            // 計算當前頁面應該顯示的章節範圍
+            const start = (page - 1) * itemsPerPage;  // 起始索引
+            const end = start + itemsPerPage;         // 結束索引
+            // 切割出當前頁面需要顯示的章節資料
+            const pageChapters = chapters.slice(start, end);
+
+            // 使用 map 方法生成 HTML 字串，並用 join 合併
+            container.innerHTML = pageChapters.map(chapter => `
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="card h-100">
+                        <img src="${chapter.image}" class="card-img-top" alt="${chapter.title}" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h4 class="card-title text-center"><strong>${chapter.title}</strong></h4>
+                            <button class="btn btn-outline-dark mt-auto">查看更多</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        /**
+         * 切換頁面的函數
+         * @param {string} direction - 'prev' 表示上一頁，'next' 表示下一頁
+         */
+        function changePage(direction) {
+            // 根據方向更新當前頁碼
+            if (direction === 'prev' && currentPage > 1) {
+                // 如果是往前且不是第一頁，則頁碼減1
+                currentPage--;
+            } else if (direction === 'next' && currentPage < totalPages) {
+                // 如果是往後且不是最後一頁，則頁碼加1
+                currentPage++;
+            }
+            // 更新顯示的章節和分頁狀態
+            displayChapters(currentPage);
+            updatePaginationActive();
+        }
+
+        /**
+         * 直接跳轉到指定頁面
+         * @param {number} page - 目標頁碼
+         */
+        function goToPage(page) {
+            currentPage = page;
+            displayChapters(currentPage);
+            updatePaginationActive();
+        }
+
+        /**
+         * 更新分頁按鈕的激活狀態
+         * 為當前頁碼的按鈕添加 active 類別
+         */
+        function updatePaginationActive() {
+            // 獲取所有分頁按鈕
+            document.querySelectorAll('.page-item').forEach((item, index) => {
+                if (index === 0) return; // 跳過"上一頁"按鈕
+                if (index === 3) return; // 跳過"下一頁"按鈕
+                // 如果是當前頁碼，添加 active 類別；否則移除
+                if (index === currentPage) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // 頁面載入時初始化顯示
+        displayChapters(1);         // 顯示第一頁的內容
+        updatePaginationActive();    // 更新分頁按鈕狀態
+    </script>
 </body>
 </html>
