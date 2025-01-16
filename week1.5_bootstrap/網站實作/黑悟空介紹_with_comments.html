@@ -210,9 +210,9 @@
         <div class="container">
             <h2 class="text-center text-warning fw-bold"><strong>魔王攻擊招式</strong></h2>
             <table class="table table-striped table-hover">
-                <thead class="table-warning text-center fw-bold">
+                <thead class="table-warning text-center fw-bold fs-5 ">
                     <tr>
-                        <th scope="col">章節名稱</th>
+                        <th scope="col ">章節名稱</th>
                         <th scope="col">關底BOSS名稱</th>
                     </tr>
                 </thead>
@@ -250,7 +250,74 @@
         </div>
     </section>
 
-    
+
+    <!--改善建議與聯絡資訊表單-->
+    <section class="box-30 p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="mb-4 fw-bold"><strong>改善建議與聯絡資訊</strong></h2>
+                    <form>
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label fw-bold">姓名:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" placeholder="請輸入您的姓名">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="email" class="col-sm-2 col-form-label fw-bold">Email:</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" placeholder="請輸入您的Email">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <legend class="col-sm-2 col-form-label"><strong>喜好程度:</strong></legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference1" value="1">
+                                    <label class="form-check-label" for="preference1">非常喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference2" value="2">
+                                    <label class="form-check-label" for="preference2">喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference3" value="3">
+                                    <label class="form-check-label" for="preference3">一般</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference4" value="4">
+                                    <label class="form-check-label" for="preference4">不喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference5" value="5">
+                                    <label class="form-check-label" for="preference5">非常不喜歡</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="suggestion" class="col-sm-2 col-form-label fw-bold">改善建議:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="suggestion" rows="3" placeholder="請填寫您對於此款遊戲的改善建議"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-10 offset-sm-2">
+                                <button type="submit" class="btn btn-primary fw-bold w-100">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-4">
+                    <h2 class="mb-4 fw-bold"><strong>聯絡資訊</strong></h2>
+                    <P>公司名稱:遊戲科學</P>
+                    <p>聯絡電話: 123-456-789</p>
+                    <p>電子郵件: <a href="mailto:heishenhua@example.com">heishenhua@example.com</a></p>
+                    <p>網站地址: <a href="https://www.heishenhua.com/" class="text-decoration-none fw-bold  text-success" target="_blank">黑悟空官方網站</a></p>
+            </div>
+        </div>
+    </section>
 
     <!-- 引入 Bootstrap 的 JavaScript 檔案，包含了 Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
