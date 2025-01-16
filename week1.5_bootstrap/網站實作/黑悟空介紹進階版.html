@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<!-- 設定網頁語言為繁體中文 -->
+<html lang="zh-TW">
+<head>
+    <!-- 設定字符編碼為 UTF-8，確保中文字能正確顯示 -->
+    <meta charset="UTF-8">
+    <!-- 設定響應式視窗，使網頁在不同裝置上都能正確顯示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑悟空介紹</title>
+    <!-- 引入 Bootstrap 5 的 CSS 框架，用於網頁樣式和排版 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入 Ionicons 圖標庫，支援 ES 模組的現代瀏覽器 -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <!-- 引入 Ionicons 圖標庫的備用方案，支援較舊的瀏覽器 -->
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/zh/a/a6/Black_Myth_Wukong_cover_art.jpg"> 
+</head>
+<body>
+    <!-- 
+        頁面頂部的影片橫幅區域 
+        使用 header 元素作為頁面的頂部區塊
+    -->
+    <header style="
+        /* 設定上下內距為 100px，創造更寬敞的視覺空間 */
+        padding: 100px 0;
+        /* 設定背景圖片 */
+        background-image: url('https://cdn1.epicgames.com/spt-assets/ca9ef1bcf2f54043baac351366aec677/black-myth-wukong-1seg8.jpg');
+        /* 使背景圖片完整覆蓋區域 */
+        background-size: cover;
+        /* 將背景圖片對齊到頂部中央 */
+        background-position: center top;
+        /* 防止背景圖片重複 */
+        background-repeat: no-repeat;
+        /* 設定相對定位，作為內部元素的定位參考 */
+        position: relative;
+    ">
+        <!-- 
+            使用 Bootstrap 的 container 類別
+            - 提供固定寬度的響應式容器
+            - 自動水平置中
+        -->
+        <div class="container">
+            <!-- 
+                使用 Bootstrap 的網格系統
+                - col-8：使用 8 格寬度（共 12 格中的 8 格）
+                - offset-2：左側偏移 2 格，實現水平置中
+            -->
+            <div class="col-8 offset-2">
+                <!-- 
+                    使用 Bootstrap 的 ratio 和 ratio-16x9 類別
+                    - 自動維持 16:9 的影片比例
+                    - 響應式調整大小
+                -->
+                <div class="ratio ratio-16x9">
+                    <!-- 
+                        YouTube 嵌入式影片 iframe
+                        - frameborder="0"：移除邊框
+                        - allow 屬性：設定允許的功能權限
+                        - allowfullscreen：允許全螢幕播放
+                    -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/O2nNljv0MOw" 
+                        title="Black Myth: Wukong Trailer"
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要內容區塊 -->
+    <!-- 
+        p-3: padding 設為 3 個單位（1rem = 16px）
+        bg-dark: 設定深色背景
+    -->
+    <section class="p-3 bg-dark">
+        <!-- 
+            container: Bootstrap 的容器類別
+            - 提供固定寬度的響應式容器
+            - 自動水平置中
+            - 在不同螢幕尺寸下有不同的最大寬度
+        -->
+        <div class="container">
+            <!-- 
+                row: Bootstrap 的網格系統行容器
+                - 使用 flexbox 進行排版
+                - 可容納多個 column（列）
+                - 自動處理列之間的間距
+            -->
+            <div class="row">
+                <!-- 
+                    col-md-8: 在中型螢幕（≥768px）以上時佔據 8/12 的寬度
+                    - 在小螢幕時會自動變為佔滿整行
+                    - md 表示 medium 斷點
+                    - 8 表示佔用 12 分之 8 的寬度
+                -->
+                <div class="col-md-8">
+                    <!-- 
+                        text-warning: 文字顏色設為警告色（黃色）
+                        mb-4: margin-bottom 設為 4 個單位
+                    -->
+                    <h2 class="text-warning mb-4"><strong>黑神話:悟空 世界觀介紹</strong></h2>
+                    <!-- 文字內容區塊，設定為白色 -->
+                    <div class="text-white">
+                        <!-- 遊戲簡介段落，底部有間距 -->
+                        <div class="mb-4">
+                            <p>《黑神話：悟空》的世界觀設定是基於中國古典名著《西遊記》，故事發生在唐僧及其徒弟成功取回佛經之後，屬於《西遊記》的後傳。遊戲的背景圍繞著孫悟空的隕落與復活展開，玩家將扮演「天命人」，踏上尋找和復活孫悟空的旅程。</p>
+                        </div>
+                        <!-- 故事背景段落 -->
+                        <div class="mb-4">
+                            <!-- 
+                                h5: 設定標題大小
+                                mb-3: 底部間距設為 3 個單位
+                            -->
+                            <h3 class="text-warning h5 mb-3"><strong>故事背景</strong></h3>
+                            <p>在遊戲中，孫悟空被封為「鬥戰勝佛」後選擇隱退，返回花果山。然而，天庭對他的行為感到威脅，派遣二郎神和天兵天將前來討伐。孫悟空在戰鬥中落敗，其肉身化為石卵，靈魂則被分為六根，隱藏在世間。玩家的任務是收集這六根，解救和復活孫悟空。</p>
+                        </div>
+                        <!-- 角色與勢力段落 -->
+                        <div class="mb-4">
+                            <h3 class="text-warning h5 mb-3"><strong>角色與勢力</strong></h3>
+                            <p>遊戲中涉及多個角色和勢力，包括天庭、妖王等。天庭的形象並非積極向上，反而呈現出一種複雜的權力鬥爭，反映了對傳統神話的重新解讀。玩家在遊戲中將面對各種妖怪和敵人，體驗豐富的戰鬥系統和故事情節。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 
+                    col-md-4: 在中型螢幕以上時佔據 4/12 的寬度
+                    - 用於右側的下載區域
+                -->
+                <div class="col-md-4">
+                    <!-- 下載區域標題 -->
+                    <h2 class="text-warning text-center mb-4"><strong>DOWNLOAD</strong></h2>
+                    <!-- 
+                        嵌入 Steam 商店小工具
+                        - frameborder="0" 移除框架邊框
+                        - width="100%" 使框架寬度符合容器
+                    -->
+                    <iframe src="https://store.steampowered.com/widget/2358720/" 
+                            frameborder="0" 
+                            width="100%" 
+                            height="190"></iframe>
+                    <!-- 
+                        下載按鈕容器
+                        d-grid: 使用網格佈局
+                        gap-2: 設定網格間距
+                        mt-4: 上方間距設為 4 個單位
+                    -->
+                    <div class="d-grid gap-2 mt-4">
+                        <!-- 
+                            按鈕樣式設定：
+                            - btn-warning: 警告色按鈕（黃色）
+                            - btn-lg: 大型按鈕
+                            - fst-italic: 斜體文字
+                            - d-flex: 使用 flexbox 布局
+                            - align-items-center: 垂直居中對齊
+                            - justify-content-center: 水平居中對齊
+                        -->
+                        <button class="btn btn-warning btn-lg fst-italic d-flex align-items-center justify-content-center" type="button">
+                            PC 下載 
+                            <!-- 
+                                下載圖標
+                                ms-2: margin-start（左邊距）設為 2 個單位
+                            -->
+                            <ion-icon name="cloud-download-outline" class="ms-2"></ion-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="p-3 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4 fw-bold"><strong>章節介紹</strong></h2>
+            <div class="row">
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://i.ytimg.com/vi/EpAwylpDyxQ/maxresdefault.jpg" alt="第一章：火照黑雲" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第一章：火照黑雲</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://i1.ytimg.com/vi/8QCfXn8IxNM/hqdefault.jpg" alt="第二章：風起黃昏" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第二章：風起黃昏</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://i.ytimg.com/vi/oje-JkEkZFc/sddefault.jpg" alt="第三章：夜生白露" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第三章：夜生白露</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://i.ytimg.com/vi/aX-IyovAbTw/maxresdefault.jpg" alt="第四章：曲度紫鴛" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第四章：曲度紫鴛</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+
+                <!-- 空白區塊 -->
+                <div class="col-sm-6 col-md-3 mb-4"></div> 
+
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://p26-sign.bdxiguaimg.com/tos-cn-i-0813/owdIg54EfXAjAMmXPFIJAwEAgDmkfnAM9AC5DD~tplv-pk90l89vgd-crop-center:864:486.jpeg?appId=0&channelId=0&customType=custom%2Fnone&from=0_large_image_list&imageType=video1609&isImmersiveScene=0&is_stream=0&lk3s=9d3f5bff&logId=20240914084025BE888773E5C9D8BDE2D1&requestFrom=0&x-expires=1757810425&x-signature=T6dFO9EmgFTJ%2FEnnFx1kmZdjlHQ%3D" alt="第五章：日落紅塵" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第五章：日落紅塵</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="col-sm-6 col-md-3 mb-4">
+                    <div class="border border-secondary rounded p-1">
+                        <div style="height: 200px; overflow: hidden;">
+                            <img src="https://s.yimg.com/ny/api/res/1.2/TqmP14PUVh0yQ_69NRhyqw--/YXBwaWQ9aGlnaGxhbmRlcjt3PTk2MDtoPTU0MDtjZj13ZWJw/https://s.yimg.com/os/creatr-uploaded-images/2024-08/4c4e7330-5f8a-11ef-9fef-799a5014c833" alt="第六章：未竟" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        </div>
+                        <div class="mt-3">
+                            <h4 class="text-center"><strong>第六章：未竟</strong></h4>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-dark box-30 p-3">
+        <div class="container">
+            <h2 class="text-center text-warning fw-bold"><strong>魔王攻擊招式</strong></h2>
+            <table class="table table-striped table-hover">
+                <thead class="table-warning text-center fw-bold fs-5 ">
+                    <tr>
+                        <th scope="col ">章節名稱</th>
+                        <th scope="col">關底BOSS名稱</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr>
+                        <td>火照黑雲</td>
+                        <td>黑熊精</td>
+                    </tr>
+                    <tr>
+                        <td>風起黃昏</td>
+                        <td>黃風大聖</td>
+                    </tr>
+                    <tr>
+                        <td>夜生白露</td>
+                        <td>黃眉</td>
+                    </tr>
+                    <tr>
+                        <td>曲度紫鴛</td>
+                        <td>百眼魔君</td>
+                    </tr>
+                    <tr>
+                        <td>日落紅塵</td>
+                        <td>紅孩兒</td>
+                    </tr>
+                    <tr>
+                        <td>未竟</td>
+                        <td>大聖殘軀</td>
+                    </tr>
+                    <tr>
+                        <td>真結局</td>
+                        <td>二郎顯聖真君</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+    <!--改善建議與聯絡資訊表單-->
+    <section class="box-30 p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="mb-4 fw-bold"><strong>改善建議與聯絡資訊</strong></h2>
+                    <form>
+                        <div class="row mb-3">
+                            <label for="name" class="col-sm-2 col-form-label fw-bold">姓名:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="name" placeholder="請輸入您的姓名">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="email" class="col-sm-2 col-form-label fw-bold">Email:</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="email" placeholder="請輸入您的Email">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <legend class="col-sm-2 col-form-label"><strong>喜好程度:</strong></legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference1" value="1">
+                                    <label class="form-check-label" for="preference1">非常喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference2" value="2">
+                                    <label class="form-check-label" for="preference2">喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference3" value="3">
+                                    <label class="form-check-label" for="preference3">一般</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference4" value="4">
+                                    <label class="form-check-label" for="preference4">不喜歡</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="preference" id="preference5" value="5">
+                                    <label class="form-check-label" for="preference5">非常不喜歡</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="suggestion" class="col-sm-2 col-form-label fw-bold">改善建議:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" id="suggestion" rows="3" placeholder="請填寫您對於此款遊戲的改善建議"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-10 offset-sm-2">
+                                <button type="submit" class="btn btn-primary fw-bold w-100">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-md-4">
+                    <h2 class="mb-4 fw-bold"><strong>聯絡資訊</strong></h2>
+                    <P>公司名稱:遊戲科學</P>
+                    <p>聯絡電話: 123-456-789</p>
+                    <p>電子郵件: <a href="mailto:heishenhua@example.com">heishenhua@example.com</a></p>
+                    <p>網站地址: <a href="https://www.heishenhua.com/" class="text-decoration-none fw-bold  text-success" target="_blank">黑悟空官方網站</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white bg-dark text-center pt-3 pb-3 mb-0">
+        <p>&copy; 2024 黑悟空遊戲科學. All rights reserved.</p>
+    </footer>
+
+    <!-- 引入 Bootstrap 的 JavaScript 檔案，包含了 Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
