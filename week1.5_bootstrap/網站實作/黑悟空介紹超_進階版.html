@@ -312,8 +312,19 @@
                                     <label for="suggestion" class="form-label fw-bold"><i class="fas fa-comment me-2"></i>改善建議:</label>
                                     <textarea class="form-control" id="suggestion" rows="3" placeholder="請填寫您對於此款遊戲的改善建議"></textarea>
                                 </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-success fw-bold">
+                                <div class="d-grid gap-2">
+                                    <button class="btn btn-danger fw-bold mb-2" type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#cancel">
+                                        <i class="fas fa-times me-2"></i>取消
+                                    </button>
+                                    <div class="collapse" id="cancel">
+                                        <div class="card card-body bg-secondary text-white mb-2">
+                                            <p class="mb-0 text-center">獎品有限，若您未填寫請加快腳步填寫後送出</p>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary fw-bold">
                                         <i class="fas fa-paper-plane me-2"></i>提交
                                     </button>
                                 </div>
