@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>艾爾登法環遊戲活動</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 按鈕懸停效果 */
+        .btn-outline-light:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            color: white !important;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        
+        /* 按鈕基本樣式 */
+        .btn-outline-light {
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* 關卡卡片樣式 */
+        .card {
+            transition: transform 0.3s ease;
+            background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        .card-img-top {
+            filter: brightness(0.9);
+            transition: filter 0.3s ease;
+        }
+
+        .card:hover .card-img-top {
+            filter: brightness(1);
+        }
+
+        /* 背景樣式 */
+        body {
+            background-color: #0a0a0a;
+        }
+    </style>
+</head>
+<body>
+   <!-- 頁面頂部的大圖橫幅區域 -->
+    <header class="position-relative">
+        <!-- 
+            使用 img-fluid 類別使圖片具有響應式特性
+            - 圖片會自動調整大小以適應容器寬度
+            - 保持圖片原始比例
+            - 不會超出父容器的寬度
+        -->
+        <img src="https://prj.gamer.com.tw/2022/eldenring/img/kv.jpg" 
+            class="img-fluid" 
+            alt="艾爾登法環遊戲">
+        
+        <!-- 開始遊戲按鈕 -->
+        <div class="position-absolute top-50 start-50 translate-middle text-center">
+            <button class="btn btn-outline-light btn-lg fw-bold px-5 py-3" 
+                    style="font-family: 'Times New Roman', serif; letter-spacing: 3px; text-transform: uppercase; border-width: 2px;">
+                <i class="fas fa-dragon me-2"></i>
+                啟動遊戲
+            </button>
+        </div>
+    </header>
+
+    <!-- 遊戲關卡展示區域 -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center text-light mb-5" style="font-family: 'Times New Roman', serif; letter-spacing: 2px;">
+                <i class="fas fa-map-marked-alt me-2"></i>探索區域
+            </h2>
+            
+            <div class="row g-4">
+                <!-- 關卡 1 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://truth.bahamut.com.tw/s01/202203/7657a199679334661a2610c110fd0671.JPG" class="card-img-top" alt="寧姆格福" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">寧姆格福與啜泣半島</h4>
+                            <p class="card-text">初始區域，包含南部啜泣半島。充滿神秘與危險的區域，適合新手探索。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★☆☆☆</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area1Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area1Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 1-20</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 聖堂教堂</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 葛力克騎士</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 2 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://img.3dmgame.com.tw/puku-clone-version/182fe58c3207f17794d962177e2a27892b23fbbe.webp" class="card-img-top" alt="湖之利耶尼亞" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">湖之利耶尼亞</h4>
+                            <p class="card-text">被魔法學院統治的神秘湖區，充滿著古老的知識與危險。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★☆☆</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area2Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area2Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 20-40</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 雷亞盧卡利亞學院</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 蕾娜菈</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 3 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://img.3dmgame.com/uploads/images/xiaz/20220309/1646793796_304605.jpg" class="card-img-top" alt="蓋利德" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">蓋利德</h4>
+                            <p class="card-text">赤紅腐敗之地，充滿著被瘟疫侵蝕的敵人與危險。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★☆</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area3Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area3Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 40-60</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 紅獅城堡</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 史達尼</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 4 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://i.ytimg.com/vi/5iKW-w-5MVA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLALEnx40NRtkx54_rgbvwWX5fe3XA" class="card-img-top" alt="亞壇高原" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">亞壇高原</h4>
+                            <p class="card-text">包括火山官邸與王城羅德爾的廣大區域，充滿挑戰與史詩級戰鬥。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★☆</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area4Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area4Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 60-80</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 火山官邸</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 萊卡德</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 5 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://image.gamebase.com.tw/gb_img//7/004/257/4257757.jpg" class="card-img-top" alt="巨人山頂" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">巨人山頂</h4>
+                            <p class="card-text">包括西半部化聖雪原、米凱拉聖樹及聖樹分枝的寒冷地區。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area5Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area5Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 80-100</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 火焰巨人鍛造場</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 火焰巨人</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- 關卡 11 -->
+                 <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://sw.cool3c.com/user/46749/2024/f3bbf317-075b-4021-9b7d-2bb85481ce2c.jpg?auto=compress&fix=max&w=2560" class="card-img-top" alt="塔之鎮貝瑞特" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">塔之鎮貝瑞特</h4>
+                            <p class="card-text">神秘的高塔之鎮，隱藏著古老的力量與秘密。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area11Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area11Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 120+</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 古老高塔</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 塔之守護者</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 12-15 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://img.4gamers.com.tw/puku-clone-version/182fe58c3207f17794d962177e2a27892b23fbbe.webp" class="card-img-top" alt="恩希斯城與幽影區域" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">恩希斯城與幽影區域</h4>
+                            <p class="card-text">包括恩希斯城、幽影亞壇、幽影城和弗勞古遺跡的黑暗區域。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area12Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area12Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 130+</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 幽影王座</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 幽影領主</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 16-20 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://i.17173cdn.com/2fhnvk/YWxqaGBf/cms3/jwaYjubsdvjdqmj.png!a-3-480x.png" class="card-img-top" alt="尖刺山與龍饗區域" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">尖刺山與龍饗區域</h4>
+                            <p class="card-text">包括尖刺山、龍饗大祭壇、卡羅隱藏墓地、青藍海岸和石棺大洞。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area16Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area16Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 140+</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 龍之祭壇</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 古龍領主</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 關卡 21-27 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://i.ytimg.com/vi/tpXzYuaTzSg/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCbK-0YKqOXL3GcdhqynGyFSNw-Mw" class="card-img-top" alt="最終區域集合" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">幽影城</h4>
+                            <p class="card-text">包括幽影城教區、望影露台、隱匿之地等終極挑戰區域。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#area21Details">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="area21Details">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 150+</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 瑪瑙斯大教堂</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 瑪利喀斯</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 最後一個關卡示例 -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-light border-opacity-25">
+                        <img src="https://i.ytimg.com/vi/lcELh3fGL_8/maxresdefault.jpg" class="card-img-top" alt="艾尼爾‧伊莉姆" style="height: 200px; object-fit: cover;">
+                        <div class="card-body text-light">
+                            <h4 class="card-title mb-3">艾尼爾伊利姆</h4>
+                            <p class="card-text">最終區域，充滿著終極挑戰與神秘。只有最強大的探索者才能到達此處，對決「米凱拉的王 拉塔恩」。</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge bg-danger">難度: ★★★★★</span>
+                                <button class="btn btn-outline-light btn-sm" data-bs-toggle="collapse" data-bs-target="#areaFinalDetails">
+                                    <i class="fas fa-info-circle me-1"></i>詳細資訊
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="areaFinalDetails">
+                            <div class="card-footer border-light border-opacity-25 text-light">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-skull me-2"></i>推薦等級: 150+</li>
+                                    <li><i class="fas fa-chess-rook me-2"></i>主要據點: 艾爾登王座</li>
+                                    <li><i class="fas fa-dragon me-2"></i>首領: 艾爾登之獸</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 排行榜區域 -->
+    <section class="py-5" id="rankings">
+        <div class="container">
+            <h2 class="text-center text-light mb-5" style="font-family: 'Times New Roman', serif; letter-spacing: 2px;">
+                <i class="fas fa-trophy me-2"></i>英雄榜
+            </h2>
+            
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr class="text-center">
+                            <th scope="col"><i class="fas fa-medal me-2"></i>排名</th>
+                            <th scope="col"><i class="fas fa-user-shield me-2"></i>玩家名稱</th>
+                            <th scope="col"><i class="fas fa-level-up-alt me-2"></i>等級</th>
+                            <th scope="col"><i class="fas fa-star me-2"></i>成就</th>
+                            <th scope="col"><i class="fas fa-clock me-2"></i>最後更新</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center">
+                            <td><span class="badge bg-warning">1</span></td>
+                            <td>無名英雄</td>
+                            <td>150</td>
+                            <td>擊敗瑪莉卡</td>
+                            <td>2024/01/15</td>
+                        </tr>
+                        <tr class="text-center">
+                            <td><span class="badge bg-secondary">2</span></td>
+                            <td>月光騎士</td>
+                            <td>145</td>
+                            <td>擊敗拉達岡</td>
+                            <td>2024/01/14</td>
+                        </tr>
+                        <tr class="text-center">
+                            <td><span class="badge bg-danger">3</span></td>
+                            <td>黑暗之魂</td>
+                            <td>140</td>
+                            <td>擊敗梅蓮妮</td>
+                            <td>2024/01/13</td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>4</td>
+                            <td>火焰使者</td>
+                            <td>135</td>
+                            <td>擊敗葛孚雷</td>
+                            <td>2024/01/12</td>
+                        </tr>
+                        <tr class="text-center">
+                            <td>5</td>
+                            <td>風暴召喚師</td>
+                            <td>130</td>
+                            <td>擊敗蕾娜菈</td>
+                            <td>2024/01/11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 活動詳情區域 -->
+    <section class="py-5 bg-dark">
+        <div class="container">
+            <div class="row g-4">
+                <!-- 活動詳情 -->
+                <div class="col-md-4">
+                    <div class="card bg-transparent border-light border-opacity-25 h-100">
+                        <div class="card-body text-light">
+                            <h3 class="card-title mb-4">
+                                <i class="fas fa-calendar-alt me-2"></i>活動詳情
+                            </h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-clock me-2"></i>
+                                    活動時間：2025/01/20 - 2025/03/20
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-users me-2"></i>
+                                    參加對象：所有玩家
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-gift me-2"></i>
+                                    活動獎勵：
+                                    <ul class="list-unstyled ms-4">
+                                        <li>- 限定稱號「艾爾登之王」</li>
+                                        <li>- 特殊武器「月光大劍」</li>
+                                        <li>- 獨特坐騎「黃金靈馬」</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 遊戲說明 -->
+                <div class="col-md-4">
+                    <div class="card bg-transparent border-light border-opacity-25 h-100">
+                        <div class="card-body text-light">
+                            <h3 class="card-title mb-4">
+                                <i class="fas fa-book me-2"></i>遊戲說明
+                            </h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    完成主線任務獲得積分
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    擊敗Boss可獲得額外獎勵
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    探索隱藏區域解鎖特殊成就
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    與其他玩家組隊可提高獎勵倍率
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    每週更新排行榜，發放階段性獎勵
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 注意事項 -->
+                <div class="col-md-4">
+                    <div class="card bg-transparent border-light border-opacity-25 h-100">
+                        <div class="card-body text-light">
+                            <h3 class="card-title mb-4">
+                                <i class="fas fa-exclamation-triangle me-2"></i>注意事項
+                            </h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-3">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    活動期間請勿使用外掛程式
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    違規行為將永久封號處理
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    請保持良好的遊戲禮儀
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    遊戲過程中如遇問題請立即回報
+                                </li>
+                                <li class="mb-3">
+                                    <i class="fas fa-exclamation-circle me-2 text-warning"></i>
+                                    活動規則最終解釋權歸官方所有
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 添加必要的 Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body> 
+</html>
