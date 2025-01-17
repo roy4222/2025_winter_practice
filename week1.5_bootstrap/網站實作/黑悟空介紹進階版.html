@@ -14,6 +14,7 @@
     <!-- 引入 Ionicons 圖標庫的備用方案，支援較舊的瀏覽器 -->
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/zh/a/a6/Black_Myth_Wukong_cover_art.jpg"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 </head>
 <body>
     <!-- 
@@ -262,66 +263,72 @@
     <section class="box-30 p-3">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <h2 class="mb-4 fw-bold"><strong>改善建議與聯絡資訊</strong></h2>
+                <div class="col-md-8 mx-auto">
+                    <h2 class="mb-4 fw-bold text-center"><strong>改善建議與聯絡資訊</strong></h2>
                     <form>
-                        <div class="row mb-3">
-                            <label for="name" class="col-sm-2 col-form-label fw-bold">姓名:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="name" placeholder="請輸入您的姓名">
+                        <div class="card border-success shadow-sm">
+                            <div class="card-header bg-success text-white py-3">
+                                <h4 class="card-title mb-0 text-center">請填寫您的意見</h4>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="email" class="col-sm-2 col-form-label fw-bold">Email:</label>
-                            <div class="col-sm-10">
-                                <input type="email" class="form-control" id="email" placeholder="請輸入您的Email">
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <legend class="col-sm-2 col-form-label"><strong>喜好程度:</strong></legend>
-                            <div class="col-sm-10">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="preference" id="preference1" value="1">
-                                    <label class="form-check-label" for="preference1">非常喜歡</label>
+                            <div class="card-body p-4">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label fw-bold"><i class="fas fa-user me-2"></i>姓名:</label>
+                                    <input type="text" class="form-control form-control-lg" id="name" placeholder="請輸入您的姓名">
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="preference" id="preference2" value="2">
-                                    <label class="form-check-label" for="preference2">喜歡</label>
+                                <div class="mb-4">
+                                    <label for="email" class="form-label fw-bold"><i class="fas fa-envelope me-2"></i>Email:</label>
+                                    <input type="email" class="form-control form-control-lg" id="email" placeholder="請輸入您的Email">
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="preference" id="preference3" value="3">
-                                    <label class="form-check-label" for="preference3">一般</label>
+                                <div class="mb-4">
+                                    <label for="phone" class="form-label fw-bold"><i class="fas fa-phone me-2"></i>手機號碼:</label>
+                                    <input type="tel" class="form-control form-control-lg" id="phone" placeholder="請輸入您的手機號碼">
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="preference" id="preference4" value="4">
-                                    <label class="form-check-label" for="preference4">不喜歡</label>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold fs-5"><i class="fas fa-star me-2"></i>喜好程度:</label>
+                                    <div class="ms-4">
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="preference" id="preference1" value="1">
+                                            <label class="form-check-label" for="preference1">非常喜歡</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="preference" id="preference2" value="2">
+                                            <label class="form-check-label" for="preference2">喜歡</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="preference" id="preference3" value="3">
+                                            <label class="form-check-label" for="preference3">一般</label>
+                                        </div>
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input" type="radio" name="preference" id="preference4" value="4">
+                                            <label class="form-check-label" for="preference4">不喜歡</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="preference" id="preference5" value="5">
+                                            <label class="form-check-label" for="preference5">非常不喜歡</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="preference" id="preference5" value="5">
-                                    <label class="form-check-label" for="preference5">非常不喜歡</label>
+                                <div class="mb-4">
+                                    <label for="suggestion" class="form-label fw-bold"><i class="fas fa-comment me-2"></i>改善建議:</label>
+                                    <textarea class="form-control form-control-lg" id="suggestion" rows="4" placeholder="請填寫您對於此款遊戲的改善建議"></textarea>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <label for="suggestion" class="col-sm-2 col-form-label fw-bold">改善建議:</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="suggestion" rows="3" placeholder="請填寫您對於此款遊戲的改善建議"></textarea>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-sm-10 offset-sm-2">
-                                <button type="submit" class="btn btn-primary fw-bold w-100">提交</button>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success btn-lg fw-bold">
+                                        <i class="fas fa-paper-plane me-2"></i>提交
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </form>
-                </div>
 
-                <div class="col-md-4">
+                    <hr class="my-4">
+
                     <h2 class="mb-4 fw-bold"><strong>聯絡資訊</strong></h2>
                     <P>公司名稱:遊戲科學</P>
                     <p>聯絡電話: 123-456-789</p>
                     <p>電子郵件: <a href="mailto:heishenhua@example.com">heishenhua@example.com</a></p>
-                    <p>網站地址: <a href="https://www.heishenhua.com/" class="text-decoration-none fw-bold  text-success" target="_blank">黑悟空官方網站</a></p>
+                    <p>網站地址: <a href="https://www.heishenhua.com/" class="text-decoration-none fw-bold text-success" target="_blank">黑悟空官方網站</a></p>
+                </div>
             </div>
         </div>
     </section>
