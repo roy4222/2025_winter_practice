@@ -324,13 +324,36 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary fw-bold">
+                                    <button type="button" class="btn btn-primary fw-bold" data-bs-toggle="modal" data-bs-target="#submitModal">
                                         <i class="fas fa-paper-plane me-2"></i>提交
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </form>
+
+                    <!-- 提交成功的 Modal -->
+                    <div class="modal fade" id="submitModal" tabindex="-1" aria-labelledby="submitModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title" id="submitModalLabel">
+                                        <i class="fas fa-check-circle me-2"></i>提交成功
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center py-4">
+                                    <i class="fas fa-gift text-primary mb-3" style="font-size: 3rem;"></i>
+                                    <h4>感謝您的寶貴意見！</h4>
+                                    <p class="mb-0">我們已收到您的回饋，將會盡快處理。</p>
+                                    <p class="text-muted mt-2">獎品將於活動結束後寄出</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <hr class="my-4">
 
