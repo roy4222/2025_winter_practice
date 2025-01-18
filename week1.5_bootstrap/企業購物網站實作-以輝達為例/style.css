@@ -4,10 +4,9 @@
     bottom: -10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 100px;
+    width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #76b900, #1a9f00);
-    border-radius: 3px;
+    background: #76b900;
 }
 
 /* 產品卡片樣式 */
@@ -324,63 +323,71 @@ footer .text-light {
     transform: translateY(-3px);
 }
 
-/* 關於輝達區塊樣式 */
+/* 關於頁面的樣式 */
 .about-section {
-    background: linear-gradient(135deg, rgba(118,185,0,0.05) 0%, rgba(0,0,0,0) 100%);
-    padding: 60px 0;
-    border-radius: 20px;
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.about-section h2 {
-    color: #333;
-    margin-bottom: 40px;
-}
-
-.about-section p {
-    color: #666;
-    line-height: 1.8;
-    margin-bottom: 25px;
-    font-size: 1.1rem;
-    text-align: justify;
-}
-
-.about-section p strong {
-    color: #76b900;
-}
-
-.about-text {
+/* 公司標誌容器 */
+.logo-container {
     padding: 20px;
-    position: relative;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-.about-text::before {
-    content: '"';
-    position: absolute;
-    top: -20px;
-    left: 0;
-    font-size: 60px;
+.logo-container:hover {
+    transform: translateY(-5px);
+}
+
+/* 使命區塊樣式 */
+.mission-section {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mission-section h4 {
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* 創新領域列表樣式 */
+.innovation-list li {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.innovation-list i {
     color: #76b900;
-    opacity: 0.2;
-    font-family: serif;
 }
 
-.map-container {
-    position: relative;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+/* 卡片樣式 */
+.info-card {
+    background: white;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    height: 100%;
 }
 
-.map-container iframe {
-    border-radius: 15px;
-    transition: all 0.3s ease;
+.info-card:hover {
+    transform: translateY(-5px);
 }
 
-.map-container:hover iframe {
-    transform: scale(1.02);
+.info-card .card-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #76b900;
 }
 
-.highlight-text {
-    color: #76b900;
-    font-weight: 500;
+.info-card .card-text {
+    color: #666;
+    line-height: 1.6;
 }
