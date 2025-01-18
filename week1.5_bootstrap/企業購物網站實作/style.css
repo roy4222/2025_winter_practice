@@ -323,3 +323,64 @@ footer .text-light {
     background: #76b900;
     transform: translateY(-3px);
 }
+
+/* 關於輝達區塊樣式 */
+.about-section {
+    background: linear-gradient(135deg, rgba(118,185,0,0.05) 0%, rgba(0,0,0,0) 100%);
+    padding: 60px 0;
+    border-radius: 20px;
+}
+
+.about-section h2 {
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.about-section p {
+    color: #666;
+    line-height: 1.8;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    text-align: justify;
+}
+
+.about-section p strong {
+    color: #76b900;
+}
+
+.about-text {
+    padding: 20px;
+    position: relative;
+}
+
+.about-text::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    font-size: 60px;
+    color: #76b900;
+    opacity: 0.2;
+    font-family: serif;
+}
+
+.map-container {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.map-container iframe {
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.map-container:hover iframe {
+    transform: scale(1.02);
+}
+
+.highlight-text {
+    color: #76b900;
+    font-weight: 500;
+}
