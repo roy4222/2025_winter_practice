@@ -231,3 +231,95 @@
 .category-btn:hover i {
     transform: translateX(5px);
 }
+
+/* 頁尾樣式 */
+footer {
+    background: linear-gradient(to right, #1a1a1a, #2c2c2c) !important;
+    border-top: 3px solid #76b900;
+}
+
+footer h5 {
+    color: #76b900;
+    position: relative;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+footer h5::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(to right, #76b900, #8cd600);
+}
+
+footer .list-unstyled li {
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+footer .list-unstyled li a {
+    position: relative;
+    padding-left: 15px;
+}
+
+footer .list-unstyled li a::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: #76b900;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+footer .list-unstyled li a:hover {
+    color: #76b900 !important;
+    transform: translateX(5px);
+}
+
+footer .list-unstyled li a:hover::before {
+    transform: translateX(5px);
+}
+
+footer p {
+    line-height: 1.8;
+}
+
+footer .bi {
+    color: #76b900;
+}
+
+footer hr {
+    border-color: rgba(255,255,255,0.1);
+    margin: 30px 0;
+}
+
+footer .text-light {
+    opacity: 0.9;
+}
+
+/* 社交媒體圖標樣式 */
+.social-icons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background: #76b900;
+    transform: translateY(-3px);
+}
