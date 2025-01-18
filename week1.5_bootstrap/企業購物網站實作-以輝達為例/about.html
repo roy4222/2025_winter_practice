@@ -64,7 +64,7 @@
     </nav>
 
     <!-- 關於輝達詳細介紹區塊 -->
-    <section class="about-section">
+    <section class="about-section py-5">
         <div class="container">
             <!-- 標題區塊 -->
             <h2 class="text-center mb-5 fw-bold position-relative">
@@ -74,59 +74,59 @@
                     <div class="title-underline"></div>
                 </span>
             </h2>
-            <!-- 主要內容區，使用 Bootstrap 的網格系統 -->
-            <div class="row align-items-center g-4">
-                <!-- 左側列：公司標誌和簡介 -->
+            <!-- 主要內容區：使用 Bootstrap 的網格系統進行排版 -->
+            <div class="row align-items-center g-4 mb-5">
+                <!-- 左側列：公司標誌和簡介 (在大螢幕上佔6列) -->
                 <div class="col-lg-6">
-                    <!-- 公司標誌容器 -->
+                    <!-- 公司標誌容器：置中顯示 -->
                     <div class="logo-container text-center mb-4">
                         <img src="https://www.nvidia.com/content/dam/en-zz/Solutions/about-nvidia/logo-and-brand/01-nvidia-logo-vert-500x200-2c50-l@2x.png" alt="NVIDIA Logo" class="img-fluid">
                     </div>
-                    <!-- 簡短公司介紹 -->
-                    <p class="lead text-center">輝達（NVIDIA）是全球領先的人工智能計算公司，致力於加速科技進步，推動創新。</p>
+                    <!-- 簡短公司介紹：使用 lead 類別突出顯示 -->
+                    <p class="lead text-center px-3">輝達（NVIDIA）是全球領先的人工智能計算公司，致力於加速科技進步，推動創新。</p>
                 </div>
-                <!-- 右側列：公司使命和創新領域 -->
+                <!-- 右側列：公司使命和創新領域 (在大螢幕上佔6列) -->
                 <div class="col-lg-6">
-                    <div class="mission-section">
+                    <div class="mission-section px-4">
                         <!-- 公司使命 -->
-                        <h4>我們的使命</h4>
-                        <p>我們的使命是加速計算，為世界帶來改變。輝達的發明正在重塑娛樂、改變商業並激發科學突破。</p>
-                        <!-- 創新領域列表 -->
-                        <h4 class="mt-4">創新領域</h4>
+                        <h4 class="mb-3">我們的使命</h4>
+                        <p class="mb-4">我們的使命是加速計算，為世界帶來改變。輝達的發明正在重塑娛樂、改變商業並激發科學突破。</p>
+                        <!-- 創新領域列表：使用無序列表和 Bootstrap 圖標 -->
+                        <h4 class="mt-4 mb-3">創新領域</h4>
                         <ul class="list-unstyled innovation-list">
-                            <li><i class="bi bi-check-circle-fill me-2"></i>圖形處理器（GPU）</li>
-                            <li><i class="bi bi-check-circle-fill me-2"></i>人工智能和深度學習</li>
-                            <li><i class="bi bi-check-circle-fill me-2"></i>自動駕駛技術</li>
-                            <li><i class="bi bi-check-circle-fill me-2"></i>高性能計算</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i>圖形處理器（GPU）</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i>人工智能和深度學習</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i>自動駕駛技術</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill me-2"></i>高性能計算</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- 額外信息卡片區 -->
-            <div class="row mt-5 g-4 ">
-                <!-- 研發實力卡片 -->
+            <!-- 額外信息卡片區：使用 Bootstrap 卡片元件和網格系統 -->
+            <div class="row g-4">
+                <!-- 研發實力卡片 (在中等螢幕上佔4列) -->
                 <div class="col-md-4">
-                    <div class="info-card shadow-sm mb-4 ">
-                        <div class="card-body">
-                            <h5 class="card-title">研發實力</h5>
+                    <div class="info-card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-3">研發實力</h5>
                             <p class="card-text">輝達擁有世界級的研發團隊，不斷推動技術創新，引領行業發展。我們的研發投入持續增長，確保在技術領域保持領先地位。</p>
                         </div>
                     </div>
                 </div>
-                <!-- 全球影響力卡片 -->
+                <!-- 全球影響力卡片 (在中等螢幕上佔4列) -->
                 <div class="col-md-4">
-                    <div class="info-card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">全球影響力</h5>
+                    <div class="info-card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-3">全球影響力</h5>
                             <p class="card-text">我們的技術廣泛應用於遊戲、數據中心、汽車等多個領域，改變著人們的生活方式。輝達的解決方案在全球範圍內推動創新和進步。</p>
                         </div>
                     </div>
                 </div>
-                <!-- 未來展望卡片 -->
+                <!-- 未來展望卡片 (在中等螢幕上佔4列) -->
                 <div class="col-md-4">
-                    <div class="info-card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">未來展望</h5>
+                    <div class="info-card shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <h5 class="card-title mb-3">未來展望</h5>
                             <p class="card-text">輝達將繼續推動AI和加速計算的發展，為創造一個更智能、更高效的世界而努力。我們致力於解決全球性的技術挑戰。</p>
                         </div>
                     </div>
