@@ -391,3 +391,95 @@ footer .text-light {
     color: #666;
     line-height: 1.6;
 }
+
+/* 招募頁面樣式 */
+.recruitment-section {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.table-nvidia {
+    background-color: #76b900;
+    color: white;
+}
+
+.table-nvidia th {
+    font-weight: 600;
+    border: none;
+}
+
+.text-nvidia {
+    color: #76b900;
+}
+
+.btn-nvidia {
+    background-color: #76b900;
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-nvidia:hover {
+    background-color: #5a8f00;
+    color: white;
+}
+
+.btn-nvidia-outline {
+    color: #76b900;
+    border: 1px solid #76b900;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+.btn-nvidia-outline:hover {
+    background-color: #76b900;
+    color: white;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(118, 185, 0, 0.05);
+}
+
+.search-box .form-control {
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #ced4da;
+}
+
+.search-box .form-control:focus {
+    border-color: #76b900;
+    box-shadow: 0 0 0 0.2rem rgba(118, 185, 0, 0.25);
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+/* 職位列表樣式 */
+.list-unstyled li {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.3rem;
+}
+
+.list-unstyled li:last-child {
+    margin-bottom: 0;
+}
+
+.list-unstyled li i {
+    color: #76b900;
+    font-size: 1rem;
+}
+
+.list-unstyled li:hover {
+    color: #333;
+}
+
+/* 調整表格內容的寬度 */
+.table td:nth-child(5) {
+    min-width: 300px;
+}
+
+/* 確保按鈕列的寬度固定 */
+.table td:last-child {
+    width: 120px;
+}
