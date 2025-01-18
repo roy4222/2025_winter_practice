@@ -479,7 +479,19 @@ footer .text-light {
     min-width: 300px;
 }
 
-/* 確保按鈕列的寬度固定 */
+/* 調整表格按鈕列的樣式 */
 .table td:last-child {
     width: 120px;
+    vertical-align: middle;
+}
+
+.table .btn-nvidia-outline {
+    width: 100px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* 確保按鈕內容置中 */
+.btn-nvidia-outline i {
+    vertical-align: middle;
 }
