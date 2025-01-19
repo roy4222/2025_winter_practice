@@ -72,7 +72,7 @@
 
 /* 主要按鈕樣式 */
 .btn-primary {
-    background: linear-gradient(45deg, #007bff, #00ff00);
+    background: #76b900;
     border: none;
 }
 
@@ -84,7 +84,7 @@
 
 /* 次要按鈕懸停效果 */
 .btn-outline-primary:hover {
-    background: linear-gradient(45deg, #007bff, #00ff00);
+    background: #76b900;
     border-color: transparent;
 }
 

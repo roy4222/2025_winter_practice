@@ -55,8 +55,11 @@
                         <i class="bi bi-person-fill"></i> <strong>登入</strong>
                     </a>
                     <!-- 購物車按鈕 -->
-                    <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/cart.html" class="btn btn-outline-success me-2" role="button">
+                    <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/cart.html" class="btn btn-outline-success me-2 position-relative" role="button">
                         <i class="bi bi-cart-fill"></i> <strong>購物車</strong>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+                            0
+                        </span>
                     </a>
                 </div>
             </div>
@@ -79,11 +82,22 @@
                     <li><strong>記憶體頻寬：</strong> 912 GB/s</li>
                 </ul>
                 <h3 class="mt-4">NT$ 23,990</h3>
-                <button class="btn btn-primary btn-lg mt-3">
-                    <i class="bi bi-cart-plus"></i> 加入購物車
+                <button class="btn btn-nvidia btn-lg mt-3 hover-effect add-to-cart-btn"
+                    data-product-id="3"
+                    data-product-name="NVIDIA RTX 5070 Ti"
+                    data-product-price="26990"
+                    data-product-image="https://jctechspace.com/wp-content/uploads/2024/11/NVIDIA-GeForce-RTX-5070-Ti-GPU.webp">
+                <i class="bi bi-cart-plus-fill me-2"></i>加入購物車
                 </button>
-                <button class="btn btn-secondary btn-lg mt-3">
-                    <i class="bi bi-cart-plus"></i> 直接結帳
+                <button class="btn btn-secondary btn-lg mt-3 hover-effect" 
+                    onclick="cart.addItem({
+                        id: '3',
+                        name: 'NVIDIA RTX 5070 Ti',
+                        price: 26990,
+                        image: 'https://jctechspace.com/wp-content/uploads/2024/11/NVIDIA-GeForce-RTX-5070-Ti-GPU.webp',
+                        quantity: 1
+                    }); window.location.href='../cart.html';">
+                    <i class="bi bi-credit-card-fill me-2"></i>直接結帳
                 </button>
             </div>
         </div>
@@ -180,6 +194,6 @@
    
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/cart.js"></script>
+    <script src="/week1.5_bootstrap/企業購物網站實作-以輝達為例/js/cart.js"></script>
 </body>
 </html>
