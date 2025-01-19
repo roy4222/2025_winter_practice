@@ -76,6 +76,10 @@
     border: none;
 }
 
+/* 主要按鈕懸停效果 */
+.btn-primary:hover {
+    background: #669900;
+}
 /* 次要按鈕樣式 */
 .btn-outline-primary {
     border-color: #007bff;

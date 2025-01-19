@@ -66,92 +66,92 @@
         </div>
     </nav>
     <!-- 顯示訂單成功提交的提示信息 -->
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success" role="alert" style="display: none;">
         感謝您的購買，您的訂單已成功提交！
     </div>
-<!-- 結帳頁面 -->
-<section class="checkout-section py-3">
-    <div class="container">
-        <h2 class="mb-4">結帳</h2>
-        <div class="row">
-            <!-- 帳單資訊填寫表單 -->
-            <div class="col-md-8">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h3 class="card-title mb-4">帳單資訊</h3>
-                        <form>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="firstName" class="form-label">名字</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="輸入名字" required>
+    <!-- 結帳頁面 -->
+    <section class="checkout-section py-3">
+        <div class="container">
+            <h2 class="mb-4">結帳</h2>
+            <div class="row">
+                <!-- 帳單資訊填寫表單 -->
+                <div class="col-md-8">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title mb-4">帳單資訊</h3>
+                            <form id="checkoutForm" onsubmit="handleSubmit(event)">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="firstName" class="form-label">名字</label>
+                                        <input type="text" class="form-control" id="firstName" placeholder="輸入名字" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="lastName" class="form-label">姓氏</label>
+                                        <input type="text" class="form-control" id="lastName" placeholder="輸入姓氏" required>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="lastName" class="form-label">姓氏</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="輸入姓氏" required>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">電子郵件</label>
+                                    <input type="email" class="form-control" id="email" placeholder="輸入電子郵件" required>
                                 </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">電子郵件</label>
-                                <input type="email" class="form-control" id="email" placeholder="輸入電子郵件" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="address" class="form-label">地址</label>
-                                <input type="text" class="form-control" id="address" placeholder="輸入地址" required>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="city" class="form-label">城市</label>
-                                    <input type="text" class="form-control" id="city" placeholder="輸入城市" required>
+                                <div class="mb-3">
+                                    <label for="address" class="form-label">地址</label>
+                                    <input type="text" class="form-control" id="address" placeholder="輸入地址" required>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="zipCode" class="form-label">郵遞區號</label>
-                                    <input type="text" class="form-control" id="zipCode" placeholder="輸入郵遞區號" required>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">城市</label>
+                                        <input type="text" class="form-control" id="city" placeholder="輸入城市" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="zipCode" class="form-label">郵遞區號</label>
+                                        <input type="text" class="form-control" id="zipCode" placeholder="輸入郵遞區號" required>
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-             <!-- 訂單摘要區 -->
-             <div class="col-lg-4">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-nvidia text-white">
-                        <h5 class="card-title mb-0">
-                            <i class="bi bi-receipt me-2"></i>訂單摘要
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <!-- 商品總計 -->
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>商品總計</span>
-                            <span class="cart-subtotal">NT$ 0</span>
+                <!-- 訂單摘要區 -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-nvidia text-white">
+                            <h5 class="card-title mb-0">
+                                <i class="bi bi-receipt me-2"></i>訂單摘要
+                            </h5>
                         </div>
-                        <!-- 運送方式 -->
-                        <div class="mb-3">
-                            <label for="shippingMethod" class="form-label">運送方式</label>
-                            <select class="form-select" id="shippingMethod">
-                                <option value="standard" data-fee="100">標準運送 (NT$ 100)</option>
-                                <option value="express" data-fee="200">快速運送 (NT$ 200)</option>
-                                <option value="pickup" data-fee="0">門市自取 (免運費)</option>
-                            </select>
+                        <div class="card-body">
+                            <!-- 商品總計 -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>商品總計</span>
+                                <span class="cart-subtotal">NT$ 0</span>
+                            </div>
+                            <!-- 運送方式 -->
+                            <div class="mb-3">
+                                <label for="shippingMethod" class="form-label">運送方式</label>
+                                <select class="form-select" id="shippingMethod">
+                                    <option value="standard" data-fee="100">標準運送 (NT$ 100)</option>
+                                    <option value="express" data-fee="200">快速運送 (NT$ 200)</option>
+                                    <option value="pickup" data-fee="0">門市自取 (免運費)</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>運費</span>
+                                <span class="shipping-fee">NT$ 100</span>
+                            </div>
+                            <hr>
+                            <!-- 總計金額 -->
+                            <div class="d-flex justify-content-between mb-4">
+                                <h5>總計金額</h5>
+                                <h5 class="text-nvidia cart-total">NT$ 0</h5>
+                            </div>
+                            <button type="submit" form="checkoutForm" class="btn btn-nvidia w-100">確認下單</button>
                         </div>
-                        <div class="d-flex justify-content-between mb-2">
-                            <span>運費</span>
-                            <span class="shipping-fee">NT$ 100</span>
-                        </div>
-                        <hr>
-                        <!-- 總計金額 -->
-                        <div class="d-flex justify-content-between mb-4">
-                            <h5>總計金額</h5>
-                            <h5 class="text-nvidia cart-total">NT$ 0</h5>
-                        </div>
-                        <button type="submit" class="btn btn-nvidia w-100">確認下單</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
    
     
     <!-- Footer 頁尾區塊 -->
@@ -218,46 +218,62 @@
     <!-- 購物車功能 -->
     <script src="js/cart.js"></script>
     <script>
+        // 當 DOM 內容加載完成後執行
         document.addEventListener('DOMContentLoaded', function() {
-            // 獲取表單元素
-            const checkoutForm = document.querySelector('form');
-            
-            // 監聽表單提交事件
-            checkoutForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // 檢查購物車是否為空
-                if (cart.calculateTotal() === 0) {
-                    alert('購物車是空的，請先選購商品！');
-                    return;
-                }
-                
-                // 收集表單數據
-                const formData = {
-                    firstName: document.getElementById('firstName').value,
-                    lastName: document.getElementById('lastName').value,
-                    email: document.getElementById('email').value,
-                    address: document.getElementById('address').value,
-                    city: document.getElementById('city').value,
-                    zipCode: document.getElementById('zipCode').value
-                };
-                
-                // 檢查所有必填欄位
-                if (!Object.values(formData).every(value => value.trim())) {
-                    alert('請填寫所有必填欄位！');
-                    return;
-                }
-                
-                // 顯示訂單成功訊息
-                alert('感謝您的訂購！我們將盡快處理您的訂單。');
-                
-                // 清空購物車
-                cart.clearCart();
-                
-                // 重定向到首頁
-                window.location.href = 'index.html';
+            // 獲取成功提示元素並隱藏
+            const alertSuccess = document.querySelector('.alert-success');
+            alertSuccess.style.display = 'none';
+
+            // 更新總金額的函數
+            function updateTotalAmount() {
+                // 獲取商品小計，如果無法解析則默認為 0
+                const subtotal = parseFloat(document.querySelector('.cart-subtotal').textContent.replace('NT$ ', '')) || 0;
+                // 獲取運費，如果無法解析則默認為 0
+                const shippingFee = parseFloat(document.querySelector('.shipping-fee').textContent.replace('NT$ ', '')) || 0;
+                // 計算總金額
+                const total = subtotal + shippingFee;
+                // 更新總金額顯示
+                document.querySelector('.cart-total').textContent = `NT$ ${total}`;
+            }
+
+            // 監聽運送方式的變更事件
+            document.getElementById('shippingMethod').addEventListener('change', function(e) {
+                // 獲取選中選項的運費
+                const fee = e.target.options[e.target.selectedIndex].dataset.fee;
+                // 更新運費顯示
+                document.querySelector('.shipping-fee').textContent = `NT$ ${fee}`;
+                // 重新計算並更新總金額
+                updateTotalAmount();
             });
         });
+
+        // 處理表單提交的函數
+        function handleSubmit(event) {
+            // 阻止表單的默認提交行為
+            event.preventDefault();
+            
+            // 獲取所有必填欄位的值
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const zipCode = document.getElementById('zipCode').value;
+
+            // 顯示訂單成功訊息
+            alert('感謝您的訂購！我們將盡快處理您的訂單。');
+            
+            // 清空購物車
+            cart.clearCart();
+            
+            // 重定向到首頁
+            window.location.href = 'index.html';
+            
+            // 重置表單，清空所有輸入
+            document.getElementById('checkoutForm').reset();
+        }
+
+        
     </script>
 </body>
 </html>
