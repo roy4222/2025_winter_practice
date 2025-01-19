@@ -1,281 +1,304 @@
 // 購物車類別
+// 負責管理購物車的所有功能，包括添加商品、移除商品、更新數量、計算總價等
 class ShoppingCart {
-    // 建構函式
+    // 構造函數
+    // 初始化購物車，從本地存儲加載商品或創建空購物車
     constructor() {
-        // 從 localStorage 讀取購物車內容，如果沒有則初始化為空陣列
-        this.items = JSON.parse(localStorage.getItem('cart')) || [];
-        // 初始化購物車
+        // 從本地存儲中獲取購物車項目，如果沒有則初始化為空數組
+        this.items = JSON.parse(localStorage.getItem('cartItems')) || [];
+        // 調用初始化方法
         this.init();
     }
 
-    // 初始化購物車
+    // 初始化方法
+    // 更新購物車顯示，綁定事件監聽器
     init() {
-        // 更新購物車 UI
-        this.updateCartUI();
-        // 設定事件監聽器
-        this.setupEventListeners();
+        // 更新購物車顯示
+        this.updateCartDisplay();
+        // 更新購物車徽章數量
+        this.updateBadgeCount();
+        // 綁定事件監聽器
+        this.bindEvents();
     }
 
-    // 加入商品到購物車
+    // 綁定事件
+    // 為所有 "加入購物車" 按鈕添加點擊事件監聽器
+    bindEvents() {
+        // 選擇所有具有 'add-to-cart-btn' 類的按鈕
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            // 為每個按鈕添加點擊事件監聽器
+            button.addEventListener('click', (e) => {
+                // 從按鈕的 data 屬性中獲取商品信息
+                const productId = e.target.dataset.productId;
+                const productName = e.target.dataset.productName;
+                const productPrice = parseFloat(e.target.dataset.productPrice);
+                const productImage = e.target.dataset.productImage;
+                
+                // 調用 addItem 方法添加商品到購物車
+                this.addItem({
+                    id: productId,
+                    name: productName,
+                    price: productPrice,
+                    image: productImage,
+                    quantity: 1
+                });
+            });
+        });
+    }
+
+    // 添加商品到購物車
+    // @param {Object} product - 要添加的商品對象
     addItem(product) {
-        // 檢查商品是否已存在於購物車中
+        // 檢查購物車中是否已存在該商品
         const existingItem = this.items.find(item => item.id === product.id);
+        
         if (existingItem) {
             // 如果商品已存在，增加數量
-            existingItem.quantity += 1;
+            existingItem.quantity++;
         } else {
-            // 如果商品不存在，新增商品到購物車
-            this.items.push({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image: product.image,
-                quantity: 1
-            });
+            // 如果商品不存在，將新商品添加到購物車
+            this.items.push(product);
         }
-        // 儲存購物車內容
+        
+        // 保存購物車到本地存儲
         this.saveCart();
-        // 更新購物車 UI
-        this.updateCartUI();
-        // 顯示提示訊息
+        // 更新購物車顯示
+        this.updateCartDisplay();
+        // 顯示添加成功的提示
         this.showToast(`已將 ${product.name} 加入購物車`);
     }
 
-    // 從購物車移除商品
+    // 從購物車中移除商品
+    // @param {string} productId - 要移除的商品ID
     removeItem(productId) {
-        // 找到要移除的商品索引
+        // 查找要移除的商品在數組中的索引
         const index = this.items.findIndex(item => item.id === productId);
         if (index > -1) {
             // 如果找到商品，記錄被移除的商品
             const removedItem = this.items[index];
-            // 從陣列中移除該商品
+            // 從數組中移除該商品
             this.items.splice(index, 1);
-            // 儲存購物車內容
+            // 保存更新後的購物車
             this.saveCart();
-            // 更新購物車 UI
-            this.updateCartUI();
-            // 顯示提示訊息
+            // 更新購物車顯示
+            this.updateCartDisplay();
+            // 顯示移除成功的提示
             this.showToast(`已將 ${removedItem.name} 從購物車移除`);
         }
     }
 
-    // 更新商品數量
-    updateQuantity(productId, quantity) {
-        // 找到要更新數量的商品
+    // 更新購物車中商品的數量
+    // @param {string} productId - 要更新的商品ID
+    // @param {number} newQuantity - 新的數量
+    updateItemQuantity(productId, newQuantity) {
+        // 查找要更新的商品
         const item = this.items.find(item => item.id === productId);
         if (item) {
-            // 更新商品數量
-            item.quantity = parseInt(quantity);
-            if (item.quantity <= 0) {
-                // 如果數量小於等於 0，移除該商品
-                this.removeItem(productId);
-            } else {
-                // 儲存購物車內容
-                this.saveCart();
-                // 更新購物車 UI
-                this.updateCartUI();
-            }
+            // 更新數量，確保數量在1到10之間
+            item.quantity = Math.max(1, Math.min(10, newQuantity));
+            // 保存更新後的購物車
+            this.saveCart();
+            // 更新購物車顯示
+            this.updateCartDisplay();
         }
     }
 
     // 清空購物車
     clearCart() {
-        // 清空購物車內容
+        // 將購物車項目設置為空數組
         this.items = [];
-        // 儲存購物車內容
+        // 保存更新後的購物車
         this.saveCart();
-        // 更新購物車 UI
-        this.updateCartUI();
-        // 顯示提示訊息
+        // 更新購物車顯示
+        this.updateCartDisplay();
+        // 顯示清空成功的提示
         this.showToast('購物車已清空');
     }
 
-    // 計算總金額
+    // 計算購物車總價
+    // @returns {number} 總價
     calculateTotal() {
-        // 使用 reduce 方法計算總金額
+        // 使用 reduce 方法計算總價
         return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
     }
 
-    // 儲存購物車到 localStorage
+    // 將購物車數據保存到本地存儲
     saveCart() {
-        localStorage.setItem('cart', JSON.stringify(this.items));
+        localStorage.setItem('cartItems', JSON.stringify(this.items));
     }
 
-    // 更新購物車 UI
-    updateCartUI() {
-        // 更新購物車圖標上的數量
-        const cartCount = this.items.reduce((total, item) => total + item.quantity, 0);
-        const cartBadge = document.querySelector('.cart-badge');
-        if (cartBadge) {
-            cartBadge.textContent = cartCount;
-        }
-
-        // 更新購物車頁面的內容
-        const cartContent = document.querySelector('.cart-content');
-        if (cartContent) {
-            if (this.items.length === 0) {
-                // 如果購物車為空，顯示空購物車訊息
-                cartContent.innerHTML = `
-                    <div class="text-center py-5">
-                        <i class="bi bi-cart-x display-1 text-muted mb-4"></i>
-                        <h3>購物車是空的</h3>
-                        <p class="text-muted">快去選購喜歡的商品吧！</p>
-                        <a href="product.html" class="btn btn-primary">
-                            <i class="bi bi-shop me-2"></i>繼續購物
-                        </a>
-                    </div>
-                `;
-            } else {
-                // 如果購物車有商品，顯示商品列表
-                cartContent.innerHTML = `
-                    <div class="table-responsive">
-                        <table class="table align-middle">
-                            <thead>
-                                <tr>
-                                    <th>商品</th>
-                                    <th>價格</th>
-                                    <th>數量</th>
-                                    <th>小計</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${this.items.map(item => `
-                                    <tr class="align-middle">
-                                        <td style="min-width: 300px;">
-                                            <div class="d-flex align-items-center gap-3">
-                                                <img src="${item.image}" alt="${item.name}" 
-                                                     class="rounded shadow-sm" 
-                                                     style="width: 100px; height: 100px; object-fit: cover;">
-                                                <div>
-                                                    <h6 class="mb-1 fw-bold">${item.name}</h6>
-                                                    <span class="text-muted small">商品編號：${item.id}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="text-primary fw-semibold" style="min-width: 150px;">
-                                            NT$ ${item.price.toLocaleString()}
-                                        </td>
-                                        <td style="min-width: 150px;">
-                                            <div class="input-group input-group-sm">
-                                                <!-- 減少數量按鈕 -->
-                                                <button class="btn btn-outline-secondary px-3" type="button" 
-                                                        onclick="cart.updateQuantity(${item.id}, ${item.quantity - 1})">
-                                                    <i class="bi bi-dash"></i>
-                                                </button>
-                                                <!-- 數量輸入框 -->
-                                                <input type="number" class="form-control text-center fw-bold" value="${item.quantity}" 
-                                                       min="1" max="99"
-                                                       onchange="cart.updateQuantity(${item.id}, this.value)">
-                                                <!-- 增加數量按鈕 -->
-                                                <button class="btn btn-outline-secondary px-3" type="button"
-                                                        onclick="cart.updateQuantity(${item.id}, ${item.quantity + 1})">
-                                                    <i class="bi bi-plus"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <!-- 小計金額 -->
-                                        <td class="text-success fw-bold" style="min-width: 150px;">
-                                            NT$ ${(item.price * item.quantity).toLocaleString()}
-                                        </td>
-                                        <td>
-                                            <!-- 移除商品按鈕 -->
-                                            <button class="btn btn-outline-danger" 
-                                                    onclick="cart.removeItem(${item.id})"
-                                                    title="移除商品">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- 購物車底部操作區 -->
-                    <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
-                        <!-- 清空購物車按鈕 -->
-                        <button class="btn btn-outline-danger btn-lg" onclick="cart.clearCart()">
-                            <i class="bi bi-trash me-2"></i>清空購物車
-                        </button>
-                        <!-- 總計金額和結帳按鈕 -->
-                        <div class="text-end">
-                            <div class="text-muted mb-2">總計金額</div>
-                            <h3 class="text-success mb-3">NT$ ${this.calculateTotal().toLocaleString()}</h3>
-                            <!-- 前往結帳按鈕 -->
-                            <button class="btn btn-primary btn-lg px-5" onclick="cart.checkout()">
-                                <i class="bi bi-credit-card me-2"></i>前往結帳
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-        }
+    // 更新購物車徽章數量
+    updateBadgeCount() {
+        // 選擇所有購物車徽章元素
+        const badges = document.querySelectorAll('.cart-badge');
+        // 計算購物車中的總商品數量
+        const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
+        // 更新每個徽章的文本
+        badges.forEach(badge => {
+            badge.textContent = totalItems;
+        });
     }
 
-    // 結帳功能
-    checkout() {
+    // 更新購物車顯示
+    // 包括徽章數量、迷你購物車和購物車頁面
+    updateCartDisplay() {
+        this.updateBadgeCount();
+        this.updateMiniCart();
+        this.updateCartPage();
+    }
+
+    // 更新迷你購物車
+    // 顯示在導航欄中的簡化購物車視圖
+    updateMiniCart() {
+        // 選擇迷你購物車的容器元素
+        const miniCartItems = document.querySelector('.cart-items');
+        if (!miniCartItems) return;
+
+        // 如果購物車為空，顯示空購物車消息
         if (this.items.length === 0) {
-            // 如果購物車為空，顯示提示訊息
-            this.showToast('購物車是空的，請先加入商品');
-            return;
-        }
-        // 這裡可以添加結帳邏輯
-        this.showToast('前往結帳...');
-        // 導向結帳頁面（目前被註解掉）
-        // window.location.href = 'checkout.html';
-    }
-
-    // 顯示提示訊息
-    showToast(message) {
-        // 建立 Toast HTML
-        const toastHTML = `
-            <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header">
-                        <strong class="me-auto">購物車通知</strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                    </div>
-                    <div class="toast-body">
-                        ${message}
+            miniCartItems.innerHTML = `
+                <div class="text-center py-4 text-muted empty-cart-message">
+                    <i class="bi bi-cart-x display-6 mb-3"></i>
+                    <p class="mb-0">購物車是空的</p>
+                    <small>快去選購喜歡的商品吧！</small>
+                </div>
+            `;
+        } else {
+            // 如果購物車不為空，顯示所有商品
+            miniCartItems.innerHTML = this.items.map(item => `
+                <div class="cart-item" data-product-id="${item.id}">
+                    <div class="d-flex align-items-center">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image me-3">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0">${item.name}</h6>
+                            <div class="d-flex align-items-center mt-2">
+                                <small class="text-muted me-2">數量：${item.quantity}</small>
+                                <span class="text-nvidia">NT$ ${(item.price * item.quantity).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-sm text-danger" onclick="cart.removeItem('${item.id}')">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
-        `;
-        
-        // 將 Toast 插入到 body 中
-        document.body.insertAdjacentHTML('beforeend', toastHTML);
-        // 獲取 Toast 元素
-        const toastElement = document.querySelector('.toast');
-        // 建立 Bootstrap Toast 實例
-        const toast = new bootstrap.Toast(toastElement);
-        // 顯示 Toast
-        toast.show();
-        
-        // 3 秒後移除 Toast 元素
-        setTimeout(() => {
-            toastElement.parentElement.remove();
-        }, 1500);
+            `).join('');
+        }
+
+        // 更新小計
+        const subtotal = document.querySelector('.cart-subtotal');
+        if (subtotal) {
+            subtotal.textContent = `NT$ ${this.calculateTotal().toLocaleString()}`;
+        }
     }
 
-    // 設定事件監聽器
-    setupEventListeners() {
-        // 為所有加入購物車按鈕添加點擊事件監聽器
-        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                // 從按鈕的 data 屬性中獲取商品資訊
-                const productId = parseInt(button.dataset.productId);
-                const product = {
-                    id: productId,
-                    name: button.dataset.productName,
-                    price: parseInt(button.dataset.productPrice),
-                    image: button.dataset.productImage
-                };
-                // 將商品加入購物車
-                this.addItem(product);
-            });
-        });
+    // 更新購物車頁面
+    // 顯示完整的購物車內容和訂單摘要
+    updateCartPage() {
+        // 選擇購物車頁面的相關元素
+        const cartItems = document.querySelector('.cart-items');
+        const emptyCartMessage = document.querySelector('.empty-cart-message');
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        
+        if (!cartItems || !emptyCartMessage || !checkoutBtn) return;
+
+        // 如果購物車為空
+        if (this.items.length === 0) {
+            emptyCartMessage.style.display = 'block';
+            cartItems.innerHTML = '';
+            checkoutBtn.disabled = true;
+        } else {
+            // 如果購物車不為空，顯示所有商品
+            emptyCartMessage.style.display = 'none';  // 隱藏空購物車提示
+            cartItems.innerHTML = this.items.map(item => `
+                <div class="cart-item" data-product-id="${item.id}">
+                    <div class="d-flex align-items-center">
+                        <!-- 商品圖片 -->
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image me-3">
+                        <div class="flex-grow-1">
+                            <!-- 商品名稱 -->
+                            <h5 class="mb-1">${item.name}</h5>
+                            <!-- 商品單價 -->
+                            <div class="text-nvidia mb-2">NT$ ${item.price.toLocaleString()}</div>
+                            <div class="d-flex align-items-center">
+                                <!-- 數量控制 -->
+                                <div class="quantity-control input-group me-3" style="width: 150px;">
+                                    <!-- 減少數量按鈕 -->
+                                    <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity - 1})">
+                                        <i class="bi bi-dash"></i>
+                                    </button>
+                                    <!-- 數量輸入框 -->
+                                    <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="10" 
+                                           onchange="cart.updateItemQuantity('${item.id}', parseInt(this.value))">
+                                    <!-- 增加數量按鈕 -->
+                                    <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity + 1})">
+                                        <i class="bi bi-plus"></i>
+                                    </button>
+                                </div>
+                                <!-- 移除商品按鈕 -->
+                                <button class="btn btn-outline-danger" onclick="cart.removeItem('${item.id}')">
+                                    <i class="bi bi-trash me-2"></i>移除
+                                </button>
+                            </div>
+                        </div>
+                        <!-- 商品小計 -->
+                        <div class="text-end ms-3">
+                            <h5 class="text-nvidia mb-0">NT$ ${(item.price * item.quantity).toLocaleString()}</h5>
+                        </div>
+                    </div>
+                </div>
+            `).join('');  // 使用 join 將所有商品項目連接成一個字串
+            checkoutBtn.disabled = false;  // 啟用結帳按鈕
+        }
+
+        // 更新訂單摘要
+        const subtotal = document.querySelector('.cart-subtotal');
+        const total = document.querySelector('.cart-total');
+        const shippingFee = document.querySelector('.shipping-fee');
+        
+        if (subtotal && total && shippingFee) {
+            const subtotalAmount = this.calculateTotal();
+            // 計算運費：訂單滿3000免運費，否則運費100
+            const shipping = subtotalAmount >= 3000 ? 0 : 100;
+            
+            subtotal.textContent = `NT$ ${subtotalAmount.toLocaleString()}`;
+            shippingFee.textContent = `NT$ ${shipping}`;
+            total.textContent = `NT$ ${(subtotalAmount + shipping).toLocaleString()}`;
+        }
+    }
+
+    // 顯示通知消息
+    // @param {string} message - 要顯示的消息
+    showToast(message) {
+        // 獲取或創建 toast 容器
+        const toastContainer = document.getElementById('toastContainer') || (() => {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 1050;';
+            document.body.appendChild(container);
+            return container;
+        })();
+
+        // 創建新的 toast 元素
+        const toastElement = document.createElement('div');
+        toastElement.className = 'toast show';
+        toastElement.innerHTML = `
+            <div class="toast-header">
+                <i class="bi bi-cart-check text-nvidia me-2"></i>
+                <strong class="me-auto">購物車通知</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">${message}</div>
+        `;
+
+        // 將 toast 添加到容器中
+        toastContainer.appendChild(toastElement);
+
+        // 設置定時器，1.5秒後移除 toast
+        setTimeout(() => {
+            toastElement.remove();
+        }, 1500);
     }
 }
 
-// 創建購物車實例
+// 初始化購物車
 const cart = new ShoppingCart();
