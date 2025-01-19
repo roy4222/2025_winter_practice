@@ -55,8 +55,11 @@
                         <i class="bi bi-person-fill"></i> <strong>登入</strong>
                     </a>
                     <!-- 購物車按鈕 -->
-                    <a href="cart.html" class="btn btn-outline-success me-2" role="button">
+                    <a href="cart.html" class="btn btn-outline-success me-2 position-relative" role="button">
                         <i class="bi bi-cart-fill"></i> <strong>購物車</strong>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+                            0
+                        </span>
                     </a>
                 </div>
             </div>
@@ -180,10 +183,14 @@
                         <h6 class="fw-bold text-primary mb-3">NT$ 71,990 元起</h6>
                         <!-- 操作按鈕組 -->
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary hover-effect">
+                            <button class="btn btn-primary hover-effect add-to-cart-btn"
+                                    data-product-id="1"
+                                    data-product-name="NVIDIA RTX 5090"
+                                    data-product-price="71990"
+                                    data-product-image="https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/graphic-cards/50-series/geforce-rtx-50series-og-1200x630.jpg">
                                 <i class="bi bi-cart-plus-fill me-2"></i>加入購物車
                             </button>
-                            <button class="btn btn-outline-primary hover-effect">了解更多</button>
+                            <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/product/5090.html" class="btn btn-outline-primary hover-effect">了解更多</a>
                         </div>
                     </div>
                 </div>
@@ -213,10 +220,14 @@
                         <h6 class="fw-bold text-primary mb-3">NT$ 35,990 元起</h6>
                         <!-- 操作按鈕組 -->
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary hover-effect">
+                            <button class="btn btn-primary hover-effect add-to-cart-btn"
+                                    data-product-id="2"
+                                    data-product-name="NVIDIA RTX 5080"
+                                    data-product-price="35990"
+                                    data-product-image="https://www.koc.com.tw/wp-content/uploads/2024/12/20241228135742_0_5c1298.jpeg">
                                 <i class="bi bi-cart-plus-fill me-2"></i>加入購物車
                             </button>
-                            <button class="btn btn-outline-primary hover-effect">了解更多</button>
+                            <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/product/5080.html" class="btn btn-outline-primary hover-effect">了解更多</a>
                         </div>
                     </div>
                 </div>
@@ -283,10 +294,14 @@
                         <h6 class="fw-bold text-primary mb-3">NT$ 19,990 元起</h6>
                         <!-- 操作按鈕組 -->
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary hover-effect">
+                            <button class="btn btn-primary hover-effect add-to-cart-btn"
+                                    data-product-id="4"
+                                    data-product-name="NVIDIA RTX 5070"
+                                    data-product-price="19990"
+                                    data-product-image="https://www.nvidia.com/content/dam/en-zz/Solutions/geforce/graphic-cards/50-series/5070-family/geforce-rtx-5070-ti-og-image.jpg">
                                 <i class="bi bi-cart-plus-fill me-2"></i>加入購物車
                             </button>
-                            <button class="btn btn-outline-primary hover-effect">了解更多</button>
+                            <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/product/5070.html" class="btn btn-outline-primary hover-effect">了解更多</a>
                         </div>
                     </div>
                 </div>
@@ -316,10 +331,14 @@
                         <h6 class="fw-bold text-primary mb-3"> 售價3,000美元</h6>
                         <!-- 操作按鈕組 -->
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary hover-effect">
+                            <button class="btn btn-primary hover-effect add-to-cart-btn"
+                                    data-product-id="5"
+                                    data-product-name="Project Digits"
+                                    data-product-price="90000"
+                                    data-product-image="https://www.nvidia.com/content/nvidiaGDC/eu/en_EU/project-digits/home/_jcr_content/root/responsivegrid/nv_container_1505625997/nv_image.coreimg.100.850.jpeg/1736209420108/nvidia-project-digits-exploded-vew-ari.jpeg">
                                 <i class="bi bi-cart-plus-fill me-2"></i>加入購物車
                             </button>
-                            <button class="btn btn-outline-primary hover-effect">了解更多</button>
+                            <a href="/week1.5_bootstrap/企業購物網站實作-以輝達為例/product/project_digits.html" class="btn btn-outline-primary hover-effect">了解更多</a>
                         </div>
                     </div>
                 </div>
