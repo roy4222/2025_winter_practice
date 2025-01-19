@@ -550,3 +550,84 @@ footer .text-light {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
 }
+
+/* 登入頁面樣式 */
+.login-section {
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+}
+
+.login-card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-5px);
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+    border: none;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #76b900;
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #76b900;
+    border: none;
+    border-bottom: 2px solid #76b900;
+    background-color: transparent;
+}
+
+.input-group-text {
+    border: 1px solid #ced4da;
+    background-color: #f8f9fa;
+}
+
+.input-group-text i {
+    font-size: 1.1rem;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    padding: 0.6rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #76b900;
+    box-shadow: 0 0 0 0.2rem rgba(118, 185, 0, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #76b900;
+    border-color: #76b900;
+}
+
+.btn-nvidia {
+    background-color: #76b900;
+    border-color: #76b900;
+    color: white;
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-nvidia:hover {
+    background-color: #669f00;
+    border-color: #669f00;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(118, 185, 0, 0.2);
+}
+
+.text-nvidia {
+    color: #76b900;
+}
