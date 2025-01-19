@@ -63,7 +63,92 @@
         </div>
     </nav>
 
-   
+    <!-- 聯絡資訊和表單區塊 -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <!-- 標題區塊 -->
+            <h2 class="text-center mb-5 fw-bold position-relative">
+                <span class="position-relative">
+                    聯絡我們
+                    <div class="title-underline"></div>
+                </span>
+            </h2>
+            <div class="row g-4">
+                <!-- 聯絡資訊 -->
+                <div class="col-md-6">
+                    <div class="card h-100 shadow contact-card">
+                        <div class="card-body p-4">
+                            <h3 class="card-title mb-4  fw-bold text-nvidia">
+                                <i class="bi bi-info-circle-fill me-2 text-nvidia"></i>聯絡資訊
+                            </h3>
+                            <ul class="list-unstyled contact-info">
+                                <li class="mb-4 d-flex align-items-center contact-item">
+                                    <div class="contact-icon">
+                                        <i class="bi bi-geo-alt-fill text-nvidia"></i>
+                                    </div>
+                                    <span>台北市內湖區基湖路8號</span>
+                                </li>
+                                <li class="mb-4 d-flex align-items-center contact-item">
+                                    <div class="contact-icon">
+                                        <i class="bi bi-telephone-fill text-nvidia"></i>
+                                    </div>
+                                    <span>(02) 2377-7377</span>
+                                </li>
+                                <li class="mb-4 d-flex align-items-center contact-item">
+                                    <div class="contact-icon">
+                                        <i class="bi bi-envelope-fill text-nvidia"></i>
+                                    </div>
+                                    <span>info@nvidia.com</span>
+                                </li>
+                                <li class="d-flex align-items-center contact-item">
+                                    <div class="contact-icon">
+                                        <i class="bi bi-clock-fill text-nvidia"></i>
+                                    </div>
+                                    <span>週一至週五 9:00-18:00</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- 聯絡表單 -->
+                <div class="col-md-6">
+                    <div class="card h-100 shadow contact-card">
+                        <div class="card-body p-4">
+                            <h3 class="card-title mb-4 text-nvidia fw-bold">
+                                <i class="bi bi-send-fill me-2 text-nvidia"></i>發送訊息
+                            </h3>
+                            <form id="contactForm">
+                                <div class="mb-4">
+                                    <label for="name" class="form-label">姓名</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                        <input type="text" class="form-control" id="name" placeholder="請輸入您的姓名" required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="email" class="form-label">電子郵件</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                                        <input type="email" class="form-control" id="email" placeholder="請輸入您的電子郵件" required>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="message" class="form-label">訊息</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-chat-left-text-fill"></i></span>
+                                        <textarea class="form-control" id="message" rows="4" placeholder="請輸入您的訊息" required></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-2 fw-bold">
+                                    <i class="bi bi-send me-2"></i>發送訊息
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Footer 頁尾區塊 -->
     <footer class="bg-dark text-light py-5 mt-2">
