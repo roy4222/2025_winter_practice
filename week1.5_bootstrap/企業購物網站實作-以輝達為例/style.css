@@ -631,3 +631,74 @@ footer .text-light {
 .text-nvidia {
     color: #76b900;
 }
+
+/* 商品頁面樣式 */
+.carousel {
+    border-radius: 8px;
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.cart-sidebar {
+    position: sticky;
+    top: 20px;
+}
+
+.cart-item {
+    transition: all 0.3s ease;
+}
+
+.cart-item:hover {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.cart-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.cart-item-quantity input {
+    width: 60px;
+}
+
+.cart-item-details {
+    margin-right: 10px;
+}
+
+.form-select {
+    border-color: #ced4da;
+    cursor: pointer;
+}
+
+.form-select:focus {
+    border-color: #76b900;
+    box-shadow: 0 0 0 0.2rem rgba(118, 185, 0, 0.25);
+}
+
+.bg-nvidia {
+    background-color: #76b900;
+}
+
+/* 響應式調整 */
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 300px;
+    }
+    
+    .cart-sidebar {
+        position: static;
+        margin-top: 20px;
+    }
+}
