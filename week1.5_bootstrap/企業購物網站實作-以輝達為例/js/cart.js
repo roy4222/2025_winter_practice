@@ -19,6 +19,8 @@ class ShoppingCart {
         this.updateBadgeCount();
         // 綁定事件監聽器
         this.bindEvents();
+        // 綁定運送方式事件
+        this.bindShippingEvents();
     }
 
     // 綁定事件
@@ -44,6 +46,16 @@ class ShoppingCart {
                 });
             });
         });
+    }
+
+    // 綁定運送方式選擇事件
+    bindShippingEvents() {
+        const shippingSelect = document.getElementById('shippingMethod');
+        if (shippingSelect) {
+            shippingSelect.addEventListener('change', () => {
+                this.updateCartPage();
+            });
+        }
     }
 
     // 添加商品到購物車
@@ -191,79 +203,110 @@ class ShoppingCart {
         }
     }
 
-    // 更新購物車頁面
-    // 顯示完整的購物車內容和訂單摘要
+    // 更新購物車頁面和結帳頁面
     updateCartPage() {
-        // 選擇購物車頁面的相關元素
+        const subtotalAmount = this.calculateTotal();
+        const shipping = this.calculateShippingFee(subtotalAmount);
+
+        // 更新購物車頁面
         const cartItems = document.querySelector('.cart-items');
         const emptyCartMessage = document.querySelector('.empty-cart-message');
         const checkoutBtn = document.querySelector('.checkout-btn');
         
-        if (!cartItems || !emptyCartMessage || !checkoutBtn) return;
-
-        // 如果購物車為空
-        if (this.items.length === 0) {
-            emptyCartMessage.style.display = 'block';
-            cartItems.innerHTML = '';
-            checkoutBtn.disabled = true;
-        } else {
-            // 如果購物車不為空，顯示所有商品
-            emptyCartMessage.style.display = 'none';  // 隱藏空購物車提示
-            cartItems.innerHTML = this.items.map(item => `
-                <div class="cart-item" data-product-id="${item.id}">
-                    <div class="d-flex align-items-center">
-                        <!-- 商品圖片 -->
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image me-3">
-                        <div class="flex-grow-1">
-                            <!-- 商品名稱 -->
-                            <h5 class="mb-1">${item.name}</h5>
-                            <!-- 商品單價 -->
-                            <div class="text-nvidia mb-2">NT$ ${item.price.toLocaleString()}</div>
-                            <div class="d-flex align-items-center">
-                                <!-- 數量控制 -->
-                                <div class="quantity-control input-group me-3" style="width: 150px;">
-                                    <!-- 減少數量按鈕 -->
-                                    <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity - 1})">
-                                        <i class="bi bi-dash"></i>
-                                    </button>
-                                    <!-- 數量輸入框 -->
-                                    <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="10" 
-                                           onchange="cart.updateItemQuantity('${item.id}', parseInt(this.value))">
-                                    <!-- 增加數量按鈕 -->
-                                    <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity + 1})">
-                                        <i class="bi bi-plus"></i>
+        // 更新購物車商品列表
+        if (cartItems && emptyCartMessage && checkoutBtn) {
+            if (this.items.length === 0) {
+                emptyCartMessage.style.display = 'block';
+                cartItems.innerHTML = '';
+                checkoutBtn.disabled = true;
+            } else {
+                emptyCartMessage.style.display = 'none';
+                cartItems.innerHTML = this.items.map(item => `
+                    <div class="cart-item" data-product-id="${item.id}">
+                        <div class="d-flex align-items-center">
+                            <!-- 商品圖片 -->
+                            <img src="${item.image}" alt="${item.name}" class="cart-item-image me-3">
+                            <div class="flex-grow-1">
+                                <!-- 商品名稱 -->
+                                <h5 class="mb-1">${item.name}</h5>
+                                <!-- 商品單價 -->
+                                <div class="text-nvidia mb-2">NT$ ${item.price.toLocaleString()}</div>
+                                <div class="d-flex align-items-center">
+                                    <!-- 數量控制 -->
+                                    <div class="quantity-control input-group me-3" style="width: 150px;">
+                                        <!-- 減少數量按鈕 -->
+                                        <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity - 1})">
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <!-- 數量輸入框 -->
+                                        <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="10" 
+                                               onchange="cart.updateItemQuantity('${item.id}', parseInt(this.value))">
+                                        <!-- 增加數量按鈕 -->
+                                        <button class="btn btn-outline-secondary" onclick="cart.updateItemQuantity('${item.id}', ${item.quantity + 1})">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                    <!-- 移除商品按鈕 -->
+                                    <button class="btn btn-outline-danger" onclick="cart.removeItem('${item.id}')">
+                                        <i class="bi bi-trash me-2"></i>移除
                                     </button>
                                 </div>
-                                <!-- 移除商品按鈕 -->
-                                <button class="btn btn-outline-danger" onclick="cart.removeItem('${item.id}')">
-                                    <i class="bi bi-trash me-2"></i>移除
-                                </button>
+                            </div>
+                            <!-- 商品小計 -->
+                            <div class="text-end ms-3">
+                                <h5 class="text-nvidia mb-0">NT$ ${(item.price * item.quantity).toLocaleString()}</h5>
                             </div>
                         </div>
-                        <!-- 商品小計 -->
-                        <div class="text-end ms-3">
-                            <h5 class="text-nvidia mb-0">NT$ ${(item.price * item.quantity).toLocaleString()}</h5>
-                        </div>
                     </div>
-                </div>
-            `).join('');  // 使用 join 將所有商品項目連接成一個字串
-            checkoutBtn.disabled = false;  // 啟用結帳按鈕
+                `).join('');
+                checkoutBtn.disabled = false;
+            }
         }
 
-        // 更新訂單摘要
-        const subtotal = document.querySelector('.cart-subtotal');
-        const total = document.querySelector('.cart-total');
-        const shippingFee = document.querySelector('.shipping-fee');
+        // 更新金額顯示（同時更新購物車頁面和結帳頁面的金額）
+        const subtotalElements = document.querySelectorAll('.cart-subtotal');
+        const shippingElements = document.querySelectorAll('.shipping-fee');
+        const totalElements = document.querySelectorAll('.cart-total');
         
-        if (subtotal && total && shippingFee) {
-            const subtotalAmount = this.calculateTotal();
-            // 計算運費：訂單滿3000免運費，否則運費100
-            const shipping = subtotalAmount >= 3000 ? 0 : 100;
-            
-            subtotal.textContent = `NT$ ${subtotalAmount.toLocaleString()}`;
-            shippingFee.textContent = `NT$ ${shipping}`;
-            total.textContent = `NT$ ${(subtotalAmount + shipping).toLocaleString()}`;
+        subtotalElements.forEach(element => {
+            if (element) element.textContent = `NT$ ${subtotalAmount.toLocaleString()}`;
+        });
+        
+        shippingElements.forEach(element => {
+            if (element) {
+                if (subtotalAmount >= 30000) {
+                    element.textContent = '免運費';
+                    element.classList.add('text-success');
+                } else {
+                    element.textContent = `NT$ ${shipping.toLocaleString()}`;
+                    element.classList.remove('text-success');
+                }
+            }
+        });
+        
+        totalElements.forEach(element => {
+            if (element) element.textContent = `NT$ ${(subtotalAmount + shipping).toLocaleString()}`;
+        });
+
+        // 更新結帳按鈕狀態
+        const checkoutButton = document.querySelector('.btn-nvidia[type="submit"]');
+        if (checkoutButton) {
+            checkoutButton.disabled = subtotalAmount === 0;
         }
+    }
+
+    // 計算運費
+    calculateShippingFee(subtotal) {
+        // 如果訂單金額超過3000，免運費
+        if (subtotal >= 30000) return 0;
+
+        // 獲取選擇的運送方式
+        const shippingSelect = document.getElementById('shippingMethod');
+        if (!shippingSelect) return 100; // 默認運費
+
+        // 從選項的 data-fee 屬性獲取運費
+        const selectedOption = shippingSelect.options[shippingSelect.selectedIndex];
+        return parseInt(selectedOption.dataset.fee) || 100;
     }
 
     // 顯示通知消息
