@@ -10,13 +10,14 @@ function MyComponent() {
 
 function App() {
  const name = 'roger'
+
+ const handleClick = () => {
+   alert('館長:RRRRR')
+ }
   return (
     <>
       <input type="text" placeholder={name} />
-      <h1 style={{ backgroundColor: 'red' }} className="h1-tag">hello {name.toUpperCase()}</h1>
-      <MyComponent />
-      <MyComponent />
-      <MyComponent />
+      <button onClick={handleClick}>送出</button>
     </>
   )
 }
