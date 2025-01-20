@@ -9,15 +9,22 @@ function MyComponent() {
 }
 
 function App() {
- const name = 'roger'
-
- const handleClick = () => {
-   alert('館長:RRRRR')
- }
+ const listItems =[
+   {content:'羅傑', id:'1'},
+   {content:'統神', id:'2'},
+   {content:'館長', id:'3'},
+ ];
+ 
+ const filterItems = listItems.filter((item)=>{
+  if (item.content !== '統神'){
+    return true;
+  }
+ })
+  ;
+ 
   return (
     <>
-      <input type="text" placeholder={name} />
-      <button onClick={handleClick}>送出</button>
+      {filterItems.map((item)=> <div key={item.id}>{item.content}</div>)}
     </>
   )
 }
