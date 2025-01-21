@@ -68,3 +68,8 @@ body {
     align-items: center; /* 在交叉軸上居中對齊項目 */
     justify-content: space-between; /* 在主軸上均勻分布項目，首尾對齊容器邊緣 */
 }
+
+.completed {
+    opacity: 0.4; /* 設置已完成項目的透明度為 0.4 */
+    text-decoration: line-through 3px black; /* 設置已完成項目的文字為刪除線 */
+}
