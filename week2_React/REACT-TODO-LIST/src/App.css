@@ -56,3 +56,15 @@ body {
     color: white;
     cursor: pointer;
 }
+
+/* 定義待辦事項項目的樣式 */
+.todo {
+    background-color: #3636cc; /* 設置背景顏色為淺藍色 */
+    height: 40px; /* 設置高度為 40 像素 */
+    padding: 0px 10px; /* 設置左右內邊距為 10 像素，上下為 0 */
+    margin-top: 10px; /* 設置上外邊距為 10 像素 */
+    border-radius: 5px; /* 設置圓角為 5 像素 */
+    display: flex; /* 使用 flex 布局 */
+    align-items: center; /* 在交叉軸上居中對齊項目 */
+    justify-content: space-between; /* 在主軸上均勻分布項目，首尾對齊容器邊緣 */
+}
