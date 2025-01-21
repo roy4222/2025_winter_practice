@@ -1,6 +1,11 @@
 // 從 React 中引入 useState hook
 import { useState } from 'react'
 
+// 子組件：顯示點擊次數
+function ChildComponent({ clicks }) {
+  return <div>{clicks}</div>;
+}
+
 // 定義 MyComponent 組件
 function MyComponent() {
   // 使用 useState 創建 clicks 狀態變量和更新函數 setClicks，初始值為 0
@@ -18,7 +23,9 @@ function MyComponent() {
   return (
     <>
       {/* 創建一個按鈕，顯示點擊次數，並綁定點擊事件處理函數 */}
-      <button onClick={handleClick}>點擊次數:{clicks}</button>  
+      <button onClick={handleClick}>點擊次數:{clicks}</button>
+      {/* 渲染子組件，傳遞 clicks 作為 prop */}
+      <ChildComponent clicks={clicks} />  
     </>
   )
 }
