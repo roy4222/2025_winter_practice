@@ -1,0 +1,58 @@
+/* 重置所有元素的內外邊距和盒模型 */
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* 設置網頁主體樣式 */
+body {
+    background-color: #3b36cc; /* 設置背景顏色為深藍色 */
+    color: white; /* 設置文字顏色為白色 */
+    display: flex; /* 使用 flex 布局 */
+    flex-direction: row; /* 設置主軸方向為水平 */
+    justify-content: center; /* 在主軸上居中對齊 */
+    font-family: sans-serif; /* 設置字體為無襯線字體 */
+}   
+
+/* 設置主要內容容器樣式 */
+.wrapper {
+    width: 450px; /* 設置容器寬度 */
+    padding: 40px; /* 設置內邊距 */
+    background-color: #1b1b1b; /* 設置背景顏色為深灰色 */
+    border-radius: 8px; /* 設置圓角 */
+    margin-top: 20px; /* 設置上外邊距 */
+    text-align: center; /* 文字居中對齊 */
+}
+
+/* 設置創建表單的基本樣式 */
+.create-form {
+    height: 40px;
+    width: 100%;
+    margin: 25px 0px;
+    border: 1px solid #3b36cc;
+    display: flex;
+}
+
+/* 設置表單輸入框的樣式 */
+.create-form > input {
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 100%;
+    background-color: #1b1b1b;
+    color: white;
+    font-size: 16px;
+    padding: 0px 10px;
+}
+
+/* 設置表單提交按鈕的樣式 */
+.create-form > button {
+    outline: none;
+    border: none;
+    height: 100%;
+    width: 50px;
+    background-color: #3b36cc;
+    color: white;
+    cursor: pointer;
+}
