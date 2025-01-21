@@ -1,7 +1,9 @@
+// 引入 React 的 useState hook
 import { useState } from "react";
 
+// 定義 CreateForm 組件，接收 addTodo 函數作為 prop
 function CreateForm({ addTodo }) {
-
+    // 使用 useState hook 來管理輸入框的內容
     const [content, setContent] = useState("");
 
     // 定義處理表單提交的函數
@@ -11,13 +13,19 @@ function CreateForm({ addTodo }) {
         setContent("");     // 清空輸入框內容
     }
 
-  return (
-    <form className="create-form" onSubmit={handleSubmit}>
-      <input type="text" placeholder="輸入代辦事項"
-      value={content} onChange={(e) => setContent(e.target.value)} />
-      <button type="submit">加入</button>
-    </form>
-  );
+    // 渲染表單
+    return (
+        <form className="create-form" onSubmit={handleSubmit}>
+            <input 
+                type="text" 
+                placeholder="輸入代辦事項"
+                value={content} 
+                onChange={(e) => setContent(e.target.value)} // 當輸入內容變化時更新 state
+            />
+            <button type="submit">加入</button>
+        </form>
+    );
 }
 
+// 導出 CreateForm 組件
 export default CreateForm;
