@@ -12,7 +12,7 @@ const products = [
 ];
 
 export default function Products({ addToCart }) {
-  // 使用 useState 鉤子來管理搜尋詞和類別狀態
+  // useState 鉤子用於管理搜尋詞和類別狀態
   const [searchTerm, setSearchTerm] = useState('');
   const [category, setCategory] = useState('all');
 
@@ -27,21 +27,28 @@ export default function Products({ addToCart }) {
   });
 
   return (
+    // Bootstrap Container 組件，提供了一個響應式固定寬度容器
     <Container className="py-5">
+      {/* 標題，使用 Bootstrap 的文本居中類 */}
       <h1 className="text-center mb-5">商品列表</h1>
 
       {/* 搜尋和過濾區域 */}
+      {/* Bootstrap Row 組件，創建一個水平的列 */}
       <Row className="mb-4">
+        {/* Bootstrap Col 組件，在中等屏幕及以上佔8列 */}
         <Col md={8}>
+          {/* Bootstrap Form.Control 組件，創建一個輸入框 */}
           <Form.Control
             type="text"
             placeholder="搜尋商品..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="mb-3 mb-md-0"
+            className="mb-3 mb-md-0"  // 在小屏幕上添加底部邊距
           />
         </Col>
+        {/* Bootstrap Col 組件，在中等屏幕及以上佔4列 */}
         <Col md={4}>
+          {/* Bootstrap Form.Select 組件，創建一個下拉選擇框 */}
           <Form.Select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -58,23 +65,30 @@ export default function Products({ addToCart }) {
       {/* 商品網格 */}
       <Row>
         {filteredProducts.map(product => (
+          // Bootstrap Col 組件，根據不同屏幕尺寸設置不同的列寬
           <Col key={product.id} xs={12} sm={6} md={4} lg={3} className="mb-4">
+            {/* Bootstrap Card 組件，創建一個卡片式布局 */}
             <Card className="h-100 shadow-sm">
+              {/* 圖片容器 */}
               <div className="overflow-hidden" style={{ height: '200px' }}>
+                {/* Bootstrap Card.Img 組件，顯示商品圖片 */}
                 <Card.Img
                   variant="top"
                   src={product.image}
                   alt={product.name}
-                  className="h-100 object-fit-cover"
+                  className="h-100 object-fit-cover"  // 確保圖片填滿容器且不變形
                 />
               </div>
+              {/* Bootstrap Card.Body 組件，包含卡片主要內容 */}
               <Card.Body className="d-flex flex-column">
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text className="text-muted mb-2">
                   {product.category}
                 </Card.Text>
+                {/* 價格和添加按鈕區域 */}
                 <div className="mt-auto d-flex justify-content-between align-items-center">
                   <span className="h5 mb-0 text-primary">${product.price}</span>
+                  {/* Bootstrap Button 組件，創建一個添加到購物車的按鈕 */}
                   <Button
                     variant="outline-primary"
                     onClick={() => addToCart(product)}

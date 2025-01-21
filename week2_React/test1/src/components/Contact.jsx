@@ -1,53 +1,63 @@
 import { useState } from 'react';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 
+// 定義 Contact 組件
 export default function Contact() {
+  // 使用 useState 鉤子來管理表單數據
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: '',
   });
 
+  // 處理表單提交的函數
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // 這裡可以加入表單提交邏輯
-    console.log('Form submitted:', formData);
-    alert('感謝您的訊息！我們會盡快回覆。');
-    setFormData({ name: '', email: '', message: '' });
+    e.preventDefault(); // 阻止表單的默認提交行為
+    // 這裡可以加入表單提交邏輯，例如發送 API 請求
+    console.log('Form submitted:', formData); // 在控制台輸出表單數據
+    alert('感謝您的訊息！我們會盡快回覆。'); // 顯示提交成功的提示
+    setFormData({ name: '', email: '', message: '' }); // 重置表單數據
   };
 
+  // 處理表單輸入變化的函數
   const handleChange = (e) => {
+    // 更新表單數據，使用計算屬性名來動態設置對應的字段
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
+  // 渲染組件
   return (
     <div className="py-5">
       <Container>
+        {/* 頁面標題 */}
         <div className="text-center mb-5">
           <h1 className="display-4 mb-3">聯絡我們</h1>
           <h5 className="text-muted">我們很樂意聆聽您的意見</h5>
         </div>
 
         <Row className="g-4">
-          {/* Contact Information */}
+          {/* 聯絡資訊卡片 */}
           <Col md={4}>
             <Card className="h-100 bg-primary text-white">
               <Card.Body className="p-4">
                 <h4 className="mb-4">聯絡資訊</h4>
                 
+                {/* 地址資訊 */}
                 <div className="d-flex align-items-center mb-3">
                   <i className="fas fa-map-marker-alt fa-fw me-3"></i>
                   <div>台北市信義區信義路五段7號</div>
                 </div>
                 
+                {/* 電話資訊 */}
                 <div className="d-flex align-items-center mb-3">
                   <i className="fas fa-phone fa-fw me-3"></i>
                   <div>02-2345-6789</div>
                 </div>
                 
+                {/* 電子郵件資訊 */}
                 <div className="d-flex align-items-center mb-3">
                   <i className="fas fa-envelope fa-fw me-3"></i>
                   <div>service@example.com</div>
@@ -55,11 +65,13 @@ export default function Contact() {
 
                 <hr className="my-4" />
 
+                {/* 營業時間資訊 */}
                 <div>
                   <h5 className="mb-3">營業時間</h5>
                   <p className="mb-0">週一至週五 9:00-18:00</p>
                 </div>
 
+                {/* 社群媒體連結 */}
                 <div className="mt-4">
                   <h5 className="mb-3">社群媒體</h5>
                   <div className="d-flex gap-3">
@@ -78,13 +90,14 @@ export default function Contact() {
             </Card>
           </Col>
 
-          {/* Contact Form */}
+          {/* 聯絡表單 */}
           <Col md={8}>
             <Card className="h-100">
               <Card.Body className="p-4">
                 <h4 className="mb-4">傳送訊息</h4>
                 <Form onSubmit={handleSubmit}>
                   <Row>
+                    {/* 姓名輸入欄位 */}
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>姓名</Form.Label>
@@ -97,6 +110,7 @@ export default function Contact() {
                         />
                       </Form.Group>
                     </Col>
+                    {/* 電子郵件輸入欄位 */}
                     <Col md={6}>
                       <Form.Group className="mb-3">
                         <Form.Label>電子郵件</Form.Label>
@@ -110,6 +124,7 @@ export default function Contact() {
                       </Form.Group>
                     </Col>
                   </Row>
+                  {/* 訊息內容輸入欄位 */}
                   <Form.Group className="mb-3">
                     <Form.Label>訊息內容</Form.Label>
                     <Form.Control
@@ -121,6 +136,7 @@ export default function Contact() {
                       required
                     />
                   </Form.Group>
+                  {/* 提交按鈕 */}
                   <Button type="submit" variant="primary" size="lg" className="w-100">
                     送出訊息
                   </Button>
@@ -130,7 +146,7 @@ export default function Contact() {
           </Col>
         </Row>
 
-        {/* Map */}
+        {/* Google 地圖嵌入 */}
         <div className="mt-5">
           <Card>
             <Card.Body className="p-0">

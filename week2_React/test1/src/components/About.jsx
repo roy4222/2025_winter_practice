@@ -1,6 +1,9 @@
+// 引入必要的 React Bootstrap 組件
 import { Container, Row, Col, Card } from 'react-bootstrap';
 
+// 定義 About 組件
 export default function About() {
+  // 定義團隊成員資料
   const team = [
     {
       name: '王小明',
@@ -23,12 +26,20 @@ export default function About() {
   ];
 
   return (
+    // py-5: 上下內邊距為5個單位
     <div className="py-5">
-      {/* Company Introduction */}
+      {/* 公司介紹部分 */}
+      {/* Container: Bootstrap 容器，提供一個響應式固定寬度容器 */}
+      {/* mb-5: 下外邊距為5個單位 */}
       <Container className="mb-5">
+        {/* text-center: 文字居中對齊 */}
         <div className="text-center mb-5">
+          {/* display-4: 大型標題樣式 */}
           <h1 className="display-4 mb-3">關於我們</h1>
+          {/* text-muted: 淡化的文字顏色 */}
           <h5 className="text-muted mb-4">致力於提供最優質的購物體驗</h5>
+          {/* lead: 引導段落，字體稍大 */}
+          {/* mx-auto: 水平居中 */}
           <p className="lead text-muted mx-auto" style={{ maxWidth: '800px' }}>
             我們成立於2020年，是一家專注於提供優質商品的電商平台。
             我們相信，每一次的購物體驗都應該是愉快且值得的。
@@ -38,15 +49,26 @@ export default function About() {
         </div>
       </Container>
 
-      {/* Company Values */}
+      {/* 公司價值觀部分 */}
+      {/* bg-light: 淺色背景 */}
       <div className="bg-light py-5 mb-5">
         <Container>
           <h2 className="text-center mb-5">我們的價值觀</h2>
+          {/* Row: Bootstrap 網格系統的行 */}
           <Row>
+            {/* Col: Bootstrap 網格系統的列 */}
+            {/* md={4}: 在中等屏幕及以上時佔4列 */}
             <Col md={4} className="mb-4">
+              {/* Card: Bootstrap 卡片組件 */}
+              {/* border-0: 無邊框 */}
+              {/* h-100: 高度100% */}
+              {/* shadow-sm: 小陰影 */}
               <Card className="border-0 h-100 shadow-sm">
+                {/* Card.Body: 卡片主體 */}
                 <Card.Body className="text-center p-4">
                   <div className="mb-3">
+                    {/* fas fa-award: Font Awesome 圖標 */}
+                    {/* text-primary: 主題色文字 */}
                     <i className="fas fa-award fa-3x text-primary"></i>
                   </div>
                   <h4 className="mb-3">品質至上</h4>
@@ -56,6 +78,7 @@ export default function About() {
                 </Card.Body>
               </Card>
             </Col>
+            {/* 顧客第一 */}
             <Col md={4} className="mb-4">
               <Card className="border-0 h-100 shadow-sm">
                 <Card.Body className="text-center p-4">
@@ -69,6 +92,7 @@ export default function About() {
                 </Card.Body>
               </Card>
             </Col>
+            {/* 持續創新 */}
             <Col md={4} className="mb-4">
               <Card className="border-0 h-100 shadow-sm">
                 <Card.Body className="text-center p-4">
@@ -86,15 +110,17 @@ export default function About() {
         </Container>
       </div>
 
-      {/* Team Members */}
+      {/* 團隊成員部分 */}
       <Container>
         <h2 className="text-center mb-5">我們的團隊</h2>
         <Row>
+          {/* 使用 map 函數動態渲染團隊成員卡片 */}
           {team.map((member) => (
             <Col key={member.name} md={4} className="mb-4">
               <Card className="border-0 text-center h-100 shadow-sm">
                 <Card.Body className="p-4">
                   <div className="mb-4">
+                    {/* rounded-circle: 圓形圖片 */}
                     <img
                       src={member.avatar}
                       alt={member.name}
