@@ -1,371 +1,73 @@
-/* 自定義樣式 */
-.card {
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-/* 確保 footer 永遠在底部 */
-.min-vh-100 {
-  min-height: 100vh;
-}
-
-h1{
-    color: green;
-}
-
+/* 重置所有元素的默認樣式 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* 設置基本的文檔樣式 */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: #333;
 }
 
+/* 時鐘應用的主容器樣式 */
 .app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: flex;                /* 使用 flex 布局 */
+  justify-content: center;      /* 水平居中對齊 */
+  align-items: center;          /* 垂直居中對齊 */
+  min-height: 100vh;            /* 最小高度為視窗高度 */
+  background: linear-gradient(45deg, #1a1a1a, #2c3e50);  /* 背景漸變 */
 }
 
-/* Header 樣式 */
-.header {
-  background-color: #2c3e50;
-  padding: 1rem 2rem;
-  color: white;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+/* 時鐘容器的樣式 */
+.clock-container {
+  padding: 2rem;                /* 內邊距 */
+  border-radius: 20px;          /* 圓角 */
+  background: rgba(255, 255, 255, 0.1);  /* 半透明背景 */
+  backdrop-filter: blur(10px);  /* 背景模糊效果 */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);  /* 陰影效果 */
 }
 
-.header h1 {
-  color: white;
-  margin-bottom: 1rem;
+/* 時鐘本體的樣式 */
+.clock {
+  text-align: center;           /* 文字居中 */
+  color: #ffffff;               /* 文字顏色 */
+  font-family: 'Segoe UI', Arial, sans-serif;  /* 字體 */
 }
 
-.header nav ul {
-  list-style: none;
-  display: flex;
-  gap: 2rem;
+/* 時間顯示的樣式 */
+.time {
+  font-size: 5rem;              /* 字體大小 */
+  font-weight: 300;             /* 字體粗細 */
+  letter-spacing: 2px;          /* 字母間距 */
+  margin-bottom: 1rem;          /* 下邊距 */
 }
 
-.header nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
+/* 冒號的樣式和動畫 */
+.colon {
+  animation: blink 1s infinite; /* 應用閃爍動畫 */
+  opacity: 1;                   /* 初始不透明度 */
+  margin: 0 0.2rem;             /* 左右邊距 */
 }
 
-.header nav a:hover {
-  color: #3498db;
-}
-
-/* Main 內容區域樣式 */
-.main {
-  flex: 1;
-  padding: 2rem;
-}
-
-.section {
-  max-width: 1200px;
-  margin: 0 auto 4rem;
-  padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.section h2 {
-  color: #2c3e50;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #3498db;
-}
-
-/* 計數器樣式 */
-.counter {
-  margin: 2rem 0;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  text-align: center;
-}
-
-.counter button {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.counter button:hover {
-  background: #2980b9;
-}
-
-/* About 區塊樣式 */
-.about-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.about-item {
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  transition: transform 0.3s;
-}
-
-.about-item:hover {
-  transform: translateY(-5px);
-}
-
-/* Services 區塊樣式 */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
-}
-
-.service-card {
-  padding: 2rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  text-align: center;
-  transition: transform 0.3s;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-}
-
-/* Contact 表單樣式 */
-.contact-form {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #2c3e50;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 0.8rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.form-group textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-.contact-form button {
-  background: #3498db;
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
-}
-
-.contact-form button:hover {
-  background: #2980b9;
-}
-
-/* Footer 樣式 */
-.footer {
-  background: #2c3e50;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-}
-
-.social-links {
-  margin-top: 1rem;
-}
-
-.social-links a {
-  color: white;
-  text-decoration: none;
-  margin: 0 1rem;
-  transition: color 0.3s;
-}
-
-.social-links a:hover {
-  color: #3498db;
-}
-
-/* 響應式設計 */
-@media (max-width: 768px) {
-  .header nav ul {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .section {
-    padding: 1rem;
-  }
-
-  .services-grid,
-  .about-grid {
-    grid-template-columns: 1fr;
+/* 定義冒號閃爍動畫 */
+@keyframes blink {
+  50% {
+    opacity: 0;                 /* 動畫中間點設置不透明度為 0 */
   }
 }
 
-/* 全局樣式 */
-:root {
-  --primary-color: #0d6efd;
-  --secondary-color: #6c757d;
-  --dark-color: #212529;
-  --light-color: #f8f9fa;
+/* 日期顯示的樣式 */
+.date {
+  font-size: 1.5rem;            /* 字體大小 */
+  color: #ecf0f1;               /* 文字顏色 */
+  font-weight: 300;             /* 字體粗細 */
 }
 
-body {
-  font-family: 'Segoe UI', 'Microsoft JhengHei', sans-serif;
-}
-
-/* Navbar 樣式 */
-.navbar-custom {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(10px);
-}
-
-.navbar-custom .nav-link {
-  font-weight: 500;
-  position: relative;
-}
-
-.navbar-custom .nav-link::after {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 0;
-  left: 50%;
-  background-color: var(--primary-color);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.navbar-custom .nav-link:hover::after {
-  width: 100%;
-}
-
-/* Hero 區塊樣式 */
-.hero-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 20px;
-  padding: 5rem 1rem;
-}
-
-/* 卡片樣式 */
-.card {
-  transition: all 0.3s ease;
-  border: none;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-.service-card {
-  position: relative;
-  overflow: hidden;
-}
-
-.service-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0) 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.service-card:hover::before {
-  opacity: 1;
-}
-
-/* 表單樣式 */
-.form-control {
-  border: 1px solid #dee2e6;
-  transition: all 0.3s ease;
-}
-
-.form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
-}
-
-/* 按鈕樣式 */
-.btn {
-  padding: 0.5rem 1.5rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-  border: none;
-}
-
-.btn-primary:hover {
-  background: linear-gradient(135deg, #0b5ed7 0%, #0a58ca 100%);
-  transform: translateY(-2px);
-}
-
-.btn-outline-primary {
-  border-width: 2px;
-}
-
-/* 圖標樣式 */
-.icon-wrapper {
-  width: 80px;
-  height: 80px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(13, 110, 253, 0.1) 0%, rgba(13, 110, 253, 0.05) 100%);
-  border-radius: 50%;
-}
-
-/* Footer 樣式 */
-.footer {
-  background: linear-gradient(135deg, #212529 0%, #343a40 100%);
-}
-
-.footer a {
-  transition: all 0.3s ease;
-}
-
-.footer a:hover {
-  color: var(--primary-color) !important;
-  transform: translateY(-3px);
+/* 時、分、秒的共同樣式 */
+.hours, .minutes, .seconds {
+  display: inline-block;        /* 行內塊級元素 */
+  min-width: 2ch;               /* 最小寬度為兩個字符 */
 }
