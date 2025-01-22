@@ -1,5 +1,5 @@
 {
-  "name": "my-react-app",
+  "name": "react-clock",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,7 +12,6 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
-    "react-bootstrap": "^2.10.7",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
