@@ -1,73 +1,150 @@
-/* 重置所有元素的默認樣式 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* 設置基本的文檔樣式 */
+/* 基礎樣式設定 */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  line-height: 1.6;
-  color: #333;
+  background: #000; /* 設置背景為黑色 */
+  font-family: 'Segoe UI', 'Microsoft JhengHei UI', sans-serif; /* 設置字體，包括備用字體 */
 }
 
-/* 時鐘應用的主容器樣式 */
+/* 主應用容器樣式 */
 .app {
-  display: flex;                /* 使用 flex 布局 */
-  justify-content: center;      /* 水平居中對齊 */
-  align-items: center;          /* 垂直居中對齊 */
-  min-height: 100vh;            /* 最小高度為視窗高度 */
-  background: linear-gradient(45deg, #1a1a1a, #2c3e50);  /* 背景漸變 */
+  min-height: 100vh; /* 確保應用至少佔滿整個視窗高度 */
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%); /* 設置漸層背景 */
 }
 
-/* 時鐘容器的樣式 */
+/* 儀表板項目樣式 */
+.dashboard-item {
+  background: rgba(255, 255, 255, 0.05); /* 半透明白色背景 */
+  backdrop-filter: blur(10px); /* 背景模糊效果，增加深度感 */
+  border-radius: 24px; /* 圓角設置，使外觀更柔和 */
+  padding: 2rem; /* 內部間距 */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* 細微邊框，增加立體感 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* 平滑過渡效果 */
+}
+
+/* 滑鼠懸停時的儀表板項目效果 */
+.dashboard-item:hover {
+  transform: translateY(-5px); /* 向上浮動效果 */
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); /* 增強陰影效果，提高層次感 */
+}
+
+/* 時鐘容器樣式 */
 .clock-container {
-  padding: 2rem;                /* 內邊距 */
-  border-radius: 20px;          /* 圓角 */
-  background: rgba(255, 255, 255, 0.1);  /* 半透明背景 */
-  backdrop-filter: blur(10px);  /* 背景模糊效果 */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);  /* 陰影效果 */
+  text-align: center; /* 文字置中 */
+  color: #fff; /* 文字顏色設為白色 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px; /* 設置最小高度 */
 }
 
-/* 時鐘本體的樣式 */
+/* 日間模式時鐘背景 */
+.clock-container.day-mode {
+  background: linear-gradient(135deg, #00c6fb 0%, #005bea 100%); /* 藍色系漸層 */
+  border-radius: 20px;
+}
+
+/* 夜間模式時鐘背景 */
+.clock-container.night-mode {
+  background: linear-gradient(135deg, #141e30 0%, #243b55 100%); /* 深藍色系漸層 */
+  border-radius: 20px;
+}
+
+/* 時鐘內部佈局 */
 .clock {
-  text-align: center;           /* 文字居中 */
-  color: #ffffff;               /* 文字顏色 */
-  font-family: 'Segoe UI', Arial, sans-serif;  /* 字體 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; /* 元素間距 */
 }
 
-/* 時間顯示的樣式 */
+/* 時間顯示樣式 */
 .time {
-  font-size: 5rem;              /* 字體大小 */
-  font-weight: 300;             /* 字體粗細 */
-  letter-spacing: 2px;          /* 字母間距 */
-  margin-bottom: 1rem;          /* 下邊距 */
+  font-size: 4rem; /* 大字體尺寸 */
+  font-weight: 300; /* 細字體 */
+  letter-spacing: 3px; /* 字母間距 */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* 文字陰影 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 冒號的樣式和動畫 */
+/* 時間單位（時、分、秒）樣式 */
+.time-unit {
+  min-width: 70px; /* 確保每個單位有固定寬度 */
+  text-align: center;
+}
+
+/* 冒號樣式及動畫 */
 .colon {
-  animation: blink 1s infinite; /* 應用閃爍動畫 */
-  opacity: 1;                   /* 初始不透明度 */
-  margin: 0 0.2rem;             /* 左右邊距 */
+  animation: blink 1s infinite; /* 閃爍動畫 */
+  opacity: 1;
+  margin: 0 0.2rem;
+  display: inline-block;
+  width: 20px;
+  text-align: center;
 }
 
-/* 定義冒號閃爍動畫 */
-@keyframes blink {
-  50% {
-    opacity: 0;                 /* 動畫中間點設置不透明度為 0 */
+/* 日期樣式 */
+.date {
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* 模式指示器樣式 */
+.mode-indicator {
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+
+/* 計時器容器樣式 */
+.timer-container {
+  text-align: center;
+  color: #fff;
+}
+
+/* 計時器顯示樣式 */
+.timer-display {
+  font-size: 4rem;
+  font-weight: 300;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* 世界時鐘容器樣式 */
+.world-clock-container {
+  color: #fff;
+}
+
+/* 響應式設計：適應小螢幕設備 */
+@media (max-width: 768px) {
+  .time {
+    font-size: 3rem; /* 縮小時間字體 */
+  }
+  
+  .timer-display {
+    font-size: 3rem; /* 縮小計時器顯示字體 */
   }
 }
 
-/* 日期顯示的樣式 */
-.date {
-  font-size: 1.5rem;            /* 字體大小 */
-  color: #ecf0f1;               /* 文字顏色 */
-  font-weight: 300;             /* 字體粗細 */
+/* 動畫效果定義 */
+@keyframes blink {
+  50% {
+    opacity: 0.3; /* 定義閃爍效果 */
+  }
 }
 
-/* 時、分、秒的共同樣式 */
-.hours, .minutes, .seconds {
-  display: inline-block;        /* 行內塊級元素 */
-  min-width: 2ch;               /* 最小寬度為兩個字符 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px); /* 從下方20px處開始 */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0); /* 移動到原位置 */
+  }
+}
+
+/* 應用淡入動畫到儀表板項目 */
+.dashboard-item {
+  animation: fadeIn 0.5s ease-out forwards; /* 使用淡入動畫 */
 }
