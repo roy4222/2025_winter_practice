@@ -1,82 +1,46 @@
-// 引入 React 和 useState hook
-import React, { useState } from 'react';
+// 引入必要的 React 庫和組件
+import React, { useState } from "react";
+import { Card, Button, Modal } from 'react-bootstrap';
+// 引入 Bootstrap 的 CSS 文件
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-  // 初始化任務列表狀態
-  const [tasks, setTasks] = useState([
-    { id: 1, name: '洗衣服', completed: false },
-    { id: 2, name: '寫程式', completed: false },
-    { id: 3, name: '讀書', completed: false },
-  ]);
+  // 使用 useState 鉤子來管理模態框的開關狀態
+  const [isModalOpen, setModalOpen] = useState(false);
 
-  // 初始化新任務名稱狀態
-  const [newTaskName, setNewTaskName] = useState('');
-
-  // 添加新任務的函數
-  const addTask = () => {
-    if (newTaskName.trim() !== '') {
-      // 創建新任務並添加到任務列表
-      setTasks([...tasks, { id: Date.now(), name: newTaskName, completed: false }]);
-      // 清空輸入框
-      setNewTaskName('');
-    }
-  };
-
-  // 切換任務完成狀態的函數
-  const toggleTask = (id) => {
-    // 更新指定任務的完成狀態
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    ));
-  };
-
-  // 刪除任務的函數
-  const deleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
+  // 定義開啟和關閉模態框的函數
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   return (
-    <div>
-      {/* 輸入新任務的文本框 */}
-      <input
-        type="text"
-        value={newTaskName}
-        onChange={(e) => setNewTaskName(e.target.value)}
-        placeholder="輸入新任務"
-      />
-      {/* 添加新任務的按鈕 */}
-      <button onClick={addTask}>添加任務</button>
-      
-      {/* 任務列表 */}
-      <ul>
-        {/* 使用 map 函數遍歷所有任務並渲染 */}
-        {tasks.map((task) => (
-          <li key={task.id} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-            {/* 任務名稱，點擊可切換完成狀態 */}
-            <span
-              onClick={() => toggleTask(task.id)}
-              style={{
-                cursor: 'pointer',
-                textDecoration: task.completed ? 'line-through' : 'none', // 完成的任務會有刪除線
-                marginRight: '10px'
-              }}
-            >
-              {task.name}
-            </span>
-            
-            {/* 完成狀態指示器 */}
-            <span>{task.completed ? '✅' : '❌'}</span>
-            
-            {/* 刪除按鈕 */}
-            <button onClick={() => deleteTask(task.id)} style={{ marginLeft: '10px' }}>
-              刪除
-            </button>
-          </li>
-        ))}
-      </ul>
+    <div className="container mt-5">
+      <h1 className="text-center mb-4">React Children 範例</h1>
+
+      {/* 使用 Bootstrap 的 Card 組件 */}
+      <Card className="shadow-sm">
+        <Card.Body>
+          <Card.Title>卡片標題</Card.Title>
+          <Card.Text>這是一個可重複使用的卡片組件。</Card.Text>
+          {/* 按鈕點擊時觸發 openModal 函數 */}
+          <Button variant="primary" onClick={openModal}>打開模態框</Button>
+        </Card.Body>
+      </Card>
+
+      {/* 使用 Bootstrap 的 Modal 組件 */}
+      <Modal show={isModalOpen} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>模態框標題</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>這是模態框內的內容。</p>
+        </Modal.Body>
+        <Modal.Footer>
+          {/* 關閉按鈕點擊時觸發 closeModal 函數 */}
+          <Button variant="secondary" onClick={closeModal}>關閉</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
 
-// 導出 App 組件
 export default App;
