@@ -1,0 +1,192 @@
+/* 輪播容器的樣式 */
+.carousel-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* 主要輪播區域的樣式 */
+.carousel-main {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 圖片容器的樣式 */
+.image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+/* 輪播圖片的樣式 */
+.carousel-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 當前活動圖片的樣式 */
+.carousel-image.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 導航按鈕的基本樣式 */
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  z-index: 2;
+  font-size: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+}
+
+/* 導航按鈕懸停效果 */
+.nav-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* 導航按鈕點擊效果 */
+.nav-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* 上一張按鈕位置 */
+.nav-button.prev {
+  left: 20px;
+}
+
+/* 下一張按鈕位置 */
+.nav-button.next {
+  right: 20px;
+}
+
+/* 輪播控制區域樣式 */
+.carousel-controls {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 播放/暫停按鈕樣式 */
+.play-button {
+  background: linear-gradient(45deg, #4CAF50, #45a049);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* 播放/暫停按鈕懸停效果 */
+.play-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+}
+
+/* 播放/暫停按鈕點擊效果 */
+.play-button:active {
+  transform: translateY(1px);
+}
+
+/* 正在播放時的按鈕樣式 */
+.play-button.playing {
+  background: linear-gradient(45deg, #f44336, #da190b);
+  box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+}
+
+/* 正在播放時的按鈕懸停效果 */
+.play-button.playing:hover {
+  box-shadow: 0 6px 20px rgba(244, 67, 54, 0.4);
+}
+
+/* 縮略圖容器樣式 */
+.thumbnail-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  margin-top: 20px;
+}
+
+/* 單個縮略圖樣式 */
+.thumbnail {
+  position: relative;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 縮略圖懸停效果 */
+.thumbnail:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* 當前活動縮略圖樣式 */
+.thumbnail.active {
+  border: 3px solid #4CAF50;
+  transform: scale(1.05);
+}
+
+/* 縮略圖內的圖片樣式 */
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* 縮略圖內的圖片懸停效果 */
+.thumbnail:hover img {
+  transform: scale(1.1);
+}
+
+/* 定義淡入縮放動畫 */
+@keyframes fadeScale {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

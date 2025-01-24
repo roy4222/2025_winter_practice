@@ -1,0 +1,6 @@
+請在此目錄下放置5張圖片，並命名為:
+image1.jpg
+image2.jpg
+image3.jpg
+image4.jpg
+image5.jpg

@@ -1,5 +1,5 @@
 // 引入必要的 React 庫和組件
-import React, { useState } from "react";
+import { useState } from "react";
 import { Card, Button, Modal } from 'react-bootstrap';
 // 引入 Bootstrap 的 CSS 文件
 import 'bootstrap/dist/css/bootstrap.min.css';
