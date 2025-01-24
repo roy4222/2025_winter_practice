@@ -1,61 +1,42 @@
+// 從 React 中導入 useState hook，用於管理組件的狀態
+import { useState } from 'react'
+// 從 styled-components 導入 ThemeProvider，用於提供主題上下文
 import { ThemeProvider } from 'styled-components'
+// 從本地文件導入淺色和深色主題設置
 import { lightTheme, darkTheme } from './styles/theme'
+// 導入全局樣式組件
 import GlobalStyles from './styles/GlobalStyles'
-import { useTheme } from './hooks/useTheme'
-import { Card, CardTitle, CardContent, CardActions } from './components/Card'
-import StyledButton from './components/StyledButton'
+// 導入 App 組件的樣式
 import './App.css'
 
+// 定義 App 組件
 function App() {
-  const { theme, toggleTheme, resetToSystemPreference } = useTheme()
-  const currentTheme = theme === 'dark' ? darkTheme : lightTheme
+  // 使用 useState 創建一個狀態變量 isDarkMode 和對應的更新函數 setIsDarkMode
+  // 初始值為 false，表示默認使用淺色主題
+  const [isDarkMode, setIsDarkMode] = useState(false)
 
+  // 根據 isDarkMode 的值選擇使用深色或淺色主題
+  const theme = isDarkMode ? darkTheme : lightTheme
+
+  // 返回 JSX
   return (
-    <ThemeProvider theme={currentTheme}>
+    // 使用 ThemeProvider 包裹整個應用，提供主題上下文
+    <ThemeProvider theme={theme}>
+      {/* 應用全局樣式 */}
       <GlobalStyles />
+      {/* App 的主要容器 */}
       <div className="App">
+        {/* 切換主題的按鈕 */}
+        <button onClick={() => setIsDarkMode(!isDarkMode)}>
+          {/* 根據當前主題模式顯示相應的文字 */}
+          切換{isDarkMode ? '淺色' : '深色'}主題
+        </button>
+        {/* 標題 */}
         <h1>Bable雛形</h1>
-        
-        {/* 主題切換按鈕 */}
-        <div style={{ marginBottom: '2rem' }}>
-          <StyledButton onClick={toggleTheme} style={{ marginRight: '1rem' }}>
-            切換為{theme === 'light' ? '深色' : '淺色'}主題
-          </StyledButton>
-          <StyledButton variant="secondary" onClick={resetToSystemPreference}>
-            重置為系統預設
-          </StyledButton>
-        </div>
-
-        {/* 展示不同變體的卡片 */}
-        <div style={{ display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
-          <Card>
-            <CardTitle>基本卡片</CardTitle>
-            <CardContent>
-              這是一個基本的卡片組件，展示了主題系統的基本用法。
-            </CardContent>
-          </Card>
-
-          <Card variant="elevated" animated>
-            <CardTitle>進階卡片</CardTitle>
-            <CardContent>
-              這個卡片使用了陰影效果和動畫效果。
-            </CardContent>
-            <CardActions>
-              <StyledButton variant="secondary">取消</StyledButton>
-              <StyledButton>確認</StyledButton>
-            </CardActions>
-          </Card>
-
-          <Card variant="outlined">
-            <CardTitle>邊框卡片</CardTitle>
-            <CardContent>
-              這是一個使用邊框樣式的卡片，沒有陰影效果。
-            </CardContent>
-          </Card>
-        </div>
       </div>
     </ThemeProvider>
   )
 }
 
+// 導出 App 組件作為默認導出
 export default App
