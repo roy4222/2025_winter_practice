@@ -6,6 +6,8 @@ import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme } from './styles/theme'
 // 導入全局樣式組件
 import GlobalStyles from './styles/GlobalStyles'
+// 導入井字遊戲組件
+import TicTacToe from './components/TicTacToe'
 // 導入 App 組件的樣式
 import './App.css'
 
@@ -33,6 +35,8 @@ function App() {
         </button>
         {/* 標題 */}
         <h1>Bable雛形</h1>
+        {/* 顯示遊戲板 */}
+        <TicTacToe />
       </div>
     </ThemeProvider>
   )
