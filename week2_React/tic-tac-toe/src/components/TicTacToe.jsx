@@ -189,8 +189,8 @@ function TicTacToe() {
     // 使用 useState 來管理當前玩家、玩家步驟、遊戲模式和主題
     const [currentPlayer, setCurrentPlayer] = useState(Player[0]);
     const [playerStepsMap, setPlayerStepsMap] = useState(defaultUserSteps);
-    const [isSinglePlay, setIsSinglePlay] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isSinglePlay, setIsSinglePlay] = useState(true);
+    const [isDarkMode, setIsDarkMode] = useState(true);
     
     // 管理遊戲結果的狀態
     const [judgmentInfo, setJudgmentInfo] = useState({

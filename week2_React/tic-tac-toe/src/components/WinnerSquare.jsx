@@ -30,6 +30,7 @@ const StyledWinnerSquare = styled.div`
   font-weight: bold;
   // 設置文字大小
   font-size: 1.2em;
+  border: none !important;
 `;
 
 // 獲勝格子組件
