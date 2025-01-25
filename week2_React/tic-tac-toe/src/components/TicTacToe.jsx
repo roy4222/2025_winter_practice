@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { pinkPurpleTheme, pinkPurpleDarkTheme } from '../styles/theme';
 import Squares from './Squares';
+import Information from './Information';
 
 const TicTacToeGame = styled.div`
   /* 全局樣式設置 */
@@ -276,30 +277,29 @@ function TicTacToe() {
                 <button className="theme-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
                     切換{isDarkMode ? '淺色' : '深色'}主題
                 </button>
-                {/* 遊戲狀態信息 */}
-                <div className="information">
-                    {winnerId ? (
 
-                      
-                        `獲勝者: ${winnerId === "1" ? "O" : "X"}`
-                    ) : isGameEndedInTie ? (
-                        "遊戲平局!"
-                    ) : (
-                        `當前玩家: ${currentPlayer === "1" ? "O" : "X"}`
-                    )}
-                </div>
+                {/* 遊戲狀態信息 */}
+                <Information
+                    winnerId={winnerId}
+                    isGameEndedInTie={isGameEndedInTie}
+                    currentPlayer={currentPlayer}
+                    isDarkMode={isDarkMode}
+                />
+
                 {/* 棋盤區域 */}
                 <Squares 
                     squares={squares}
                     onSquareClick={handleSquareClick}
                     isDarkMode={isDarkMode}
-                    winningSquares={winnerSteps}  
+                    winningSquares={winnerSteps}
                 />
 
                 {/* 操作按鈕區域 */}
                 <div className="actions">
-                    <button onClick={() => restartGame()}>重新開始按鈕</button>
-                    <button onClick={() => setIsSinglePlay(!isSinglePlay)}>切換按鈕</button>
+                    <button onClick={() => restartGame()}>重新開始遊戲</button>
+                    <button onClick={() => setIsSinglePlay(!isSinglePlay)}>
+                        切換到{isSinglePlay ? '雙人' : '單人'}模式
+                    </button>
                 </div>
             </div>
         </TicTacToeGame>
