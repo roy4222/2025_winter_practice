@@ -58,9 +58,11 @@ const InfoContainer = styled.div`
 
   // 平局文字樣式
   .tie {
-    background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+    background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffecd2);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   }
 `;
 

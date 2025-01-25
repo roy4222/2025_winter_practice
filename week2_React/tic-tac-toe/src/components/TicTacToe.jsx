@@ -5,6 +5,7 @@ import Squares from './Squares';
 import Information from './Information';
 import RestartButton from './RestartButton';
 import SwitchMode from './SwitchMode';
+import getAiMove from './AiMode';
 
 const TicTacToeGame = styled.div`
   /* 全局樣式設置 */
@@ -252,7 +253,46 @@ function TicTacToe() {
         }
 
         // 切換到下一個玩家
-        setCurrentPlayer(currentPlayer === Player[0] ? Player[1] : Player[0]);
+        const nextPlayer = currentPlayer === Player[0] ? Player[1] : Player[0];
+        setCurrentPlayer(nextPlayer);
+
+        // 如果是單人模式且遊戲未結束，則執行AI移動
+        if (isSinglePlay && !result && !isGameEndedInTie && nextPlayer === Player[1]) {
+            // 生成當前棋盤狀態
+            const currentSquares = Array(9).fill(null).map((_, i) => {
+                if (newPlayerStepsMap["1"].includes(i)) return "1";
+                if (newPlayerStepsMap["-1"].includes(i)) return "-1";
+                return "";
+            });
+
+            // 獲取AI的移動
+            setTimeout(() => {
+                const aiMove = getAiMove(
+                    currentSquares,
+                    newPlayerStepsMap["1"],
+                    newPlayerStepsMap["-1"]
+                );
+
+                if (aiMove !== null) {
+                    // 更新AI的步驟
+                    const aiPlayerStepsMap = {
+                        ...newPlayerStepsMap,
+                        [Player[1]]: [...newPlayerStepsMap[Player[1]], aiMove]
+                    };
+                    setPlayerStepsMap(aiPlayerStepsMap);
+
+                    // 檢查AI是否獲勝
+                    const aiResult = checkWinner(Player[1], aiPlayerStepsMap[Player[1]]);
+                    if (aiResult) {
+                        setJudgmentInfo(aiResult);
+                        return;
+                    }
+
+                    // 切換回玩家
+                    setCurrentPlayer(Player[0]);
+                }
+            }, 500); // 添加延遲使AI移動更自然
+        }
     };
 
     // 重新開始遊戲

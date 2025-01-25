@@ -78,7 +78,7 @@ const SwitchMode = ({ isSinglePlay, onModeChange, isDarkMode }) => {
         $isDarkMode={isDarkMode}
       />
       <SwitchLabel $isDarkMode={isDarkMode}>
-        {isSinglePlay ? '單人模式' : '雙人模式'}
+        {isSinglePlay ? 'Ai對戰模式' : '手動模式'}
       </SwitchLabel>
     </SwitchContainer>
   );
