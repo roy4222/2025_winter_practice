@@ -3,6 +3,7 @@ import { useState } from "react";
 import { pinkPurpleTheme, pinkPurpleDarkTheme } from '../styles/theme';
 import Squares from './Squares';
 import Information from './Information';
+import RestartButton from './RestartButton';
 
 const TicTacToeGame = styled.div`
   /* 全局樣式設置 */
@@ -296,14 +297,14 @@ function TicTacToe() {
 
                 {/* 操作按鈕區域 */}
                 <div className="actions">
-                    <button onClick={() => restartGame()}>重新開始遊戲</button>
+                    <RestartButton onRestart={restartGame} isDarkMode={isDarkMode} />
                     <button onClick={() => setIsSinglePlay(!isSinglePlay)}>
                         切換到{isSinglePlay ? '雙人' : '單人'}模式
                     </button>
                 </div>
             </div>
         </TicTacToeGame>
-    )
+    );
 }
 
 // 導出 TicTacToe 組件
