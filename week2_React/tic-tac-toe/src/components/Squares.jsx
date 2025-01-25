@@ -2,6 +2,7 @@
 import React from 'react';
 // 導入 styled-components 庫，用於創建樣式化組件
 import styled from 'styled-components';
+import WinnerSquare from './WinnerSquare';
 
 // 定義單個格子組件
 // 接收四個 props：index（格子索引）、value（格子值）、onClick（點擊事件處理函數）、isDarkMode（深色模式標誌）
@@ -24,26 +25,30 @@ const Square = ({ index, value, onClick, isDarkMode }) => {
 };
 
 // 定義棋盤組件
-// 接收三個 props：squares（棋盤狀態數組）、onSquareClick（格子點擊事件處理函數）、isDarkMode（深色模式標誌）
-const Squares = ({ squares, onSquareClick, isDarkMode }) => {
+// 接收props：squares（棋盤狀態數組）、onSquareClick（格子點擊事件處理函數）、isDarkMode（深色模式標誌）、winningSquares（獲勝格子數組）
+const Squares = ({ squares, onSquareClick, isDarkMode, winningSquares }) => {
   return (
     // 渲染一個包含所有格子的容器 div
     <div className="squares">
       {/* 使用 map 函數遍歷 squares 數組，為每個元素創建一個 Square 組件 */}
       {squares.map((value, index) => (
-        // 渲染 Square 組件
-        <Square
-          // 設置唯一的 key 屬性，幫助 React 識別每個組件
-          key={index}
-          // 傳遞當前格子的索引
-          index={index}
-          // 傳遞當前格子的值
-          value={value}
-          // 傳遞點擊事件處理函數
-          onClick={onSquareClick}
-          // 傳遞深色模式標誌
-          isDarkMode={isDarkMode}
-        />
+        // 根據是否為獲勝格子來決定渲染WinnerSquare還是普通Square
+        winningSquares?.includes(index) ? (
+          <WinnerSquare
+            key={index}
+            index={index}
+            value={value}
+            onClick={onSquareClick}
+          />
+        ) : (
+          <Square
+            key={index}
+            index={index}
+            value={value}
+            onClick={onSquareClick}
+            isDarkMode={isDarkMode}
+          />
+        )
       ))}
     </div>
   );

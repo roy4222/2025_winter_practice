@@ -169,63 +169,50 @@ const TicTacToeGame = styled.div`
   }
 `;
 
+// 引入必要的 React Hook 和樣式元件
 function TicTacToe() {
-    // 定義玩家標識，1 代表 O，-1 代表 X
+    // 定義玩家標識
     const Player = ["1", "-1"];
     
     // 初始化玩家步驟的默認狀態
     const defaultUserSteps = {
-        "1": [],  // 玩家 O 的步驟
-        "-1": []  // 玩家 X 的步驟
+        "1": [],  // 玩家1的步驟
+        "-1": []  // 玩家2的步驟
     };
     
-    // 使用 useState 鉤子管理當前玩家，初始為第一個玩家（O）
+    // 使用 useState 來管理當前玩家、玩家步驟、遊戲模式和主題
     const [currentPlayer, setCurrentPlayer] = useState(Player[0]);
-    
-    // 使用 useState 鉤子管理玩家步驟，初始為默認狀態
     const [playerStepsMap, setPlayerStepsMap] = useState(defaultUserSteps);
-    
-    // 使用 useState 鉤子管理遊戲模式，false 為雙人模式，true 為單人模式
     const [isSinglePlay, setIsSinglePlay] = useState(false);
-    
-    // 使用 useState 鉤子管理深色模式狀態
     const [isDarkMode, setIsDarkMode] = useState(false);
     
-    // 使用 useState 鉤子管理遊戲判斷信息
+    // 管理遊戲結果的狀態
     const [judgmentInfo, setJudgmentInfo] = useState({
-        winnerId: 0,         // 獲勝者 ID，0 表示沒有獲勝者
-        winnerSteps: [],     // 獲勝路徑
+        winnerId: 0,         // 獲勝者ID
+        winnerSteps: [],     // 獲勝步驟
         lastStepToWin: {}    // 獲勝的最後一步
     });
     
-    // 解構 judgmentInfo 以方便使用
+    // 解構judgmentInfo以便使用
     const {
         winnerId,
         winnerSteps,
         lastStepToWin
     } = judgmentInfo;
     
-    // 判斷遊戲是否以平局結束
-    // 通過檢查所有玩家的步驟總數是否等於 9（棋盤格子數）來確定
+    // 判斷遊戲是否平局
     const isGameEndedInTie = Player.flatMap(player => playerStepsMap[player]).length === 9;
 
     // 定義所有可能的獲勝組合
     const winningPatterns = [
-        [0, 1, 2], // 第一橫排
-        [3, 4, 5], // 第二橫排
-        [6, 7, 8], // 第三橫排
-        [0, 3, 6], // 第一直排
-        [1, 4, 7], // 第二直排
-        [2, 5, 8], // 第三直排
-        [0, 4, 8], // 左上到右下斜排
-        [2, 4, 6]  // 右上到左下斜排
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // 橫向
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // 縱向
+        [0, 4, 8], [2, 4, 6]  // 對角線
     ];
 
-    // 檢查是否獲勝
+    // 檢查是否有獲勝者
     const checkWinner = (player, steps) => {
-        // 檢查每一種獲勝組合
         for (const pattern of winningPatterns) {
-            // 如果玩家的步驟包含了某個獲勝組合的所有位置
             if (pattern.every(position => steps.includes(position))) {
                 return {
                     winnerId: player,
@@ -239,7 +226,7 @@ function TicTacToe() {
 
     // 處理格子點擊事件
     const handleSquareClick = (index) => {
-        // 檢查遊戲是否已結束或該格子是否已被點擊
+        // 如果遊戲已結束或該格子已被佔用，則不進行操作
         if (winnerId || isGameEndedInTie || 
             Player.some(player => playerStepsMap[player].includes(index))) {
             return;
@@ -252,14 +239,14 @@ function TicTacToe() {
         };
         setPlayerStepsMap(newPlayerStepsMap);
 
-        // 檢查是否獲勝
+        // 檢查是否有獲勝者
         const result = checkWinner(currentPlayer, newPlayerStepsMap[currentPlayer]);
         if (result) {
             setJudgmentInfo(result);
             return;
         }
 
-        // 切換玩家
+        // 切換到下一個玩家
         setCurrentPlayer(currentPlayer === Player[0] ? Player[1] : Player[0]);
     };
 
@@ -274,23 +261,26 @@ function TicTacToe() {
         });
     };
 
-    // 將 playerStepsMap 轉換為 squares 陣列
+    // 生成棋盤狀態
     const squares = Array(9).fill(null).map((_, index) => {
-        // 創建一個長度為 9 的陣列，初始值均為 null
-        // 使用 map 遍歷每個索引位置
-        if (playerStepsMap["1"].includes(index)) return "1"; // 如果索引存在於玩家 1 的步驟中，返回 "1"
-        if (playerStepsMap["-1"].includes(index)) return "-1"; // 如果索引存在於玩家 -1 的步驟中，返回 "-1"
-        return ""; // 如果該索引位置未被任何玩家佔據，返回空字符串
+        if (playerStepsMap["1"].includes(index)) return "1"; 
+        if (playerStepsMap["-1"].includes(index)) return "-1"; 
+        return ""; 
     });
 
+    // 渲染遊戲界面
     return (
         <TicTacToeGame $isDarkMode={isDarkMode}>
             <div className="container">
+                {/* 主題切換按鈕 */}
                 <button className="theme-toggle" onClick={() => setIsDarkMode(!isDarkMode)}>
                     切換{isDarkMode ? '淺色' : '深色'}主題
                 </button>
+                {/* 遊戲狀態信息 */}
                 <div className="information">
                     {winnerId ? (
+
+                      
                         `獲勝者: ${winnerId === "1" ? "O" : "X"}`
                     ) : isGameEndedInTie ? (
                         "遊戲平局!"
@@ -298,11 +288,15 @@ function TicTacToe() {
                         `當前玩家: ${currentPlayer === "1" ? "O" : "X"}`
                     )}
                 </div>
+                {/* 棋盤區域 */}
                 <Squares 
                     squares={squares}
                     onSquareClick={handleSquareClick}
                     isDarkMode={isDarkMode}
+                    winningSquares={winnerSteps}  
                 />
+
+                {/* 操作按鈕區域 */}
                 <div className="actions">
                     <button onClick={() => restartGame()}>重新開始按鈕</button>
                     <button onClick={() => setIsSinglePlay(!isSinglePlay)}>切換按鈕</button>
@@ -312,4 +306,5 @@ function TicTacToe() {
     )
 }
 
+// 導出 TicTacToe 組件
 export default TicTacToe;
