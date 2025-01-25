@@ -2,7 +2,7 @@
 const getAiMove = (squares, playerSteps, aiSteps) => {
   // 獲取所有空位
   const emptySquares = squares
-    .map((square, index) => square === "" ? index : null)
+    .map((square, index) => square === "" ? index : null) //遍歷 squares（表示井字棋盤的陣列），找出空的格子並返回它們的索引。
     .filter(index => index !== null);
 
   // 如果沒有空位,返回null
@@ -18,8 +18,8 @@ const getAiMove = (squares, playerSteps, aiSteps) => {
   // 檢查是否有機會獲勝
   for (const pattern of winningPatterns) {
     const [a, b, c] = pattern;
-    const aiCount = pattern.filter(pos => aiSteps.includes(pos)).length;
-    const emptyCount = pattern.filter(pos => squares[pos] === "").length;
+    const aiCount = pattern.filter(pos => aiSteps.includes(pos)).length; //計算該組合中 AI 已經佔據的格子數（aiCount）。
+    const emptyCount = pattern.filter(pos => squares[pos] === "").length; //計算該組合中仍為空的格子數（emptyCount）。
     
     // 如果AI已經佔據了兩個位置且第三個位置為空,則選擇該位置獲勝
     if (aiCount === 2 && emptyCount === 1) {
@@ -31,7 +31,7 @@ const getAiMove = (squares, playerSteps, aiSteps) => {
   // 檢查是否需要阻擋對手獲勝
   for (const pattern of winningPatterns) {
     const [a, b, c] = pattern;
-    const playerCount = pattern.filter(pos => playerSteps.includes(pos)).length;
+    const playerCount = pattern.filter(pos => playerSteps.includes(pos)).length; //與 AI 獲勝邏輯類似，只是檢查玩家的步驟數（playerCount）。
     const emptyCount = pattern.filter(pos => squares[pos] === "").length;
     
     // 如果玩家已經佔據了兩個位置且第三個位置為空,則阻擋該位置
