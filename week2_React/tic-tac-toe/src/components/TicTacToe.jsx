@@ -4,6 +4,7 @@ import { pinkPurpleTheme, pinkPurpleDarkTheme } from '../styles/theme';
 import Squares from './Squares';
 import Information from './Information';
 import RestartButton from './RestartButton';
+import SwitchMode from './SwitchMode';
 
 const TicTacToeGame = styled.div`
   /* 全局樣式設置 */
@@ -85,6 +86,7 @@ const TicTacToeGame = styled.div`
     padding: 20px;
     /* 設置圓角 */
     border-radius: 8px;
+    border:none;
   }
 
   /* 棋盤樣式 */
@@ -138,6 +140,7 @@ const TicTacToeGame = styled.div`
     flex-direction: column;
     /* 設置按鈕之間的間隔 */
     gap: 15px;
+    border:none;
 
     /* 操作按鈕樣式 */
     button {
@@ -298,9 +301,11 @@ function TicTacToe() {
                 {/* 操作按鈕區域 */}
                 <div className="actions">
                     <RestartButton onRestart={restartGame} isDarkMode={isDarkMode} />
-                    <button onClick={() => setIsSinglePlay(!isSinglePlay)}>
-                        切換到{isSinglePlay ? '雙人' : '單人'}模式
-                    </button>
+                    <SwitchMode 
+                        isSinglePlay={isSinglePlay} 
+                        onModeChange={() => setIsSinglePlay(!isSinglePlay)}
+                        isDarkMode={isDarkMode}
+                    />
                 </div>
             </div>
         </TicTacToeGame>
