@@ -1,12 +1,10 @@
 // 導入必要的 React 鉤子和樣式庫
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 
 // 導入遊戲常數和主要地圖組件
-import direction, { SNAKE_INITIAL_SPEED, GRID_SIZE } from './constants';
+import { SNAKE_INITIAL_SPEED, GRID_SIZE, direction, INITIAL_SNAKE, ARROW_UP, ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT } from './constants';
 import MainMap from './MainMap';
-
-
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -255,18 +253,6 @@ const RestartButton = styled.button`
     }
 `;
 
-// 定義蛇的初始狀態
-const defaultSnake = {
-    head: { x: 2, y: 10 },
-    bodyList: [
-        { x: 1, y: 0 },
-        { x: 0, y: 0 },
-    ],
-    maxLength: 3,
-    direction: direction.ARROW_RIGHT,
-    Speed: SNAKE_INITIAL_SPEED,
-};
-
 // 定義一個創建食物的函數
 const CreateFood = () => {
     return {
@@ -276,15 +262,57 @@ const CreateFood = () => {
 }
 
 const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
-    const [snake, setSnake] = useState(defaultSnake);
-    const [food, setFood] = useState(CreateFood());
+    // 遊戲狀態
+    const [snake, setSnake] = useState(INITIAL_SNAKE);
+    const [currentDirection, setCurrentDirection] = useState(direction[ARROW_RIGHT]);
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [score, setScore] = useState(0);
 
+    // 處理方向改變
     const handleDirectionChange = (newDirection) => {
-        // 處理方向鍵按鈕點擊事件
-    }
+        // 防止反向移動
+        if (
+            (currentDirection === direction[ARROW_UP] && newDirection === direction[ARROW_DOWN]) ||
+            (currentDirection === direction[ARROW_DOWN] && newDirection === direction[ARROW_UP]) ||
+            (currentDirection === direction[ARROW_LEFT] && newDirection === direction[ARROW_RIGHT]) ||
+            (currentDirection === direction[ARROW_RIGHT] && newDirection === direction[ARROW_LEFT])
+        ) {
+            return;
+        }
+        setCurrentDirection(newDirection);
+        setSnake(prev => ({
+            ...prev,
+            direction: newDirection
+        }));
+        if (!isGameStarted) {
+            setIsGameStarted(true);
+        }
+    };
+
+    // 處理蛇的移動
+    useEffect(() => {
+        if (!isGameStarted || isPaused) return;
+
+        const moveSnake = () => {
+            setSnake(prev => {
+                const newHead = {
+                    x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
+                    y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
+                };
+
+                return {
+                    ...prev,
+                    head: newHead,
+                    direction: currentDirection,
+                    bodyList: [prev.head, ...prev.bodyList.slice(0, prev.maxLength - 2)]
+                };
+            });
+        };
+
+        const gameInterval = setInterval(moveSnake, snake.Speed);
+        return () => clearInterval(gameInterval);
+    }, [isGameStarted, isPaused, currentDirection]);
 
     return (
         <Background>
@@ -296,33 +324,32 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                     資訊看板
                 </SnakeGame_Information>
                 
-                <MainMap />
+                <MainMap snake={snake} />
                     
                 <ControlArea>
                     <DirectionPad>
                         <DirectionButton
                             data-direction="up"
-                            onClick={() => handleDirectionChange(direction.UP)}
+                            onClick={() => handleDirectionChange(direction[ARROW_UP])}
                         />
                         <DirectionButton
                             data-direction="left"
-                            onClick={() => handleDirectionChange(direction.LEFT)}
+                            onClick={() => handleDirectionChange(direction[ARROW_LEFT])}
                         />
                         <DirectionButton
                             data-direction="right"
-                            onClick={() => handleDirectionChange(direction.RIGHT)}
+                            onClick={() => handleDirectionChange(direction[ARROW_RIGHT])}
                         />
                         <DirectionButton
                             data-direction="down"
-                            onClick={() => handleDirectionChange(direction.DOWN)}
+                            onClick={() => handleDirectionChange(direction[ARROW_DOWN])}
                         />
                     </DirectionPad>
                     <PauseButton isDarkMode={isDarkMode} $isPaused={isPaused} onClick={() => setIsPaused(!isPaused)}>
                         {isPaused ? '播放' : '暫停'}
                     </PauseButton>
                     <RestartButton onClick={() => {
-                        setSnake(defaultSnake);
-                        setFood(CreateFood());
+                        setSnake(INITIAL_SNAKE);
                         setIsGameStarted(false);
                         setIsPaused(false);
                         setScore(0);

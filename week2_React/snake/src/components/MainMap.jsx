@@ -32,8 +32,47 @@ const GridCell = styled.div`
     height: 100%; // 高度填滿父容器
 `;
 
+// 定義蛇頭的樣式
+const SnakeHead = styled.div`
+    position: absolute;
+    width: calc(100% / ${GRID_SIZE});
+    height: calc(100% / ${GRID_SIZE});
+    background-color: ${({ theme }) => theme.colors.primary};
+    border-radius: 50%;
+    left: ${({ x }) => (x * 100 / GRID_SIZE)}%;
+    top: ${({ y }) => (y * 100 / GRID_SIZE)}%;
+    z-index: 1;
+    transition: all 0.2s linear;
+    animation: mouthMove 0.3s infinite linear;
+    transform: ${({ direction }) => {
+        if (direction.x === 1) return 'rotate(0deg)';
+        if (direction.x === -1) return 'rotate(180deg)';
+        if (direction.y === 1) return 'rotate(90deg)';
+        if (direction.y === -1) return 'rotate(-90deg)';
+        return 'rotate(0deg)';
+    }};
+
+    @keyframes mouthMove {
+        0% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); }
+        50% { clip-path: polygon(100% 35%, 50% 50%, 100% 65%, 0 100%, 0 0); }
+        100% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); }
+    }
+
+    // 眼睛
+    &:after {
+        content: '';
+        position: absolute;
+        width: 20%;
+        height: 20%;
+        background-color: ${({ theme }) => theme.colors.background};
+        border-radius: 50%;
+        top: 20%;
+        left: 20%;
+    }
+`;
+
 // 主地圖組件
-const MainMap = () => {
+const MainMap = ({ snake }) => {
     // 創建 GRID_SIZE * GRID_SIZE 的網格，填充 null 值
     const grid = Array(GRID_SIZE * GRID_SIZE).fill(null);
 
@@ -43,6 +82,7 @@ const MainMap = () => {
             {grid.map((_, index) => (
                 <GridCell key={index} />
             ))}
+            {snake && <SnakeHead x={snake.head.x} y={snake.head.y} direction={snake.direction} />}
         </MapContainer>
     );
 };
