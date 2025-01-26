@@ -1,11 +1,11 @@
 //地圖為30x30格子
-export const GRID_SIZE = 35; 
+export const GRID_SIZE = 30; 
 
 // 定義蛇的初始速度（毫秒）
 export const SNAKE_INITIAL_SPEED = 200;
 
 export const PAGE_PADDING = 8;
-export const MAX_WIDTH = 700;
+export const MAX_WIDTH = 650;
 
 // 定義方向鍵常量
 export const ARROW_UP = "ARROW_UP";

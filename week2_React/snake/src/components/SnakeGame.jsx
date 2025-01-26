@@ -67,45 +67,63 @@ const ThemeToggleButton = styled.button`
     }
 `;
 
+// 定義 SnakeGame 組件，接收 isDarkMode 和 setIsDarkMode 作為 props
 const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
-    // 遊戲狀態
+    // 使用 useState 鉤子來管理遊戲狀態
+    // 初始化蛇的狀態，使用 INITIAL_SNAKE 常量
     const [snake, setSnake] = useState(INITIAL_SNAKE);
+    // 初始化當前方向，預設為向右
     const [currentDirection, setCurrentDirection] = useState(direction[ARROW_RIGHT]);
+    // 遊戲是否開始的狀態
     const [isGameStarted, setIsGameStarted] = useState(false);
+    // 遊戲是否暫停的狀態
     const [isPaused, setIsPaused] = useState(false);
+    // 遊戲分數
     const [score, setScore] = useState(0);
 
-    // 處理蛇的移動
+    // 使用 useEffect 鉤子來處理蛇的移動邏輯
     useEffect(() => {
+        // 如果遊戲未開始或已暫停，則不執行任何操作
         if (!isGameStarted || isPaused) return;
 
+        // 定義移動蛇的函數
         const moveSnake = () => {
+            // 使用 setSnake 更新蛇的狀態
             setSnake(prev => {
+                // 計算新的頭部位置
                 const newHead = {
+                    // 使用模運算確保蛇在網格內循環
                     x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
                     y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
                 };
 
+                // 返回更新後的蛇狀態
                 return {
                     ...prev,
                     head: newHead,
                     direction: currentDirection,
+                    // 更新身體列表，移除最後一個元素以保持長度不變
                     bodyList: [prev.head, ...prev.bodyList.slice(0, prev.maxLength - 2)]
                 };
             });
         };
 
+        // 設置移動間隔，根據蛇的速度
         const gameInterval = setInterval(moveSnake, snake.Speed);
+        // 清理函數，在組件卸載或依賴項變化時清除定時器
         return () => clearInterval(gameInterval);
-    }, [isGameStarted, isPaused, currentDirection]);
+    }, [isGameStarted, isPaused, currentDirection]); // 依賴項列表
 
+    // 渲染遊戲界面
     return (
         <Background>
             <GameContainer>
                 <LeftPanel>
+                    {/* 主題切換按鈕 */}
                     <ThemeToggleButton onClick={() => setIsDarkMode(!isDarkMode)}>
                         切換{isDarkMode ? '淺色' : '深色'}主題
                     </ThemeToggleButton>
+                    {/* 遊戲規則說明 */}
                     <SnakeGame_Information>
                         <h3>遊戲規則: </h3>
                         <ul>
@@ -117,7 +135,9 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                         </ul>
                     </SnakeGame_Information>
                 </LeftPanel>
+                {/* 主遊戲地圖 */}
                 <MainMap snake={snake} />
+                {/* 遊戲控制按鈕和操作 */}
                 <Actions 
                     currentDirection={currentDirection}
                     setCurrentDirection={setCurrentDirection}
@@ -134,4 +154,5 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     );
 };
 
+// 導出 SnakeGame 組件
 export default SnakeGame;

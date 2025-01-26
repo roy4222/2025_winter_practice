@@ -222,79 +222,86 @@ const RestartButton = styled.button`
 
 // Actions 組件：處理遊戲控制和用戶輸入
 const Actions = ({
-    currentDirection,
-    setCurrentDirection,
-    setSnake,
-    isGameStarted,
-    setIsGameStarted,
-    isPaused,
-    setIsPaused,
-    setScore,
-    isDarkMode
+    currentDirection,       // 當前蛇的移動方向
+    setCurrentDirection,    // 設置蛇的移動方向的函數
+    setSnake,               // 設置蛇的狀態的函數
+    isGameStarted,          // 遊戲是否已開始的標誌
+    setIsGameStarted,       // 設置遊戲開始狀態的函數
+    isPaused,               // 遊戲是否暫停的標誌
+    setIsPaused,            // 設置遊戲暫停狀態的函數
+    setScore,               // 設置遊戲分數的函數
+    isDarkMode              // 是否為深色模式的標誌
 }) => {
-    // 處理方向改變
+    // 處理方向改變的函數
     const handleDirectionChange = (newDirection) => {
         // 防止反向移動（蛇不能立即掉頭）
+        // 檢查新方向是否與當前方向相反
         if (
             (currentDirection === direction[ARROW_UP] && newDirection === direction[ARROW_DOWN]) ||
             (currentDirection === direction[ARROW_DOWN] && newDirection === direction[ARROW_UP]) ||
             (currentDirection === direction[ARROW_LEFT] && newDirection === direction[ARROW_RIGHT]) ||
             (currentDirection === direction[ARROW_RIGHT] && newDirection === direction[ARROW_LEFT])
         ) {
-            return;
+            return; // 如果是反向移動，直接返回，不改變方向
         }
+        
         // 更新方向狀態
         setCurrentDirection(newDirection);
+        
         // 更新蛇的狀態，包括新的方向
         setSnake(prev => ({
             ...prev,
             direction: newDirection
         }));
+        
         // 如果遊戲尚未開始，則開始遊戲
         if (!isGameStarted) {
             setIsGameStarted(true);
         }
     };
 
-    // 處理鍵盤事件
+    // 使用 useEffect 鉤子來處理鍵盤事件
     useEffect(() => {
+        // 定義處理鍵盤按下事件的函數
         const handleKeyDown = (event) => {
             switch (event.key.toLowerCase()) {
                 case ' ':  // 空白鍵：開始/暫停遊戲
                     if (!isGameStarted) {
-                        setIsGameStarted(true);
-                        setIsPaused(false);
+                        setIsGameStarted(true);  // 開始遊戲
+                        setIsPaused(false);      // 確保遊戲不是暫停狀態
                     } else {
-                        setIsPaused(prev => !prev);
+                        setIsPaused(prev => !prev);  // 切換暫停狀態
                     }
                     break;
                 case 'w':
                 case 'arrowup':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_UP]);
+                    if (!isPaused) handleDirectionChange(direction[ARROW_UP]);  // 向上移動
                     break;
                 case 's':
                 case 'arrowdown':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_DOWN]);
+                    if (!isPaused) handleDirectionChange(direction[ARROW_DOWN]);  // 向下移動
                     break;
                 case 'a':
                 case 'arrowleft':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_LEFT]);
+                    if (!isPaused) handleDirectionChange(direction[ARROW_LEFT]);  // 向左移動
                     break;
                 case 'd':
                 case 'arrowright':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_RIGHT]);
+                    if (!isPaused) handleDirectionChange(direction[ARROW_RIGHT]);  // 向右移動
                     break;
                 default:
-                    break;
+                    break;  // 忽略其他按鍵
             }
         };
 
         // 添加鍵盤事件監聽器
         window.addEventListener('keydown', handleKeyDown);
-        // 清理函數：移除事件監聽器
+        
+        // 清理函數：組件卸載時移除事件監聽器
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isGameStarted, isPaused, handleDirectionChange, setIsGameStarted, setIsPaused, currentDirection]);
+    }, [isGameStarted, isPaused, handleDirectionChange, setIsGameStarted, setIsPaused, currentDirection]);  // 依賴項列表
 
+    // 渲染遊戲控制界面
     return (
         <ControlArea>
             {/* 方向控制按鈕 */}
@@ -316,20 +323,22 @@ const Actions = ({
                     onClick={() => !isPaused && handleDirectionChange(direction[ARROW_DOWN])}
                 />
             </DirectionPad>
+            
             {/* 暫停/播放按鈕 */}
             <PauseButton 
-                isDarkMode={isDarkMode} 
-                $isPaused={isPaused} 
+                isDarkMode={isDarkMode}  
+                $isPaused={isPaused}     
                 onClick={() => setIsPaused(!isPaused)}
             >
-                {isPaused ? '播放' : '暫停'}
+                {isPaused ? '播放' : '暫停'}  
             </PauseButton>
+            
             {/* 重新開始按鈕 */}
             <RestartButton onClick={() => {
-                setSnake(INITIAL_SNAKE);
-                setIsGameStarted(false);
-                setIsPaused(false);
-                setScore(0);
+                setSnake(INITIAL_SNAKE);  // 重置蛇的狀態
+                setIsGameStarted(false);  // 設置遊戲為未開始狀態
+                setIsPaused(false);       // 取消暫停狀態
+                setScore(0);              // 重置分數
             }}>
                 重來一場
             </RestartButton>
@@ -337,4 +346,5 @@ const Actions = ({
     );
 };
 
+// 導出 Actions 組件供其他部分使用
 export default Actions;
