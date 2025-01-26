@@ -4,6 +4,10 @@ export const GRID_SIZE = 30;
 // 定義蛇的初始速度（毫秒）
 export const SNAKE_INITIAL_SPEED = 200;
 
+export const PAGE_PADDING = 8;
+export const MAX_WIDTH = 700;
+
+
 // 定義方向鍵常量
 export const ARROW_UP = 'ArrowUp';
 export const ARROW_DOWN = 'ArrowDown';
@@ -19,3 +23,4 @@ const direction = {
     [ARROW_RIGHT]: { x: 1, y: 0 },  // 向右移動：x增加
 }
 
+export default direction;

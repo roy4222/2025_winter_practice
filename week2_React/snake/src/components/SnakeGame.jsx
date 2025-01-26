@@ -1,39 +1,338 @@
+// 導入必要的 React 鉤子和樣式庫
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+// 導入遊戲常數和主要地圖組件
+import direction, { SNAKE_INITIAL_SPEED, GRID_SIZE } from './constants';
+import MainMap from './MainMap';
+
+
+
+// 定義背景容器樣式
+const Background = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+`;
+
+// 定義遊戲容器樣式
+const GameContainer = styled.div`
+    text-align: center;
+    padding: ${({ theme }) => theme.spacing.large};
+`;
+
+// 定義資訊看板樣式
+const SnakeGame_Information = styled.div`
+    border: 2px solid ${({ theme }) => theme.colors.border};
+    padding: ${({ theme }) => theme.spacing.medium};
+    margin-bottom: ${({ theme }) => theme.spacing.medium};
+`;
+
+// 定義控制區域樣式
+const ControlArea = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    gap: ${({ theme }) => theme.spacing.medium};
+`;
+
+// 定義方向鍵容器樣式
+const DirectionPad = styled.div`
+    display: grid;
+    grid-template-areas:
+        ". up ."
+        "left . right"
+        ". down .";
+    gap: 8px;
+    margin: ${({ theme }) => theme.spacing.medium} 0;
+`;
+
+// 定義方向鍵按鈕樣式
+const DirectionButton = styled.button`
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05)
+        );
+        pointer-events: none;
+    }
+
+    &[data-direction="up"] {
+        grid-area: up;
+        &:before {
+            content: '↑';
+        }
+    }
+
+    &[data-direction="down"] {
+        grid-area: down;
+        &:before {
+            content: '↓';
+        }
+    }
+
+    &[data-direction="left"] {
+        grid-area: left;
+        &:before {
+            content: '←';
+        }
+    }
+
+    &[data-direction="right"] {
+        grid-area: right;
+        &:before {
+            content: '→';
+        }
+    }
+`;
+
+// 定義主題切換按鈕樣式
+const ThemeToggleButton = styled.button`
+    padding: ${({ theme }) => theme.spacing.small} ${({ theme }) => theme.spacing.medium};
+    margin: ${({ theme }) => theme.spacing.medium};
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: ${({ theme }) => theme.typography.fontSize.medium};
+    
+    &:hover {
+        opacity: 0.9;
+    }
+`;
+
+// 定義暫停按鈕樣式
+const PauseButton = styled.button`
+    padding: ${({ theme }) => theme.spacing.medium};
+    margin: ${({ theme }) => theme.spacing.medium} 0;
+    background-color: ${({ theme, isDarkMode }) => isDarkMode ? theme.colors.success : theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: ${({ theme }) => theme.typography.fontSize.large};
+    font-weight: bold;
+    width: 100%;
+    max-width: 200px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    &:before {
+        content: ${({ $isPaused }) => $isPaused ? "'⯈'" : "'❚❚'"};
+        font-size: 1.2em;
+        margin-right: 8px;
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05)
+        );
+        pointer-events: none;
+    }
+`;
+
+// 定義重來按鈕樣式
+const RestartButton = styled.button`
+    padding: ${({ theme }) => theme.spacing.medium};
+    margin: ${({ theme }) => theme.spacing.medium} 0;
+    background-color: ${({ theme }) => theme.colors.secondary};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: ${({ theme }) => theme.typography.fontSize.large};
+    font-weight: bold;
+    width: 100%;
+    max-width: 200px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        background-color: ${({ theme }) => theme.colors.primary};
+    }
+
+    &:active {
+        transform: translateY(1px);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    &:before {
+        content: '↺';
+        font-size: 1.4em;
+        margin-right: 8px;
+        display: inline-block;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover:before {
+        transform: rotate(-180deg);
+    }
+
+    &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.1),
+            rgba(255, 255, 255, 0.05)
+        );
+        pointer-events: none;
+    }
+`;
+
 // 定義蛇的初始狀態
 const defaultSnake = {
-    head: { x: 2, y: 10 },          // 蛇頭的初始位置
-    bodyList: [                     // 蛇身的初始位置列表
+    head: { x: 2, y: 10 },
+    bodyList: [
         { x: 1, y: 0 },
         { x: 0, y: 0 },
     ],
-    maxLength: 3,                   // 蛇的最大長度
-    direction: ARROW_RIGHT,         // 蛇的初始移動方向
-    Speed: SNAKE_INITIAL_SPEED,     // 蛇的初始移動速度
+    maxLength: 3,
+    direction: direction.ARROW_RIGHT,
+    Speed: SNAKE_INITIAL_SPEED,
 };
+
 // 定義一個創建食物的函數
 const CreateFood = () => {
-    // 返回一個包含隨機 x 和 y 坐標的物件
     return {
-        // 生成一個在 0 到 GRID_SIZE-1 之間的隨機整數作為 x 坐標
         x: Math.floor(Math.random() * GRID_SIZE),
-        // 生成一個在 0 到 GRID_SIZE-1 之間的隨機整數作為 y 坐標
         y: Math.floor(Math.random() * GRID_SIZE)
     }
 }
 
-const SnakeGame = () => {
+const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     const [snake, setSnake] = useState(defaultSnake);
     const [food, setFood] = useState(CreateFood());
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [score, setScore] = useState(0);
 
+    const handleDirectionChange = (newDirection) => {
+        // 處理方向鍵按鈕點擊事件
+    }
+
     return (
         <Background>
-            <Container>
-                <Infornation/>
-                <MainMap/>
-                <Actions/>
-            </Container>
+            <GameContainer>
+                <ThemeToggleButton onClick={() => setIsDarkMode(!isDarkMode)}>
+                    切換{isDarkMode ? '淺色' : '深色'}主題
+                </ThemeToggleButton>
+                <SnakeGame_Information>
+                    資訊看板
+                </SnakeGame_Information>
+                
+                <MainMap />
+                    
+                <ControlArea>
+                    <DirectionPad>
+                        <DirectionButton
+                            data-direction="up"
+                            onClick={() => handleDirectionChange(direction.UP)}
+                        />
+                        <DirectionButton
+                            data-direction="left"
+                            onClick={() => handleDirectionChange(direction.LEFT)}
+                        />
+                        <DirectionButton
+                            data-direction="right"
+                            onClick={() => handleDirectionChange(direction.RIGHT)}
+                        />
+                        <DirectionButton
+                            data-direction="down"
+                            onClick={() => handleDirectionChange(direction.DOWN)}
+                        />
+                    </DirectionPad>
+                    <PauseButton isDarkMode={isDarkMode} $isPaused={isPaused} onClick={() => setIsPaused(!isPaused)}>
+                        {isPaused ? '播放' : '暫停'}
+                    </PauseButton>
+                    <RestartButton onClick={() => {
+                        setSnake(defaultSnake);
+                        setFood(CreateFood());
+                        setIsGameStarted(false);
+                        setIsPaused(false);
+                        setScore(0);
+                    }}>
+                        重來一場
+                    </RestartButton>
+                </ControlArea>
+            </GameContainer>
         </Background>
-    )
-}
+    );
+};
+
+export default SnakeGame;
