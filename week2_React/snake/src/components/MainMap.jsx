@@ -17,12 +17,29 @@ const MapContainer = styled.div`
     background-color: ${({ theme }) => theme.colors.background};
     position: relative;
     margin: ${({ theme }) => theme.spacing.medium} auto;
+    display: grid;
+    grid-template-columns: repeat(30, 1fr);
+    grid-template-rows: repeat(30, 1fr);
+`;
+
+// 定義網格單元格的樣式
+const GridCell = styled.div`
+    border: 1px solid ${({ theme }) => theme.colors.border}40;
+    width: 100%;
+    height: 100%;
 `;
 
 // 主地圖組件
 const MainMap = () => {
+    // 創建35x35的網格
+    const grid = Array(30 * 30).fill(null);
+
     return (
-        <MapContainer />
+        <MapContainer>
+            {grid.map((_, index) => (
+                <GridCell key={index} />
+            ))}
+        </MapContainer>
     );
 };
 
