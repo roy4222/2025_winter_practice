@@ -220,6 +220,7 @@ const RestartButton = styled.button`
     }
 `;
 
+// Actions 組件：處理遊戲控制和用戶輸入
 const Actions = ({
     currentDirection,
     setCurrentDirection,
@@ -233,7 +234,7 @@ const Actions = ({
 }) => {
     // 處理方向改變
     const handleDirectionChange = (newDirection) => {
-        // 防止反向移動
+        // 防止反向移動（蛇不能立即掉頭）
         if (
             (currentDirection === direction[ARROW_UP] && newDirection === direction[ARROW_DOWN]) ||
             (currentDirection === direction[ARROW_DOWN] && newDirection === direction[ARROW_UP]) ||
@@ -242,11 +243,14 @@ const Actions = ({
         ) {
             return;
         }
+        // 更新方向狀態
         setCurrentDirection(newDirection);
+        // 更新蛇的狀態，包括新的方向
         setSnake(prev => ({
             ...prev,
             direction: newDirection
         }));
+        // 如果遊戲尚未開始，則開始遊戲
         if (!isGameStarted) {
             setIsGameStarted(true);
         }
@@ -256,7 +260,7 @@ const Actions = ({
     useEffect(() => {
         const handleKeyDown = (event) => {
             switch (event.key.toLowerCase()) {
-                case ' ':  // 空白鍵
+                case ' ':  // 空白鍵：開始/暫停遊戲
                     if (!isGameStarted) {
                         setIsGameStarted(true);
                         setIsPaused(false);
@@ -285,12 +289,15 @@ const Actions = ({
             }
         };
 
+        // 添加鍵盤事件監聽器
         window.addEventListener('keydown', handleKeyDown);
+        // 清理函數：移除事件監聽器
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [isGameStarted, isPaused, handleDirectionChange, setIsGameStarted, setIsPaused, currentDirection]);
 
     return (
         <ControlArea>
+            {/* 方向控制按鈕 */}
             <DirectionPad>
                 <DirectionButton
                     data-direction="up"
@@ -309,6 +316,7 @@ const Actions = ({
                     onClick={() => !isPaused && handleDirectionChange(direction[ARROW_DOWN])}
                 />
             </DirectionPad>
+            {/* 暫停/播放按鈕 */}
             <PauseButton 
                 isDarkMode={isDarkMode} 
                 $isPaused={isPaused} 
@@ -316,6 +324,7 @@ const Actions = ({
             >
                 {isPaused ? '播放' : '暫停'}
             </PauseButton>
+            {/* 重新開始按鈕 */}
             <RestartButton onClick={() => {
                 setSnake(INITIAL_SNAKE);
                 setIsGameStarted(false);
