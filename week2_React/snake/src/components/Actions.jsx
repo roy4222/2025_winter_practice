@@ -248,7 +248,8 @@ const Actions = ({
     setScore,               // 設置遊戲分數的函數
     isDarkMode,             // 是否為深色模式的標誌
     isGameOver,            // 遊戲是否結束的標誌
-    setIsGameOver          // 設置遊戲結束狀態的函數
+    setIsGameOver,         // 設置遊戲結束狀態的函數
+    resetGame             // 重置遊戲的函數
 }) => {
     // 處理方向改變的函數
     const handleDirectionChange = (newDirection) => {
@@ -366,15 +367,12 @@ const Actions = ({
             >
                 {isGameOver ? '遊戲結束' : (isPaused ? '繼續遊戲' : '暫停遊戲')}
             </PauseButton>
-            
-            {/* 重新開始按鈕 */}
-            <RestartButton onClick={() => {
-                setSnake(INITIAL_SNAKE);  // 重置蛇的狀態
-                setIsGameStarted(false);  // 設置遊戲為未開始狀態
-                setIsPaused(false);       // 取消暫停狀態
-                setScore(0);              // 重置分數
-                setIsGameOver(false);     // 重置遊戲結束狀態
-            }}>
+
+            {/* 重置按鈕 */}
+            <RestartButton 
+                $isDarkMode={isDarkMode}
+                onClick={resetGame}
+            >
                 重來一場
             </RestartButton>
         </ControlArea>

@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
-import { MAX_WIDTH, PAGE_PADDING } from './constants';
+import { MAX_WIDTH, PAGE_PADDING, SNAKE_INITIAL_SPEED } from './constants';
+import React from 'react'; // Add this line to import React
+
 
 // 分數變化時的動畫效果
 const scoreChange = keyframes`
@@ -54,8 +56,10 @@ const ScoreBlock = styled.div`
 
 // Information 組件
 const Information = ({ score, speed }) => {
-    // 將間隔時間轉換為速度等級 (1-10)
-    const speedLevel = Math.round((200 - speed) / 15) + 1;
+    // 使用 useMemo 緩存計算結果,只有當 speed 改變時才重新計算
+    const speedLevel = React.useMemo(() => {
+        return Math.round((SNAKE_INITIAL_SPEED - speed) / 3) + 1;
+    }, [speed]);
     
     return (
         <InfoContainer>

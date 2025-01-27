@@ -79,6 +79,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     const [food, setFood] = useState(null);
     const [isGameOver, setIsGameOver] = useState(false);
     const speedRef = useRef(SNAKE_INITIAL_SPEED);
+    const gameInterval = useRef(null);
 
     // 移動蛇的函數
     const moveSnake = useCallback(() => {
@@ -155,32 +156,57 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
 
     // 更新速度的函數
     const updateSpeed = useCallback((newScore) => {
-        // 每吃一個食物減少30ms,最快50ms
-        const newSpeed = Math.max(50, SNAKE_INITIAL_SPEED - (newScore * 30));
+        // 每吃一個食物減少10ms,最快50ms
+        const newSpeed = Math.max(50, SNAKE_INITIAL_SPEED - (newScore * 10));
         speedRef.current = newSpeed;
         setSnake(prev => ({...prev, speed: newSpeed}));
     }, []);
 
     // 重置遊戲的函數
     const resetGame = useCallback(() => {
-        setSnake({
-            ...INITIAL_SNAKE,
-            speed: SNAKE_INITIAL_SPEED  // 明確設置速度
-        });
-        setCurrentDirection(direction[ARROW_RIGHT]);
+        // 先重置速度參考
+        speedRef.current = SNAKE_INITIAL_SPEED;
+        
+        // 清除並重置 interval
+        if (gameInterval.current) {
+            clearInterval(gameInterval.current);
+        }
+        
+        // 確保遊戲狀態重置
         setIsGameStarted(false);
         setIsPaused(false);
+        setIsGameOver(false);
         setScore(0);
         setFood(null);
-        setIsGameOver(false);
-        speedRef.current = SNAKE_INITIAL_SPEED;
-    }, []);
+        
+        // 重置方向
+        setCurrentDirection(direction[ARROW_RIGHT]);
+        
+        // 重置蛇的狀態
+        const resetSnake = {
+            ...INITIAL_SNAKE,
+            speed: SNAKE_INITIAL_SPEED
+        };
+        setSnake(resetSnake);
+        
+        // 重新設置 interval
+        gameInterval.current = setInterval(moveSnake, SNAKE_INITIAL_SPEED);
+    }, [moveSnake]);
 
     // 使用 useEffect 鉤子來處理蛇的移動邏輯
     useEffect(() => {
-        const gameInterval = setInterval(moveSnake, speedRef.current);
-        return () => clearInterval(gameInterval);
-    }, [moveSnake, speedRef]);
+        // 清除現有的 interval
+        if (gameInterval.current) {
+            clearInterval(gameInterval.current);
+        }
+        // 設置新的 interval
+        gameInterval.current = setInterval(moveSnake, speedRef.current);
+        return () => {
+            if (gameInterval.current) {
+                clearInterval(gameInterval.current);
+            }
+        };
+    }, [moveSnake, speedRef.current]);
 
     // 使用 useEffect 處理食物的生成
     useEffect(() => {
@@ -212,7 +238,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                 </LeftPanel>
                 <div>
                     {/* 分數顯示 */}
-                    <Information score={score} speed={speedRef.current} />
+                    <Information score={score} speed={snake.speed} />
                     {/* 主遊戲地圖 */}
                     <MainMap snake={snake} food={food} />
                 </div>
