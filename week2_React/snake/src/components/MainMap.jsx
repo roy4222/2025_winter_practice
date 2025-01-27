@@ -139,8 +139,41 @@ const SnakeBody = styled.div`
     }
 `;
 
+// 定義食物的樣式
+const Food = styled.div`
+    position: absolute;
+    width: calc(100% / ${GRID_SIZE});
+    height: calc(100% / ${GRID_SIZE});
+    left: ${({ x }) => (x * 100 / GRID_SIZE)}%;
+    top: ${({ y }) => (y * 100 / GRID_SIZE)}%;
+    background-color: ${({ theme }) => theme.colors.secondary};
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulse 1s infinite ease-in-out;
+
+    // 閃爍動畫
+    @keyframes pulse {
+        0% { transform: scale(0.95); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(0.95); }
+    }
+
+    // 內部裝飾
+    &:before {
+        content: '';
+        position: absolute;
+        width: 30%;
+        height: 30%;
+        background-color: ${({ theme }) => theme.colors.background};
+        border-radius: 50%;
+        top: 20%;
+        left: 20%;
+        opacity: 0.7;
+    }
+`;
+
 // 主地圖組件
-const MainMap = ({ snake }) => {
+const MainMap = ({ snake, food }) => {
     // 創建 GRID_SIZE * GRID_SIZE 的網格，填充 null 值
     const grid = Array(GRID_SIZE * GRID_SIZE).fill(null);
 
@@ -150,17 +183,17 @@ const MainMap = ({ snake }) => {
             {grid.map((_, index) => (
                 <GridCell key={index} />
             ))}
-            {/* 渲染蛇的身體 */}
-            {snake && snake.bodyList.map((segment, index) => (
-                <SnakeBody 
-                    key={`body-${index}`}
-                    x={segment.x}
-                    y={segment.y}
-                    index={index}
-                />
-            ))}
+            
             {/* 渲染蛇頭 */}
-            {snake && <SnakeHead x={snake.head.x} y={snake.head.y} direction={snake.direction} />}
+            <SnakeHead x={snake.head.x} y={snake.head.y} direction={snake.direction} />
+
+            {/* 渲染蛇身 */}
+            {snake.bodyList.map((body, index) => (
+                <SnakeBody key={index} x={body.x} y={body.y} index={index} />
+            ))}
+
+            {/* 渲染食物 */}
+            {food && <Food x={food.x} y={food.y} />}
         </MapContainer>
     );
 };

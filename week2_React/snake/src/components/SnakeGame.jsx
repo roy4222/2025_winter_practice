@@ -80,6 +80,31 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     const [isPaused, setIsPaused] = useState(false);
     // 遊戲分數
     const [score, setScore] = useState(0);
+    // 食物位置
+    const [food, setFood] = useState(null);
+
+    // 生成新的食物位置
+    const generateFood = () => {
+        let newFood;
+        do {
+            newFood = {
+                x: Math.floor(Math.random() * GRID_SIZE),
+                y: Math.floor(Math.random() * GRID_SIZE)
+            };
+            // 確保食物不會生成在蛇身上
+        } while (
+            (newFood.x === snake.head.x && newFood.y === snake.head.y) || 
+            snake.bodyList.some(body => body.x === newFood.x && body.y === newFood.y)
+        );
+        setFood(newFood);
+    };
+
+    // 在遊戲開始時生成第一個食物
+    useEffect(() => {
+        if (isGameStarted && !food) {
+            generateFood();
+        }
+    }, [isGameStarted]);
 
     // 使用 useEffect 鉤子來處理蛇的移動邏輯
     useEffect(() => {
@@ -97,13 +122,24 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                     y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
                 };
 
+                // 檢查是否吃到食物
+                const ateFood = food && newHead.x === food.x && newHead.y === food.y;
+                if (ateFood) {
+                    // 增加分數
+                    setScore(prevScore => prevScore + 10);
+                    // 生成新的食物
+                    generateFood();
+                }
+
                 // 返回更新後的蛇狀態
                 return {
                     ...prev,
                     head: newHead,
                     direction: currentDirection,
-                    // 更新身體列表，移除最後一個元素以保持長度不變
-                    bodyList: [prev.head, ...prev.bodyList.slice(0, prev.maxLength - 2)]
+                    // 如果吃到食物，保留最後一個身體部分；否則移除
+                    bodyList: [prev.head, ...prev.bodyList.slice(0, ateFood ? prev.maxLength - 1 : prev.maxLength - 2)],
+                    // 如果吃到食物，增加最大長度
+                    maxLength: ateFood ? prev.maxLength + 1 : prev.maxLength
                 };
             });
         };
@@ -112,7 +148,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
         const gameInterval = setInterval(moveSnake, snake.Speed);
         // 清理函數，在組件卸載或依賴項變化時清除定時器
         return () => clearInterval(gameInterval);
-    }, [isGameStarted, isPaused, currentDirection]); // 依賴項列表
+    }, [isGameStarted, isPaused, currentDirection, food]); // 新增 food 作為依賴項
 
     // 渲染遊戲界面
     return (
@@ -136,7 +172,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                     </SnakeGame_Information>
                 </LeftPanel>
                 {/* 主遊戲地圖 */}
-                <MainMap snake={snake} />
+                <MainMap snake={snake} food={food} />
                 {/* 遊戲控制按鈕和操作 */}
                 <Actions 
                     currentDirection={currentDirection}
