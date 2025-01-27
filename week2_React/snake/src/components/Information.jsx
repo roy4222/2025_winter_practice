@@ -53,12 +53,19 @@ const ScoreBlock = styled.div`
 `;
 
 // Information 組件
-const Information = ({ score }) => {
+const Information = ({ score, speed }) => {
+    // 將間隔時間轉換為速度等級 (1-10)
+    const speedLevel = Math.round((200 - speed) / 15) + 1;
+    
     return (
         <InfoContainer>
             <ScoreBlock $changed={score > 0}>
                 <span className="score-label">分數</span>
                 <span className="score-value">{score}</span>
+            </ScoreBlock>
+            <ScoreBlock>
+                <span className="score-label">速度</span>
+                <span className="score-value">level {speedLevel}</span>
             </ScoreBlock>
         </InfoContainer>
     );

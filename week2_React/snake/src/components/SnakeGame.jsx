@@ -118,8 +118,8 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                 if (ateFood) {
                     setScore(prevScore => prevScore + 10);
                     generateFood();
-                    // 更新速度引用
-                    speedRef.current = Math.max(50, speedRef.current - 10);
+                    // 更新速度引用 - 減少間隔時間使蛇移動更快
+                    speedRef.current = Math.max(50, speedRef.current - 20);
                 }
 
                 return {
@@ -160,7 +160,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                 </LeftPanel>
                 <div>
                     {/* 分數顯示 */}
-                    <Information score={score} />
+                    <Information score={score} speed={speedRef.current} />
                     {/* 主遊戲地圖 */}
                     <MainMap snake={snake} food={food} />
                 </div>
