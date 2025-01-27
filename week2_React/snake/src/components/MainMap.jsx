@@ -34,39 +34,58 @@ const GridCell = styled.div`
 
 // 定義蛇頭的樣式
 const SnakeHead = styled.div`
+    // 設置絕對定位，使蛇頭可以自由移動
     position: absolute;
+    // 計算蛇頭的寬度，基於網格大小
     width: calc(100% / ${GRID_SIZE});
+    // 計算蛇頭的高度，基於網格大小
     height: calc(100% / ${GRID_SIZE});
+    // 設置蛇頭的背景顏色，使用主題中的主要顏色
     background-color: ${({ theme }) => theme.colors.primary};
+    // 設置圓形邊框，使蛇頭呈現圓形
     border-radius: 50%;
+    // 計算蛇頭的左側位置，基於 x 坐標和網格大小
     left: ${({ x }) => (x * 100 / GRID_SIZE)}%;
+    // 計算蛇頭的頂部位置，基於 y 坐標和網格大小
     top: ${({ y }) => (y * 100 / GRID_SIZE)}%;
+    // 設置 z-index 確保蛇頭顯示在最上層
     z-index: 1;
+    // 添加過渡效果，使移動更加平滑
     transition: all 0.2s linear;
+    // 應用 mouthMove 動畫，實現張嘴效果
     animation: mouthMove 0.3s infinite linear;
+    // 根據移動方向旋轉蛇頭
     transform: ${({ direction }) => {
-        if (direction.x === 1) return 'rotate(0deg)';
-        if (direction.x === -1) return 'rotate(180deg)';
-        if (direction.y === 1) return 'rotate(90deg)';
-        if (direction.y === -1) return 'rotate(-90deg)';
-        return 'rotate(0deg)';
+        if (direction.x === 1) return 'rotate(0deg)';      // 向右
+        if (direction.x === -1) return 'rotate(180deg)';   // 向左
+        if (direction.y === 1) return 'rotate(90deg)';     // 向下
+        if (direction.y === -1) return 'rotate(-90deg)';   // 向上
+        return 'rotate(0deg)';                             // 默認方向
     }};
 
+    // 定義 mouthMove 動畫，實現蛇頭張嘴效果
     @keyframes mouthMove {
-        0% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); }
-        50% { clip-path: polygon(100% 35%, 50% 50%, 100% 65%, 0 100%, 0 0); }
-        100% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); }
+        0% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); }   // 嘴巴關閉
+        50% { clip-path: polygon(100% 35%, 50% 50%, 100% 65%, 0 100%, 0 0); } // 嘴巴張開
+        100% { clip-path: polygon(100% 0, 50% 50%, 100% 100%, 0 100%, 0 0); } // 嘴巴關閉
     }
 
-    // 眼睛
+    // 使用偽元素創建蛇的眼睛
     &:after {
         content: '';
+        // 設置絕對定位，相對於蛇頭
         position: absolute;
+        // 設置眼睛寬度為蛇頭的 20%
         width: 20%;
+        // 設置眼睛高度為蛇頭的 20%
         height: 20%;
+        // 設置眼睛顏色，使用主題中的背景顏色
         background-color: ${({ theme }) => theme.colors.background};
+        // 設置圓形邊框，使眼睛呈現圓形
         border-radius: 50%;
+        // 設置眼睛的頂部位置
         top: 20%;
+        // 設置眼睛的左側位置
         left: 20%;
     }
 `;

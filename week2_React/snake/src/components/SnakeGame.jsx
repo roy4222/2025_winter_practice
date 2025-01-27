@@ -130,7 +130,7 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                             <li>使用方向鍵或W/A/S/D控制蛇的移動</li>
                             <li>按空格鍵暫停或繼續遊戲</li>
                             <li>吃到食物可以增加分數和蛇的長度</li>
-                            <li>撞到牆壁或自己的身體會結束遊戲</li>
+                            <li>撞到自己的身體會結束遊戲</li>
                             <li>盡可能獲得高分！</li>
                         </ul>
                     </SnakeGame_Information>

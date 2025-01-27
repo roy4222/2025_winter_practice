@@ -1,16 +1,19 @@
+// 引入 React 和 useEffect hook
 import React, { useEffect } from 'react';
+// 引入 styled-components 用於樣式化組件
 import styled from 'styled-components';
+// 從常量文件中引入遊戲所需的常量
 import { 
-    direction, 
-    ARROW_UP, 
-    ARROW_DOWN, 
-    ARROW_LEFT, 
-    ARROW_RIGHT,
-    KEY_W,
-    KEY_S,
-    KEY_A,
-    KEY_D,
-    INITIAL_SNAKE
+    direction,     // 方向對象，包含各個方向的坐標變化
+    ARROW_UP,      // 向上箭頭鍵常量
+    ARROW_DOWN,    // 向下箭頭鍵常量
+    ARROW_LEFT,    // 向左箭頭鍵常量
+    ARROW_RIGHT,   // 向右箭頭鍵常量
+    KEY_W,         // W 鍵常量，用於向上移動
+    KEY_S,         // S 鍵常量，用於向下移動
+    KEY_A,         // A 鍵常量，用於向左移動
+    KEY_D,         // D 鍵常量，用於向右移動
+    INITIAL_SNAKE  // 蛇的初始狀態
 } from './constants';
 
 // 定義控制區域樣式
@@ -35,33 +38,53 @@ const DirectionPad = styled.div`
 
 // 定義方向鍵按鈕樣式
 const DirectionButton = styled.button`
+    // 設置按鈕的基本尺寸
     width: 60px;
     height: 60px;
     padding: 0;
+
+    // 使用主題顏色設置背景和文字顏色
     background-color: ${({ theme }) => theme.colors.primary};
     color: ${({ theme }) => theme.colors.background};
+
+    // 移除邊框，添加圓角
     border: none;
     border-radius: 8px;
+
+    // 設置鼠標樣式為指針
     cursor: pointer;
+
+    // 設置文字大小
     font-size: 24px;
+
+    // 使用 flex 布局居中內容
     display: flex;
     align-items: center;
     justify-content: center;
+
+    // 添加過渡效果
     transition: all 0.3s ease;
+
+    // 添加陰影效果
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    // 設置相對定位，用於偽元素
     position: relative;
     overflow: hidden;
 
+    // 懸停效果
     &:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
+    // 點擊效果
     &:active {
         transform: translateY(1px);
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
+    // 添加漸變效果的偽元素
     &:after {
         content: '';
         position: absolute;
@@ -76,32 +99,25 @@ const DirectionButton = styled.button`
         pointer-events: none;
     }
 
+    // 為每個方向按鈕設置特定樣式
     &[data-direction="up"] {
         grid-area: up;
-        &:before {
-            content: '↑';
-        }
+        &:before { content: '↑'; }
     }
 
     &[data-direction="down"] {
         grid-area: down;
-        &:before {
-            content: '↓';
-        }
+        &:before { content: '↓'; }
     }
 
     &[data-direction="left"] {
         grid-area: left;
-        &:before {
-            content: '←';
-        }
+        &:before { content: '←'; }
     }
 
     &[data-direction="right"] {
         grid-area: right;
-        &:before {
-            content: '→';
-        }
+        &:before { content: '→'; }
     }
 `;
 
