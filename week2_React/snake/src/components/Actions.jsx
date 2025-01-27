@@ -125,7 +125,7 @@ const DirectionButton = styled.button`
 const PauseButton = styled.button`
     padding: ${({ theme }) => theme.spacing.medium};
     margin: ${({ theme }) => theme.spacing.medium} 0;
-    background-color: ${({ theme, isDarkMode }) => isDarkMode ? theme.colors.success : theme.colors.secondary};
+    background-color: ${({ theme, $isDarkMode }) => $isDarkMode ? theme.colors.success : theme.colors.secondary};
     color: ${({ theme }) => theme.colors.background};
     border: none;
     border-radius: 8px;
@@ -253,10 +253,8 @@ const Actions = ({
         // 防止反向移動（蛇不能立即掉頭）
         // 檢查新方向是否與當前方向相反
         if (
-            (currentDirection === direction[ARROW_UP] && newDirection === direction[ARROW_DOWN]) ||
-            (currentDirection === direction[ARROW_DOWN] && newDirection === direction[ARROW_UP]) ||
-            (currentDirection === direction[ARROW_LEFT] && newDirection === direction[ARROW_RIGHT]) ||
-            (currentDirection === direction[ARROW_RIGHT] && newDirection === direction[ARROW_LEFT])
+            (currentDirection.x === -newDirection.x && currentDirection.y === -newDirection.y) ||
+            (currentDirection.y === -newDirection.y && currentDirection.x === -newDirection.x)
         ) {
             return; // 如果是反向移動，直接返回，不改變方向
         }
@@ -280,42 +278,61 @@ const Actions = ({
     useEffect(() => {
         // 定義處理鍵盤按下事件的函數
         const handleKeyDown = (event) => {
-            switch (event.key.toLowerCase()) {
-                case ' ':  // 空白鍵：開始/暫停遊戲
-                    if (!isGameStarted) {
-                        setIsGameStarted(true);  // 開始遊戲
-                        setIsPaused(false);      // 確保遊戲不是暫停狀態
-                    } else {
-                        setIsPaused(prev => !prev);  // 切換暫停狀態
-                    }
-                    break;
+            const key = event.key.toLowerCase();
+            
+            // 如果遊戲暫停，只處理空白鍵
+            if (key === ' ') {
+                if (!isGameStarted) {
+                    setIsGameStarted(true);
+                    setIsPaused(false);
+                } else {
+                    setIsPaused(prev => !prev);
+                }
+                return;
+            }
+
+            // 如果遊戲暫停，不處理方向鍵
+            if (isPaused) return;
+
+            // 處理方向鍵
+            switch (key) {
                 case 'w':
-                case 'arrowup':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_UP]);  // 向上移動
+                    handleDirectionChange(direction[KEY_W]);
                     break;
                 case 's':
-                case 'arrowdown':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_DOWN]);  // 向下移動
+                    handleDirectionChange(direction[KEY_S]);
                     break;
                 case 'a':
-                case 'arrowleft':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_LEFT]);  // 向左移動
+                    handleDirectionChange(direction[KEY_A]);
                     break;
                 case 'd':
+                    handleDirectionChange(direction[KEY_D]);
+                    break;
+                case 'arrowup':
+                    handleDirectionChange(direction[ARROW_UP]);
+                    break;
+                case 'arrowdown':
+                    handleDirectionChange(direction[ARROW_DOWN]);
+                    break;
+                case 'arrowleft':
+                    handleDirectionChange(direction[ARROW_LEFT]);
+                    break;
                 case 'arrowright':
-                    if (!isPaused) handleDirectionChange(direction[ARROW_RIGHT]);  // 向右移動
+                    handleDirectionChange(direction[ARROW_RIGHT]);
                     break;
                 default:
-                    break;  // 忽略其他按鍵
+                    break;
             }
         };
 
         // 添加鍵盤事件監聽器
         window.addEventListener('keydown', handleKeyDown);
-        
-        // 清理函數：組件卸載時移除事件監聽器
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isGameStarted, isPaused, handleDirectionChange, setIsGameStarted, setIsPaused, currentDirection]);  // 依賴項列表
+
+        // 清理函數：移除事件監聽器
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [isGameStarted, isPaused, currentDirection]);
 
     // 渲染遊戲控制界面
     return (
@@ -342,11 +359,10 @@ const Actions = ({
             
             {/* 暫停/播放按鈕 */}
             <PauseButton 
-                isDarkMode={isDarkMode}  
-                $isPaused={isPaused}     
+                $isDarkMode={isDarkMode}  
                 onClick={() => setIsPaused(!isPaused)}
             >
-                {isPaused ? '播放' : '暫停'}  
+                {isPaused ? '繼續遊戲' : '暫停遊戲'}
             </PauseButton>
             
             {/* 重新開始按鈕 */}

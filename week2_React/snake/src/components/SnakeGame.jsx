@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { SNAKE_INITIAL_SPEED, GRID_SIZE, direction, INITIAL_SNAKE, ARROW_RIGHT } from './constants';
 import MainMap from './MainMap';
@@ -69,18 +69,15 @@ const ThemeToggleButton = styled.button`
 
 // 定義 SnakeGame 組件，接收 isDarkMode 和 setIsDarkMode 作為 props
 const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
+    // 使用 useRef 來追踪當前速度
+    const speedRef = useRef(SNAKE_INITIAL_SPEED);
+    
     // 使用 useState 鉤子來管理遊戲狀態
-    // 初始化蛇的狀態，使用 INITIAL_SNAKE 常量
-    const [snake, setSnake] = useState(INITIAL_SNAKE);
-    // 初始化當前方向，預設為向右
+    const [snake, setSnake] = useState({ ...INITIAL_SNAKE, Speed: SNAKE_INITIAL_SPEED });
     const [currentDirection, setCurrentDirection] = useState(direction[ARROW_RIGHT]);
-    // 遊戲是否開始的狀態
     const [isGameStarted, setIsGameStarted] = useState(false);
-    // 遊戲是否暫停的狀態
     const [isPaused, setIsPaused] = useState(false);
-    // 遊戲分數
     const [score, setScore] = useState(0);
-    // 食物位置
     const [food, setFood] = useState(null);
 
     // 生成新的食物位置
@@ -91,7 +88,6 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                 x: Math.floor(Math.random() * GRID_SIZE),
                 y: Math.floor(Math.random() * GRID_SIZE)
             };
-            // 確保食物不會生成在蛇身上
         } while (
             (newFood.x === snake.head.x && newFood.y === snake.head.y) || 
             snake.bodyList.some(body => body.x === newFood.x && body.y === newFood.y)
@@ -108,47 +104,37 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
 
     // 使用 useEffect 鉤子來處理蛇的移動邏輯
     useEffect(() => {
-        // 如果遊戲未開始或已暫停，則不執行任何操作
         if (!isGameStarted || isPaused) return;
 
-        // 定義移動蛇的函數
         const moveSnake = () => {
-            // 使用 setSnake 更新蛇的狀態
             setSnake(prev => {
-                // 計算新的頭部位置
                 const newHead = {
-                    // 使用模運算確保蛇在網格內循環
                     x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
                     y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
                 };
 
-                // 檢查是否吃到食物
                 const ateFood = food && newHead.x === food.x && newHead.y === food.y;
                 if (ateFood) {
-                    // 增加分數
                     setScore(prevScore => prevScore + 10);
-                    // 生成新的食物
                     generateFood();
+                    // 更新速度引用
+                    speedRef.current = Math.max(50, speedRef.current - 10);
                 }
 
-                // 返回更新後的蛇狀態
                 return {
                     ...prev,
                     head: newHead,
                     direction: currentDirection,
-                    // 如果吃到食物，保留最後一個身體部分；否則移除
                     bodyList: [prev.head, ...prev.bodyList.slice(0, ateFood ? prev.maxLength - 1 : prev.maxLength - 2)],
-                    // 如果吃到食物，增加最大長度
-                    maxLength: ateFood ? prev.maxLength + 1 : prev.maxLength
+                    maxLength: ateFood ? prev.maxLength + 1 : prev.maxLength,
+                    Speed: speedRef.current
                 };
             });
         };
 
-        // 設置移動間隔，根據蛇的速度
-        const gameInterval = setInterval(moveSnake, snake.Speed);
-        // 清理函數，在組件卸載或依賴項變化時清除定時器
+        const gameInterval = setInterval(moveSnake, speedRef.current);
         return () => clearInterval(gameInterval);
-    }, [isGameStarted, isPaused, currentDirection, food]); // 新增 food 作為依賴項
+    }, [isGameStarted, isPaused, currentDirection, food]);
 
     // 渲染遊戲界面
     return (
