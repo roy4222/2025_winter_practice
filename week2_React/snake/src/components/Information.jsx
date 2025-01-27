@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { MAX_WIDTH, PAGE_PADDING, SNAKE_INITIAL_SPEED } from './constants';
-import React from 'react'; // Add this line to import React
-
+import React from 'react';
 
 // 分數變化時的動畫效果
 const scoreChange = keyframes`
@@ -18,39 +17,37 @@ const scoreChange = keyframes`
 
 // 容器樣式
 const InfoContainer = styled.div`
-    width: 100%;
-    max-width: ${MAX_WIDTH}px;
-    padding: ${PAGE_PADDING}px;
-    margin: 0 auto;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
     gap: 20px;
+    padding: 10px;
+    width: 100%;
+    margin-left: 60px;  // 為主題切換按鈕留出空間
 `;
 
 // 分數顯示區塊樣式
-const ScoreBlock = styled.div`
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.background};
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 1.5rem;
-    font-weight: bold;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+const InfoItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 120px;
+    padding: 10px 20px;
+    background-color: ${({ theme }) => theme.colors.surface};
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    min-width: 100px;
 
-    .score-label {
-        font-size: 0.8rem;
+    h3 {
+        margin: 0;
+        font-size: 1rem;
+        color: ${({ theme }) => theme.colors.text};
         opacity: 0.8;
-        margin-bottom: 5px;
     }
 
-    .score-value {
-        font-size: 2rem;
-        animation: ${({ $changed }) => $changed ? scoreChange : 'none'} 0.3s ease-in-out;
+    p {
+        margin: 5px 0 0;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: ${({ theme }) => theme.colors.primary};
     }
 `;
 
@@ -58,19 +55,19 @@ const ScoreBlock = styled.div`
 const Information = ({ score, speed }) => {
     // 使用 useMemo 緩存計算結果,只有當 speed 改變時才重新計算
     const speedLevel = React.useMemo(() => {
-        return Math.round((SNAKE_INITIAL_SPEED - speed) / 3) + 1;
+        return Math.round((SNAKE_INITIAL_SPEED - speed) / 10) + 1;
     }, [speed]);
     
     return (
         <InfoContainer>
-            <ScoreBlock $changed={score > 0}>
-                <span className="score-label">分數</span>
-                <span className="score-value">{score}</span>
-            </ScoreBlock>
-            <ScoreBlock>
-                <span className="score-label">速度</span>
-                <span className="score-value">level {speedLevel}</span>
-            </ScoreBlock>
+            <InfoItem>
+                <h3>分數</h3>
+                <p>{score}</p>
+            </InfoItem>
+            <InfoItem>
+                <h3>速度</h3>
+                <p>level {speedLevel}</p>
+            </InfoItem>
         </InfoContainer>
     );
 };

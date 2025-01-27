@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import MainMap from './MainMap';
 import Information from './Information';
 import Actions from './Actions';
+import GameOverlay from './GameOverlay';
 import { GRID_SIZE, PAGE_PADDING, INITIAL_SNAKE, SNAKE_INITIAL_SPEED, direction, ARROW_RIGHT } from './constants';
 
 // 定義背景容器樣式
@@ -10,7 +11,8 @@ const Background = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    gap: 20px;
+    padding: ${PAGE_PADDING}px;
     min-height: 100vh;
     background-color: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
@@ -18,12 +20,12 @@ const Background = styled.div`
 
 // 定義遊戲容器樣式
 const GameContainer = styled.div`
-    display: flex;
-    gap: 20px;
-    padding: ${({ theme }) => theme.spacing.large};
-    background-color: ${({ theme }) => theme.colors.surface};
+    position: relative;
+    width: fit-content;
+    height: fit-content;
+    border: 2px solid ${({ theme }) => theme.colors.border};
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 `;
 
 // 定義左側面板樣式
@@ -44,27 +46,68 @@ const SnakeGame_Information = styled.div`
     min-height: 200px;
 `;
 
-// 定義主題切換按鈕樣式
-const ThemeToggleButton = styled.button`
-    width: 100%;
-    padding: ${({ theme }) => theme.spacing.medium};
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.background};
+// 定義按鈕容器樣式
+const ButtonGroup = styled.div`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 20;
+`;
+
+// 定義按鈕行容器
+const ButtonRow = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+`;
+
+// 定義通用按鈕樣式
+const GameButton = styled.button`
+    padding: 8px 16px;
+    font-size: 1rem;
+    background-color: #ff69b4;
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
-    font-size: ${({ theme }) => theme.typography.fontSize.medium};
-    font-weight: bold;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 100px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        filter: brightness(1.1);
     }
 
     &:active {
         transform: translateY(1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        filter: brightness(0.9);
+    }
+
+    .icon {
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+    }
+
+    /* 暫停/繼續按鈕特殊樣式 */
+    &[data-action="pause"] {
+        background-color: ${props => props.$isPaused ? '#4CAF50' : '#ff69b4'};
+    }
+
+    /* 遊戲結束按鈕特殊樣式 */
+    &[data-action="gameover"] {
+        background-color: #f44336;
     }
 `;
 
@@ -73,11 +116,11 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     // 使用 useState 鉤子來管理遊戲狀態
     const [snake, setSnake] = useState(INITIAL_SNAKE);
     const [currentDirection, setCurrentDirection] = useState(direction[ARROW_RIGHT]);
-    const [isGameStarted, setIsGameStarted] = useState(false);
+    const [isGameStarted, setIsGameStarted] = useState(false);  // 確保初始狀態為未開始
     const [isPaused, setIsPaused] = useState(false);
+    const [isGameOver, setIsGameOver] = useState(false);
     const [score, setScore] = useState(0);
     const [food, setFood] = useState(null);
-    const [isGameOver, setIsGameOver] = useState(false);
     const speedRef = useRef(SNAKE_INITIAL_SPEED);
     const gameInterval = useRef(null);
 
@@ -219,46 +262,73 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     return (
         <Background>
             <GameContainer>
-                <LeftPanel>
-                    {/* 主題切換按鈕 */}
-                    <ThemeToggleButton onClick={() => setIsDarkMode(!isDarkMode)}>
-                        切換{isDarkMode ? '淺色' : '深色'}主題
-                    </ThemeToggleButton>
-                    {/* 遊戲規則說明 */}
-                    <SnakeGame_Information>
-                        <h3>遊戲規則: </h3>
-                        <ul>
-                            <li>使用方向鍵或W/A/S/D控制蛇的移動</li>
-                            <li>按空格鍵暫停或繼續遊戲</li>
-                            <li>吃到食物可以增加分數和蛇的長度</li>
-                            <li>撞到自己的身體會結束遊戲</li>
-                            <li>盡可能獲得高分！</li>
-                        </ul>
-                    </SnakeGame_Information>
-                </LeftPanel>
-                <div>
-                    {/* 分數顯示 */}
-                    <Information score={score} speed={snake.speed} />
-                    {/* 主遊戲地圖 */}
-                    <MainMap snake={snake} food={food} />
-                </div>
-                {/* 遊戲控制按鈕和操作 */}
-                <Actions 
-                    currentDirection={currentDirection}
-                    setCurrentDirection={setCurrentDirection}
-                    setSnake={setSnake}
-                    isGameStarted={isGameStarted}
-                    setIsGameStarted={setIsGameStarted}
-                    isPaused={isPaused}
-                    setIsPaused={setIsPaused}
-                    setScore={setScore}
+                {/* 按鈕組 */}
+                <ButtonGroup>
+                    <ButtonRow>
+                        <GameButton onClick={() => setIsDarkMode(!isDarkMode)}>
+                            <span className="icon">🌓</span>
+                            主題
+                        </GameButton>
+                    </ButtonRow>
+                    <ButtonRow>
+                        <GameButton 
+                            onClick={() => !isGameOver && setIsPaused(!isPaused)}
+                            data-action={isGameOver ? "gameover" : "pause"}
+                            $isPaused={isPaused}
+                        >
+                            <span className="icon">
+                                {isGameOver ? '💀' : (isPaused ? '▶' : '⏸')}
+                            </span>
+                            {isGameOver ? '結束' : (isPaused ? '繼續' : '暫停')}
+                        </GameButton>
+                        <GameButton onClick={resetGame}>
+                            <span className="icon">🔄</span>
+                            重來
+                        </GameButton>
+                    </ButtonRow>
+                </ButtonGroup>
+
+                {/* 遊戲資訊 */}
+                <Information 
+                    score={score}
+                    speed={snake.speed}
                     isDarkMode={isDarkMode}
+                />
+                {/* 遊戲地圖 */}
+                <MainMap 
+                    snake={snake}
+                    food={food}
+                    isDarkMode={isDarkMode}
+                />
+
+                {/* 遊戲開始和結束畫面 */}
+                <GameOverlay 
+                    isGameStarted={isGameStarted}
                     isGameOver={isGameOver}
-                    setIsGameOver={setIsGameOver}
-                    updateSpeed={updateSpeed}
-                    resetGame={resetGame}
+                    score={score}
+                    onStart={() => {
+                        setIsGameStarted(true);
+                        setIsPaused(false);
+                    }}
+                    onRestart={resetGame}
                 />
             </GameContainer>
+
+            {/* 遊戲控制按鈕和操作 */}
+            <Actions 
+                currentDirection={currentDirection}
+                setCurrentDirection={setCurrentDirection}
+                setSnake={setSnake}
+                isGameStarted={isGameStarted}
+                setIsGameStarted={setIsGameStarted}
+                isPaused={isPaused}
+                setIsPaused={setIsPaused}
+                setScore={setScore}
+                isDarkMode={isDarkMode}
+                isGameOver={isGameOver}
+                setIsGameOver={setIsGameOver}
+                resetGame={resetGame}
+            />
         </Background>
     );
 };
