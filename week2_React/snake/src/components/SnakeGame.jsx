@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { SNAKE_INITIAL_SPEED, GRID_SIZE, direction, INITIAL_SNAKE, ARROW_RIGHT } from './constants';
 import MainMap from './MainMap';
 import Actions from './Actions';
+import Information from './Information';
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -157,8 +158,12 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                         </ul>
                     </SnakeGame_Information>
                 </LeftPanel>
-                {/* 主遊戲地圖 */}
-                <MainMap snake={snake} food={food} />
+                <div>
+                    {/* 分數顯示 */}
+                    <Information score={score} />
+                    {/* 主遊戲地圖 */}
+                    <MainMap snake={snake} food={food} />
+                </div>
                 {/* 遊戲控制按鈕和操作 */}
                 <Actions 
                     currentDirection={currentDirection}
