@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-import { SNAKE_INITIAL_SPEED, GRID_SIZE, direction, INITIAL_SNAKE, ARROW_RIGHT } from './constants';
 import MainMap from './MainMap';
-import Actions from './Actions';
 import Information from './Information';
+import Actions from './Actions';
+import { GRID_SIZE, PAGE_PADDING, INITIAL_SNAKE, SNAKE_INITIAL_SPEED, direction, ARROW_RIGHT } from './constants';
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -70,72 +70,124 @@ const ThemeToggleButton = styled.button`
 
 // 定義 SnakeGame 組件，接收 isDarkMode 和 setIsDarkMode 作為 props
 const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
-    // 使用 useRef 來追踪當前速度
-    const speedRef = useRef(SNAKE_INITIAL_SPEED);
-    
     // 使用 useState 鉤子來管理遊戲狀態
-    const [snake, setSnake] = useState({ ...INITIAL_SNAKE, Speed: SNAKE_INITIAL_SPEED });
+    const [snake, setSnake] = useState(INITIAL_SNAKE);
     const [currentDirection, setCurrentDirection] = useState(direction[ARROW_RIGHT]);
     const [isGameStarted, setIsGameStarted] = useState(false);
     const [isPaused, setIsPaused] = useState(false);
     const [score, setScore] = useState(0);
     const [food, setFood] = useState(null);
+    const [isGameOver, setIsGameOver] = useState(false);
+    const speedRef = useRef(SNAKE_INITIAL_SPEED);
 
-    // 生成新的食物位置
-    const generateFood = () => {
-        let newFood;
-        do {
-            newFood = {
-                x: Math.floor(Math.random() * GRID_SIZE),
-                y: Math.floor(Math.random() * GRID_SIZE)
+    // 移動蛇的函數
+    const moveSnake = useCallback(() => {
+        if (!isGameStarted || isPaused || isGameOver) return;
+
+        setSnake(prev => {
+            const newHead = {
+                x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
+                y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
             };
-        } while (
-            (newFood.x === snake.head.x && newFood.y === snake.head.y) || 
-            snake.bodyList.some(body => body.x === newFood.x && body.y === newFood.y)
-        );
-        setFood(newFood);
-    };
 
-    // 在遊戲開始時生成第一個食物
-    useEffect(() => {
-        if (isGameStarted && !food) {
-            generateFood();
-        }
-    }, [isGameStarted]);
+            // 檢查是否撞到自己
+            const hasCollision = prev.bodyList.some(
+                segment => segment.x === newHead.x && segment.y === newHead.y
+            );
 
-    // 使用 useEffect 鉤子來處理蛇的移動邏輯
-    useEffect(() => {
-        if (!isGameStarted || isPaused) return;
+            if (hasCollision) {
+                setIsGameOver(true);
+                return prev;
+            }
 
-        const moveSnake = () => {
-            setSnake(prev => {
-                const newHead = {
-                    x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
-                    y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
-                };
-
-                const ateFood = food && newHead.x === food.x && newHead.y === food.y;
-                if (ateFood) {
-                    setScore(prevScore => prevScore + 10);
-                    generateFood();
-                    // 更新速度引用 - 減少間隔時間使蛇移動更快
-                    speedRef.current = Math.max(50, speedRef.current - 20);
-                }
-
+            // 更新蛇的身體
+            const newBodyList = [prev.head, ...prev.bodyList];
+            
+            // 檢查是否吃到食物
+            if (food && newHead.x === food.x && newHead.y === food.y) {
+                const newScore = score + 1;
+                setScore(newScore);
+                updateSpeed(newScore);
+                setFood(null);
                 return {
                     ...prev,
                     head: newHead,
-                    direction: currentDirection,
-                    bodyList: [prev.head, ...prev.bodyList.slice(0, ateFood ? prev.maxLength - 1 : prev.maxLength - 2)],
-                    maxLength: ateFood ? prev.maxLength + 1 : prev.maxLength,
-                    Speed: speedRef.current
+                    bodyList: newBodyList,
+                    maxLength: prev.maxLength + 1,
+                    speed: speedRef.current
                 };
-            });
+            }
+
+            // 如果沒有吃到食物，移除尾部
+            if (newBodyList.length > prev.maxLength - 1) {
+                newBodyList.pop();
+            }
+
+            return {
+                ...prev,
+                head: newHead,
+                bodyList: newBodyList
+            };
+        });
+    }, [isGameStarted, isPaused, isGameOver, currentDirection, food]);
+
+    // 生成食物的函數
+    const generateFood = useCallback(() => {
+        if (food) return;
+
+        const newFood = {
+            x: Math.floor(Math.random() * GRID_SIZE),
+            y: Math.floor(Math.random() * GRID_SIZE)
         };
 
+        // 確保食物不會生成在蛇的身體上
+        const isOnSnake = snake.bodyList.some(
+            segment => segment.x === newFood.x && segment.y === newFood.y
+        ) || (snake.head.x === newFood.x && snake.head.y === newFood.y);
+
+        if (isOnSnake) {
+            generateFood();
+            return;
+        }
+
+        setFood(newFood);
+    }, [food, snake]);
+
+    // 更新速度的函數
+    const updateSpeed = useCallback((newScore) => {
+        // 每吃一個食物減少30ms,最快50ms
+        const newSpeed = Math.max(50, SNAKE_INITIAL_SPEED - (newScore * 30));
+        speedRef.current = newSpeed;
+        setSnake(prev => ({...prev, speed: newSpeed}));
+    }, []);
+
+    // 重置遊戲的函數
+    const resetGame = useCallback(() => {
+        setSnake({
+            ...INITIAL_SNAKE,
+            speed: SNAKE_INITIAL_SPEED  // 明確設置速度
+        });
+        setCurrentDirection(direction[ARROW_RIGHT]);
+        setIsGameStarted(false);
+        setIsPaused(false);
+        setScore(0);
+        setFood(null);
+        setIsGameOver(false);
+        speedRef.current = SNAKE_INITIAL_SPEED;
+    }, []);
+
+    // 使用 useEffect 鉤子來處理蛇的移動邏輯
+    useEffect(() => {
         const gameInterval = setInterval(moveSnake, speedRef.current);
         return () => clearInterval(gameInterval);
-    }, [isGameStarted, isPaused, currentDirection, food]);
+    }, [moveSnake, speedRef]);
+
+    // 使用 useEffect 處理食物的生成
+    useEffect(() => {
+        if (isGameStarted && !isPaused && !isGameOver && !food) {
+            generateFood();
+        }
+    }, [isGameStarted, isPaused, isGameOver, food, generateFood]);
 
     // 渲染遊戲界面
     return (
@@ -175,11 +227,14 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                     setIsPaused={setIsPaused}
                     setScore={setScore}
                     isDarkMode={isDarkMode}
+                    isGameOver={isGameOver}
+                    setIsGameOver={setIsGameOver}
+                    updateSpeed={updateSpeed}
+                    resetGame={resetGame}
                 />
             </GameContainer>
         </Background>
     );
 };
 
-// 導出 SnakeGame 組件
 export default SnakeGame;

@@ -2,7 +2,7 @@
 export const GRID_SIZE = 30; 
 
 // 定義蛇的初始速度（毫秒）
-export const SNAKE_INITIAL_SPEED = 200;
+export const SNAKE_INITIAL_SPEED = 100;
 
 export const PAGE_PADDING = 8;
 export const MAX_WIDTH = 650;
@@ -40,5 +40,5 @@ export const INITIAL_SNAKE = {
     ],
     maxLength: 3,
     direction: direction[ARROW_RIGHT],
-    Speed: SNAKE_INITIAL_SPEED,
+    speed: SNAKE_INITIAL_SPEED,
 };

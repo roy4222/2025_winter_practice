@@ -43,7 +43,8 @@ const SnakeHead = styled.div.attrs(props => ({
             if (props.direction.y === 1) return 'rotate(90deg)';
             if (props.direction.y === -1) return 'rotate(-90deg)';
             return 'rotate(0deg)';
-        })()
+        })(),
+        transition: props.$isCrossing ? 'none' : `all ${props.speed * 0.25}ms linear`
     }
 }))`
     position: absolute;
@@ -52,7 +53,6 @@ const SnakeHead = styled.div.attrs(props => ({
     background-color: ${({ theme }) => theme.colors.primary};
     border-radius: 50%;
     z-index: 1;
-    transition: all 0.2s linear;
     animation: mouthMove 0.3s infinite linear;
 
     @keyframes mouthMove {
@@ -78,7 +78,10 @@ const SnakeBody = styled.div.attrs(props => ({
     style: {
         left: `${(props.x * 100 / GRID_SIZE)}%`,
         top: `${(props.y * 100 / GRID_SIZE)}%`,
-        zIndex: 10 - props.$index
+        zIndex: 10 - props.$index,
+        // 設定固定的較短動畫時間,最多30ms
+        transition: props.$isCrossing ? 'none' : `all ${Math.min(30, props.speed * 0.15)}ms linear`,
+        transform: props.$isCrossing ? 'none' : undefined
     }
 }))`
     position: absolute;
@@ -91,7 +94,6 @@ const SnakeBody = styled.div.attrs(props => ({
         return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     }};
     border-radius: 40%;
-    transition: all 0.2s linear;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     
     &:after {
@@ -116,7 +118,7 @@ const SnakeBody = styled.div.attrs(props => ({
 const Food = styled.div.attrs(props => ({
     style: {
         left: `${(props.x * 100 / GRID_SIZE)}%`,
-        top: `${(props.y * 100 / GRID_SIZE)}%`
+        top: `${(props.y * 100 / GRID_SIZE)}%`,
     }
 }))`
     position: absolute;
@@ -124,13 +126,13 @@ const Food = styled.div.attrs(props => ({
     height: calc(100% / ${GRID_SIZE});
     background-color: ${({ theme }) => theme.colors.secondary};
     border-radius: 50%;
-    z-index: 1;
-    animation: pulse 1s infinite ease-in-out;
+    transform: scale(0.8);
+    animation: pulse 1s infinite;
 
     @keyframes pulse {
-        0% { transform: scale(0.95); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(0.95); }
+        0% { transform: scale(0.8); }
+        50% { transform: scale(0.9); }
+        100% { transform: scale(0.8); }
     }
 
     &:before {
@@ -140,31 +142,52 @@ const Food = styled.div.attrs(props => ({
         height: 30%;
         background-color: ${({ theme }) => theme.colors.background};
         border-radius: 50%;
-        top: 20%;
-        left: 20%;
+        top: 15%;
+        right: 15%;
         opacity: 0.7;
     }
 `;
 
 // 主地圖組件
 const MainMap = ({ snake, food }) => {
-    // 創建 GRID_SIZE * GRID_SIZE 的網格，填充 null 值
-    const grid = Array(GRID_SIZE * GRID_SIZE).fill(null);
+    // 檢查是否是邊界穿越
+    const isCrossingBoundary = (pos1, pos2) => {
+        const dx = Math.abs(pos1.x - pos2.x);
+        const dy = Math.abs(pos1.y - pos2.y);
+        return dx > 1 || dy > 1;
+    };
 
     return (
         <MapContainer>
-            {/* 遍歷 grid 數組，為每個元素創建一個 GridCell 組件 */}
-            {grid.map((_, index) => (
+            {/* 生成網格 */}
+            {Array.from({ length: GRID_SIZE * GRID_SIZE }).map((_, index) => (
                 <GridCell key={index} />
             ))}
             
             {/* 渲染蛇頭 */}
-            <SnakeHead x={snake.head.x} y={snake.head.y} direction={snake.direction} />
+            <SnakeHead 
+                x={snake.head.x} 
+                y={snake.head.y} 
+                direction={snake.direction} 
+                speed={snake.speed}
+                $isCrossing={snake.bodyList.length > 0 && isCrossingBoundary(snake.head, snake.bodyList[0])}
+            />
 
             {/* 渲染蛇身 */}
-            {snake.bodyList.map((body, index) => (
-                <SnakeBody key={index} x={body.x} y={body.y} $index={index} />
-            ))}
+            {snake.bodyList.map((body, index) => {
+                // 使用前一個位置作為參考點
+                const prevPos = index === 0 ? snake.head : snake.bodyList[index - 1];
+                return (
+                    <SnakeBody 
+                        key={index} 
+                        x={body.x} 
+                        y={body.y} 
+                        $index={index} 
+                        speed={snake.speed}
+                        $isCrossing={isCrossingBoundary(body, prevPos)}
+                    />
+                );
+            })}
 
             {/* 渲染食物 */}
             {food && <Food x={food.x} y={food.y} />}

@@ -246,7 +246,9 @@ const Actions = ({
     isPaused,               // 遊戲是否暫停的標誌
     setIsPaused,            // 設置遊戲暫停狀態的函數
     setScore,               // 設置遊戲分數的函數
-    isDarkMode              // 是否為深色模式的標誌
+    isDarkMode,             // 是否為深色模式的標誌
+    isGameOver,            // 遊戲是否結束的標誌
+    setIsGameOver          // 設置遊戲結束狀態的函數
 }) => {
     // 處理方向改變的函數
     const handleDirectionChange = (newDirection) => {
@@ -341,28 +343,28 @@ const Actions = ({
             <DirectionPad>
                 <DirectionButton
                     data-direction="up"
-                    onClick={() => !isPaused && handleDirectionChange(direction[ARROW_UP])}
+                    onClick={() => !isPaused && !isGameOver && handleDirectionChange(direction[ARROW_UP])}
                 />
                 <DirectionButton
                     data-direction="left"
-                    onClick={() => !isPaused && handleDirectionChange(direction[ARROW_LEFT])}
+                    onClick={() => !isPaused && !isGameOver && handleDirectionChange(direction[ARROW_LEFT])}
                 />
                 <DirectionButton
                     data-direction="right"
-                    onClick={() => !isPaused && handleDirectionChange(direction[ARROW_RIGHT])}
+                    onClick={() => !isPaused && !isGameOver && handleDirectionChange(direction[ARROW_RIGHT])}
                 />
                 <DirectionButton
                     data-direction="down"
-                    onClick={() => !isPaused && handleDirectionChange(direction[ARROW_DOWN])}
+                    onClick={() => !isPaused && !isGameOver && handleDirectionChange(direction[ARROW_DOWN])}
                 />
             </DirectionPad>
             
             {/* 暫停/播放按鈕 */}
             <PauseButton 
                 $isDarkMode={isDarkMode}  
-                onClick={() => setIsPaused(!isPaused)}
+                onClick={() => !isGameOver && setIsPaused(!isPaused)}
             >
-                {isPaused ? '繼續遊戲' : '暫停遊戲'}
+                {isGameOver ? '遊戲結束' : (isPaused ? '繼續遊戲' : '暫停遊戲')}
             </PauseButton>
             
             {/* 重新開始按鈕 */}
@@ -371,6 +373,7 @@ const Actions = ({
                 setIsGameStarted(false);  // 設置遊戲為未開始狀態
                 setIsPaused(false);       // 取消暫停狀態
                 setScore(0);              // 重置分數
+                setIsGameOver(false);     // 重置遊戲結束狀態
             }}>
                 重來一場
             </RestartButton>
