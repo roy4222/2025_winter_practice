@@ -1,41 +1,161 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-// 流光動畫
-const shine = keyframes`
+// 縮放動畫
+const pulse = keyframes`
     0% {
-        background-position: 0% 50%;
+        transform: scale(1);
     }
     50% {
-        background-position: 100% 50%;
+        transform: scale(${() => 0.95 + Math.random() * 0.1});
     }
     100% {
-        background-position: 0% 50%;
+        transform: scale(1);
     }
 `;
 
-// 邊框閃光動畫
-const borderShine = keyframes`
+// 旋轉動畫
+const rotate = keyframes`
     0% {
-        border-color: ${({ theme }) => theme.colors.border};
+        transform: rotate(0deg);
     }
     50% {
-        border-color: ${({ theme }) => theme.colors.primary};
+        transform: rotate(${() => (Math.random() > 0.5 ? 5 : -5)}deg);
     }
     100% {
-        border-color: ${({ theme }) => theme.colors.border};
+        transform: rotate(0deg);
+    }
+`;
+
+// 位移動畫
+const float = keyframes`
+    0% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(
+            ${() => (Math.random() > 0.5 ? 3 : -3)}px,
+            ${() => (Math.random() > 0.5 ? 3 : -3)}px
+        );
+    }
+    100% {
+        transform: translate(0, 0);
     }
 `;
 
 // 波紋動畫
-const ripple = keyframes`
+const rippleEffect = keyframes`
     0% {
         transform: scale(0);
-        opacity: 1;
+        opacity: 0.8;
     }
     100% {
         transform: scale(4);
         opacity: 0;
+    }
+`;
+
+// RGB呼吸燈動畫
+const rgbBreathe = keyframes`
+    0% {
+        border-color: rgba(255, 0, 0, 0.8);
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        filter: brightness(1.2);
+    }
+    14% {
+        border-color: rgba(255, 0, 255, 0.7);
+        box-shadow: 0 0 12px rgba(255, 0, 255, 0.4);
+        filter: brightness(1.1);
+    }
+    28% {
+        border-color: rgba(128, 0, 255, 0.9);
+        box-shadow: 0 0 18px rgba(128, 0, 255, 0.6);
+        filter: brightness(1.3);
+    }
+    42% {
+        border-color: rgba(0, 255, 0, 0.6);
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        filter: brightness(0.9);
+    }
+    56% {
+        border-color: rgba(0, 255, 255, 0.85);
+        box-shadow: 0 0 16px rgba(0, 255, 255, 0.5);
+        filter: brightness(1.25);
+    }
+    70% {
+        border-color: rgba(0, 0, 255, 0.9);
+        box-shadow: 0 0 20px rgba(0, 0, 255, 0.7);
+        filter: brightness(1.4);
+    }
+    84% {
+        border-color: rgba(255, 255, 0, 0.75);
+        box-shadow: 0 0 14px rgba(255, 255, 0, 0.45);
+        filter: brightness(1.15);
+    }
+    100% {
+        border-color: rgba(255, 0, 0, 0.8);
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        filter: brightness(1.2);
+    }
+`;
+
+// 邊框發光動畫
+const borderShine = keyframes`
+    0% {
+        border-color: rgba(255, 182, 193, 0.6);
+    }
+    33% {
+        border-color: rgba(147, 112, 219, 0.6);
+    }
+    66% {
+        border-color: rgba(0, 255, 255, 0.6);
+    }
+    100% {
+        border-color: rgba(255, 182, 193, 0.6);
+    }
+`;
+
+// 不規則光暈效果
+const glowEffect = keyframes`
+    0% {
+        box-shadow: 
+            0 0 15px rgba(255, 182, 193, 0.4),
+            0 0 30px rgba(147, 112, 219, 0.2),
+            0 0 45px rgba(0, 255, 255, 0.1);
+    }
+    25% {
+        box-shadow: 
+            0 0 20px rgba(147, 112, 219, 0.5),
+            0 0 35px rgba(0, 255, 255, 0.3),
+            0 0 50px rgba(255, 182, 193, 0.1);
+    }
+    50% {
+        box-shadow: 
+            0 0 25px rgba(0, 255, 255, 0.6),
+            0 0 40px rgba(255, 182, 193, 0.4),
+            0 0 55px rgba(147, 112, 219, 0.2);
+    }
+    75% {
+        box-shadow: 
+            0 0 20px rgba(255, 182, 193, 0.5),
+            0 0 35px rgba(147, 112, 219, 0.3),
+            0 0 50px rgba(0, 255, 255, 0.1);
+    }
+    100% {
+        box-shadow: 
+            0 0 15px rgba(255, 182, 193, 0.4),
+            0 0 30px rgba(147, 112, 219, 0.2),
+            0 0 45px rgba(0, 255, 255, 0.1);
+    }
+`;
+
+// 翻轉動畫
+const flip = keyframes`
+    0% {
+        transform: perspective(1000px) rotateY(0);
+    }
+    100% {
+        transform: perspective(1000px) rotateY(180deg);
     }
 `;
 
@@ -61,8 +181,9 @@ const Block = styled.div`
     // 基本定位和尺寸
     position: relative;
     width: 100%;
+    aspect-ratio: 1;
 
-    // 背景顏色設置，根據活動狀態變化
+    // 背景顏色設置
     background: ${({ theme, $isActive }) => 
         $isActive 
             ? `linear-gradient(120deg, 
@@ -73,18 +194,25 @@ const Block = styled.div`
     background-size: 200% 200%;
 
     // 邊框和圓角設置
-    border: 2px solid ${({ theme }) => theme.colors.border};
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 8px;
 
-    // 游標樣式和過渡效果
-    cursor: pointer;
-    transition: all 0.3s ease;
-
-    // 3D 變換樣式
+    // 基礎3D效果
     transform-style: preserve-3d;
+    perspective: 1000px;
+    backface-visibility: visible;
+    transition: transform 0.6s ease-in-out;
+    position: relative;
+    cursor: pointer;
 
-    // 活動狀態時的動畫效果
-    animation: ${({ $isActive }) => $isActive ? shine : 'none'} 3s linear infinite;
+    // 基礎動畫效果
+    animation: 
+        ${glowEffect} ${() => 2 + Math.random() * 2}s infinite ease-in-out,
+        ${borderShine} ${() => 1.5 + Math.random() * 1}s infinite ease-in-out;
+    
+    animation-delay: 
+        ${() => -Math.random() * 2}s,
+        ${() => -Math.random() * 1.5}s;
 
     // 保持正方形比例
     &::before {
@@ -93,7 +221,7 @@ const Block = styled.div`
         padding-top: 100%;
     }
 
-    // 點擊效果的內部元素
+    // 波紋效果
     &::after {
         content: '';
         position: absolute;
@@ -101,31 +229,52 @@ const Block = styled.div`
         left: 50%;
         width: 5px;
         height: 5px;
-        background: ${({ theme }) => theme.colors.primary}40;
-        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
         opacity: 0;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
         pointer-events: none;
     }
 
     // 活動狀態的額外樣式
     ${({ $isActive }) => $isActive && `
-        animation: ${borderShine} 2s ease-in-out infinite;
-        box-shadow: 0 5px 15px ${({ theme }) => theme.colors.primary}40;
+        animation: 
+            ${glowEffect} 1.5s infinite ease-in-out,
+            ${borderShine} 1s infinite ease-in-out,
+            ${flip} 0.6s ease-in-out forwards;
+        transform: perspective(1000px) rotateY(180deg);
+        box-shadow: 
+            0 0 30px rgba(255, 182, 193, 0.5),
+            0 0 50px rgba(147, 112, 219, 0.3),
+            0 0 70px rgba(0, 255, 255, 0.2);
     `}
 
     // 懸停效果
     &:hover {
-        transform: scale(0.95) rotateX(10deg) rotateY(10deg);
-        background-color: ${({ theme, $isActive }) => 
-            $isActive ? theme.colors.primary : theme.colors.secondary}20;
+        transform: 
+            ${({ $isActive }) => $isActive ? 
+                'perspective(1000px) rotateY(190deg)' : 
+                'perspective(1000px) rotateY(10deg)'};
+        box-shadow: 
+            0 0 25px rgba(255, 182, 193, 0.6),
+            0 0 45px rgba(147, 112, 219, 0.4),
+            0 0 65px rgba(0, 255, 255, 0.3);
+        z-index: 1;
     }
 
     // 點擊效果
     &:active {
-        transform: scale(0.9);
-        
+        transform: 
+            ${({ $isActive }) => $isActive ? 
+                'perspective(1000px) rotateY(175deg)' : 
+                'perspective(1000px) rotateY(5deg)'};
+        box-shadow: 
+            0 0 20px rgba(255, 182, 193, 0.4),
+            0 0 35px rgba(147, 112, 219, 0.2),
+            0 0 50px rgba(0, 255, 255, 0.1);
+            
         &::after {
-            animation: ${ripple} 0.8s ease-out;
+            animation: ${rippleEffect} 0.8s ease-out;
         }
     }
 `;
