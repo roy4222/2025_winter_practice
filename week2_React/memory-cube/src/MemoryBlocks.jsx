@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Blocks from './components/blocks';
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -70,6 +71,9 @@ const BlockContainer = styled.div`
   min-height: 400px;
   background-color: ${({ theme }) => theme.colors.primary}10;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 // 定義進度條樣式
@@ -119,6 +123,58 @@ const GameButton = styled.button`
 `;
 
 const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
+  // 定義生成隨機整數的工具函數
+  const getRandomInt = (max) => {
+    return Math.floor(Math.random() * max);
+  };
+
+  // 定義生成問題的函數，根據當前等級和方塊數量
+  const generateQuestions = (level, blockNum) => {
+    const num = level + 2;
+    const questions = new Array(num).fill(0).map(() => 
+      getRandomInt(blockNum));    
+    return questions;
+  };
+
+  // 定義遊戲的初始等級
+  const DEFAULT_LEVEL = 1;
+  // 使用 useState 鉤子管理當前等級狀態
+  const [level, setLevel] = useState(DEFAULT_LEVEL);
+  
+  // 定義不同等級對應的方塊數量
+  const blockNumSet = [4, 9, 16, 25];
+  // 定義每隔多少等級增加方塊數量
+  const levelGap = 4;
+  // 計算當前等級對應的方塊數量索引
+  const blockNumSetIndex = Math.min(Math.floor(level / levelGap), 3);
+  // 獲取當前等級的方塊數量
+  const blockNum = blockNumSet[blockNumSetIndex];
+  // 使用 useState 鉤子管理問題狀態，初始值為第一級的問題
+  const [questions, setQuestions] = useState(generateQuestions(DEFAULT_LEVEL, blockNumSet[0]));
+  
+  // 定義初始答案為空數組
+  const DEFAULT_ANSWER = [];
+  // 使用 useState 鉤子管理答案狀態
+  const [answer, setAnswer] = useState(DEFAULT_ANSWER);
+
+  // 使用 useState 鉤子管理遊戲是否開始的狀態
+  const [isGameStart, setIsGameStart] = useState(false);
+  
+  // 定義初始機會數
+  const DEFAULT_CHANCE = 3;
+  // 使用 useState 鉤子管理剩餘機會數狀態
+  const [chance, setChance] = useState(DEFAULT_CHANCE);
+  // 使用 useState 鉤子管理加載狀態
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 定義處理方塊點擊的函數
+  const handleBlockClick = (index) => {
+    // 如果正在加載中，則不處理點擊事件
+    if (isLoading) return;
+    // 將點擊的方塊索引添加到答案數組中
+    setAnswer([...answer, index]);
+  };
+
   return (
     <Background>
       <Container>
@@ -129,10 +185,18 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
             主題
           </GameButton>
         </Title>
-        <Level>關卡資訊</Level>
-        <BlockContainer>記憶方塊</BlockContainer>
+        <Level>第 {level} 關</Level>
+        <BlockContainer>
+          <Blocks
+            blockNum={blockNum}
+            questions={questions}
+            answer={answer}
+            isGameStart={isGameStart}
+            onBlockClick={handleBlockClick}
+          />
+        </BlockContainer>
         <Progress>進度條</Progress>
-        <Chance>機會/命</Chance>
+        <Chance>剩餘機會: {chance}</Chance>
       </Container>
     </Background>
   );
