@@ -149,47 +149,61 @@ const Food = styled.div.attrs(props => ({
 `;
 
 // 主地圖組件
+// 接收 snake 和 food 作為 props，用於渲染蛇和食物
 const MainMap = ({ snake, food }) => {
     // 檢查是否是邊界穿越
+    // 此函數用於判斷蛇是否正在穿越地圖邊界
     const isCrossingBoundary = (pos1, pos2) => {
+        // 計算兩點在 x 軸和 y 軸上的絕對距離
         const dx = Math.abs(pos1.x - pos2.x);
         const dy = Math.abs(pos1.y - pos2.y);
+        // 如果 x 或 y 的距離大於 1，則認為是在穿越邊界
         return dx > 1 || dy > 1;
     };
 
     return (
+        // MapContainer 是一個自定義的 styled-component，用於創建遊戲地圖的容器
         <MapContainer>
             {/* 生成網格 */}
+            {/* 使用 Array.from 創建一個長度為 GRID_SIZE * GRID_SIZE 的數組，並遍歷它 */}
+            {/* 每個元素都渲染為一個 GridCell 組件，形成遊戲的背景網格 */}
             {Array.from({ length: GRID_SIZE * GRID_SIZE }).map((_, index) => (
                 <GridCell key={index} />
             ))}
             
             {/* 渲染蛇頭 */}
+            {/* SnakeHead 是一個自定義的 styled-component，用於渲染蛇頭 */}
             <SnakeHead 
-                x={snake.head.x} 
-                y={snake.head.y} 
-                direction={snake.direction} 
-                speed={snake.speed}
+                x={snake.head.x}  // 蛇頭的 x 坐標
+                y={snake.head.y}  // 蛇頭的 y 坐標
+                direction={snake.direction}  // 蛇的移動方向
+                speed={snake.speed}  // 蛇的移動速度
+                // 判斷蛇頭是否正在穿越邊界
                 $isCrossing={snake.bodyList.length > 0 && isCrossingBoundary(snake.head, snake.bodyList[0])}
             />
 
             {/* 渲染蛇身 */}
+            {/* 遍歷 snake.bodyList 數組，渲染每一節蛇身 */}
             {snake.bodyList.map((body, index) => {
-                // 使用前一個位置作為參考點
+                // 使用前一個位置作為參考點，用於判斷是否穿越邊界
+                // 如果是第一節身體，則使用蛇頭作為參考點
                 const prevPos = index === 0 ? snake.head : snake.bodyList[index - 1];
                 return (
+                    // SnakeBody 是一個自定義的 styled-component，用於渲染蛇身
                     <SnakeBody 
-                        key={index} 
-                        x={body.x} 
-                        y={body.y} 
-                        $index={index} 
-                        speed={snake.speed}
+                        key={index}  // React 列表渲染需要的唯一 key
+                        x={body.x}  // 身體節點的 x 坐標
+                        y={body.y}  // 身體節點的 y 坐標
+                        $index={index}  // 用於計算身體顏色漸變
+                        speed={snake.speed}  // 蛇的移動速度
+                        // 判斷該節身體是否正在穿越邊界
                         $isCrossing={isCrossingBoundary(body, prevPos)}
                     />
                 );
             })}
 
             {/* 渲染食物 */}
+            {/* 只有當 food 存在時才渲染 Food 組件 */}
             {food && <Food x={food.x} y={food.y} />}
         </MapContainer>
     );

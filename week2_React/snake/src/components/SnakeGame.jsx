@@ -123,36 +123,39 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     const [food, setFood] = useState(null);
     const speedRef = useRef(SNAKE_INITIAL_SPEED);
     const gameInterval = useRef(null);
-
     // 移動蛇的函數
     const moveSnake = useCallback(() => {
+        // 如果遊戲未開始、已暫停或已結束，則不執行任何操作
         if (!isGameStarted || isPaused || isGameOver) return;
 
         setSnake(prev => {
+            // 計算新的蛇頭位置，使用模運算確保在網格範圍內
             const newHead = {
                 x: (prev.head.x + currentDirection.x + GRID_SIZE) % GRID_SIZE,
                 y: (prev.head.y + currentDirection.y + GRID_SIZE) % GRID_SIZE
             };
 
-            // 檢查是否撞到自己
+            // 檢查是否撞到自己的身體
             const hasCollision = prev.bodyList.some(
                 segment => segment.x === newHead.x && segment.y === newHead.y
             );
 
+            // 如果發生碰撞，設置遊戲結束狀態並返回當前狀態
             if (hasCollision) {
                 setIsGameOver(true);
                 return prev;
             }
 
-            // 更新蛇的身體
+            // 更新蛇的身體，將當前頭部加入身體列表的開始
             const newBodyList = [prev.head, ...prev.bodyList];
             
             // 檢查是否吃到食物
             if (food && newHead.x === food.x && newHead.y === food.y) {
                 const newScore = score + 1;
-                setScore(newScore);
-                updateSpeed(newScore);
-                setFood(null);
+                setScore(newScore);        // 更新分數
+                updateSpeed(newScore);     // 根據新分數更新速度
+                setFood(null);             // 移除已被吃掉的食物
+                // 返回更新後的蛇狀態，包括新的頭部、身體、長度和速度
                 return {
                     ...prev,
                     head: newHead,
@@ -162,11 +165,12 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
                 };
             }
 
-            // 如果沒有吃到食物，移除尾部
+            // 如果沒有吃到食物，且身體長度超過最大長度，則移除尾部
             if (newBodyList.length > prev.maxLength - 1) {
                 newBodyList.pop();
             }
 
+            // 返回更新後的蛇狀態
             return {
                 ...prev,
                 head: newHead,
@@ -198,41 +202,45 @@ const SnakeGame = ({ isDarkMode, setIsDarkMode }) => {
     }, [food, snake]);
 
     // 更新速度的函數
+    // 根據新的分數來調整蛇的移動速度
     const updateSpeed = useCallback((newScore) => {
-        // 每吃一個食物減少10ms,最快50ms
+        // 每吃一個食物減少10ms，但最快速度為50ms
         const newSpeed = Math.max(50, SNAKE_INITIAL_SPEED - (newScore * 10));
+        // 更新速度參考值
         speedRef.current = newSpeed;
+        // 更新蛇的狀態，包括新的速度
         setSnake(prev => ({...prev, speed: newSpeed}));
     }, []);
 
     // 重置遊戲的函數
+    // 將所有遊戲相關的狀態恢復到初始值
     const resetGame = useCallback(() => {
-        // 先重置速度參考
+        // 重置速度參考值為初始速度
         speedRef.current = SNAKE_INITIAL_SPEED;
         
-        // 清除並重置 interval
+        // 如果存在遊戲間隔，清除它
         if (gameInterval.current) {
             clearInterval(gameInterval.current);
         }
         
-        // 確保遊戲狀態重置
-        setIsGameStarted(false);
-        setIsPaused(false);
-        setIsGameOver(false);
-        setScore(0);
-        setFood(null);
+        // 重置所有遊戲狀態
+        setIsGameStarted(false);  // 遊戲未開始
+        setIsPaused(false);       // 遊戲未暫停
+        setIsGameOver(false);     // 遊戲未結束
+        setScore(0);              // 分數歸零
+        setFood(null);            // 清除食物
         
-        // 重置方向
+        // 重置蛇的移動方向為向右
         setCurrentDirection(direction[ARROW_RIGHT]);
         
-        // 重置蛇的狀態
+        // 重置蛇的狀態為初始狀態
         const resetSnake = {
             ...INITIAL_SNAKE,
             speed: SNAKE_INITIAL_SPEED
         };
         setSnake(resetSnake);
         
-        // 重新設置 interval
+        // 使用初始速度重新設置遊戲間隔
         gameInterval.current = setInterval(moveSnake, SNAKE_INITIAL_SPEED);
     }, [moveSnake]);
 
