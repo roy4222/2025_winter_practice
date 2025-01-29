@@ -3,6 +3,7 @@ import styled, { keyframes } from "styled-components";
 import Blocks from './components/blocks';
 import Title from './components/title';
 import Progress from './components/progress';
+import Chance from './components/chance';
 import { GAME_STATUS } from './components/constants';
 import { LevelManager } from './components/level';
 
@@ -23,38 +24,24 @@ const failureAnimation = keyframes`
 
 // 定義背景容器樣式
 const Background = styled.div`
-    // 使用 flex 布局
-    display: flex;
-    // 設置主軸方向為垂直
-    flex-direction: column;
-    // 在交叉軸上居中對齊子元素
-    align-items: center;
-    // 設置子元素之間的間距，使用主題中定義的大間距
-    gap: ${({ theme }) => theme.spacing.large};
-    // 設置寬度為 100%，佔滿父元素寬度
-    width: 100%;
-    // 設置最小高度為視窗高度，確保至少填滿整個視窗
-    min-height: 100vh;
-    // 設置內邊距，使用主題中定義的大間距
-    padding: ${({ theme }) => theme.spacing.large};
-    // 設置背景顏色，使用主題中定義的背景色
-    background-color: ${({ theme }) => theme.colors.background};
-    // 設置文字顏色，使用主題中定義的文字色
-    color: ${({ theme }) => theme.colors.text};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.large};
+  width: 100%;
+  min-height: 100vh;
+  padding: ${({ theme }) => theme.spacing.large};
+  background-color: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
 `;
 
 // 定義內容容器樣式
 const Container = styled.div`
-    // 設置寬度為 100%，佔滿父元素寬度
-    width: 100%;
-    // 設置最大寬度為 800px，限制內容區域不會過寬
-    max-width: 800px;
-    // 使用 flex 布局
-    display: flex;
-    // 設置主軸方向為垂直
-    flex-direction: column;
-    // 設置子元素之間的間距，使用主題中定義的中等間距
-    gap: ${({ theme }) => theme.spacing.medium};
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: ${({ theme }) => theme.spacing.medium};
 `;
 
 // 定義按鈕組容器樣式
@@ -76,18 +63,6 @@ const TitleHeader = styled.h1`
   justify-content: space-between;
 `;
 
-// 定義關卡資訊樣式
-const Level = styled.div`
-  font-size: ${({ theme }) => theme.typography.fontSize.medium};
-  color: ${({ theme }) => theme.colors.text};
-  padding: ${({ theme }) => theme.spacing.small};
-  margin-bottom: ${({ theme }) => theme.spacing.medium};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary}20;
-  transition: all 0.3s ease;
-`;
-
 // 定義方塊容器樣式
 const BlockContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.border};
@@ -107,17 +82,6 @@ const BlockContainer = styled.div`
     if (props.$gameStatus === GAME_STATUS.FAILED) return failureAnimation;
     return 'none';
   }} 0.5s ease;
-`;
-
-// 定義機會/命樣式
-const Chance = styled.div`
-  padding: ${({ theme }) => theme.spacing.small};
-  text-align: center;
-  color: ${({ theme }) => theme.colors.secondary};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary}10;
-  transition: all 0.3s ease;
 `;
 
 // 定義遊戲按鈕樣式
@@ -144,7 +108,6 @@ const GameButton = styled.button`
   }
 `;
 
-// MemoryBlocks 組件：管理整個記憶方塊遊戲的邏輯和狀態
 const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   // 關卡管理器
   const levelManager = useRef(new LevelManager());
@@ -159,7 +122,8 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);
-  
+  const [chances, setChances] = useState(3);
+
   // 音效函數
   const playSound = (type) => {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -232,8 +196,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
         setTimeRemaining(prev => {
           if (prev <= 1) {
             // 時間到，遊戲結束
-            setGameStatus(GAME_STATUS.FAILED);
-            playSound('failure');
+            handleGameFail();
             return 0;
           }
           return prev - 1;
@@ -253,22 +216,43 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   // 開始遊戲
   const startGame = () => {
     setGameStatus(GAME_STATUS.READY);
+    setCurrentLevel(1);
+    levelManager.current.resetLevel();
     const newQuestions = levelManager.current.generateQuestions();
     setQuestions(newQuestions);
     setAnswer([]);
     setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
+    setChances(3);
     playQuestions();
   };
 
   // 重試當前關卡
   const retryLevel = () => {
-    levelManager.current.resetLevel();
-    const levelInfo = levelManager.current.getCurrentLevelInfo();
-    setTimeRemaining(levelInfo.timeLimit);
-    setMatchedPairs(0);
-    setAnswer([]);
-    setGameStatus(GAME_STATUS.READY);
-    playQuestions();
+    if (chances > 0) {
+      levelManager.current.resetLevel();
+      const levelInfo = levelManager.current.getCurrentLevelInfo();
+      setTimeRemaining(levelInfo.timeLimit);
+      setMatchedPairs(0);
+      setAnswer([]);
+      setGameStatus(GAME_STATUS.READY);
+      playQuestions();
+    }
+  };
+
+  // 處理遊戲失敗
+  const handleGameFail = () => {
+    setGameStatus(GAME_STATUS.FAILED);
+    playSound('failure');
+    setChances(prev => {
+      const newChances = prev - 1;
+      if (newChances <= 0) {
+        // 遊戲結束，重新開始
+        setTimeout(() => {
+          startGame();
+        }, 1500);
+      }
+      return newChances;
+    });
   };
 
   // 進入下一關
@@ -278,6 +262,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
       setGameStatus(GAME_STATUS.READY);
       setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
       setMatchedPairs(0);
+      setChances(prev => Math.min(prev + 1, 3)); // 過關時加一命，但最多3命
     }
   };
 
@@ -311,14 +296,12 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
           return newMatched;
         });
       } else {
-        setGameStatus(GAME_STATUS.FAILED);
-        playSound('failure');
+        handleGameFail();
       }
       setAnswer(questions);
     }
   };
 
-  // 渲染 UI
   return (
     <Background>
       <Container>
@@ -336,13 +319,12 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
                 開始遊戲
               </GameButton>
             )}
-            {/* 在完成關卡時顯示下一關按鈕 */}
             {!isPlaying && gameStatus === GAME_STATUS.COMPLETED && (
               <GameButton onClick={nextLevel}>
                 下一關
               </GameButton>
             )}
-            {!isPlaying && gameStatus === GAME_STATUS.FAILED && (
+            {!isPlaying && gameStatus === GAME_STATUS.FAILED && chances > 0 && (
               <GameButton onClick={retryLevel}>
                 重試
               </GameButton>
@@ -359,6 +341,9 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
           matchedPairs={matchedPairs}
           timeRemaining={timeRemaining}
         />
+
+        {/* 顯示剩餘生命 */}
+        <Chance chances={chances} />
 
         {/* 顯示方塊區域 */}
         <BlockContainer $gameStatus={gameStatus}>
