@@ -2,11 +2,9 @@
 
 - **學習資源**：
     1. 《JavaScript 網頁程式設計超入門》
-    ![JavaScript 網頁程式設計超入門](https://im2.book.com.tw/image/getImage?i=https://www.books.com.tw/img/001/071/42/0010714211_bc_01.jpg&v=57209538k&w=375&h=375)
 
     2. 《讓響應式(RWD)網頁設計變簡單：Bootstrap 開發速成, 3/e (附554分鐘實作影音/範例檔)》
-    ![讓響應式(RWD)網頁設計變簡單：Bootstrap 開發速成, 3/e (附554分鐘實作影音/範例檔)](https://cf-assets2.tenlong.com.tw/products/images/000/180/973/webp/ACU084400.webp?1659588821)
-
+   
 - **學習目標**：
     1. 掌握 JavaScript 基礎語法和網頁互動技巧
     2. 理解響應式網頁設計原理和實踐方法
@@ -55,9 +53,9 @@
 
 **學習資源**：
     1. 《React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）》
-    ![React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）](https://cf-assets2.tenlong.com.tw/products/images/000/198/230/webp/9786263337695.webp?1707189740)
+    
     2. 《哎呀！原來 React 這麼有趣好玩：圈叉、貪吃蛇、記憶方塊三款經典遊戲實戰練習（iThome鐵人賽系列書）》
-    ![哎呀！原來 React 這麼有趣好玩：圈叉、貪吃蛇、記憶方塊三款經典遊戲實戰練習（iThome鐵人賽系列書）](https://cf-assets2.tenlong.com.tw/products/images/000/186/629/webp/9786263333772_bc.webp?1675922678)
+    
     
 
 - **目標**：
