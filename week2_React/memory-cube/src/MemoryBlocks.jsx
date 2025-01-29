@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Blocks from './components/blocks';
+import Title from './components/title';
+import Progress from './components/progress';
+import { LEVELS, GAME_STATUS } from './components/constants';
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -38,12 +41,19 @@ const Container = styled.div`
     gap: ${({ theme }) => theme.spacing.medium};
 `;
 
+// 定義按鈕組容器樣式
+const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.small};
+`;
+
 // 定義標題樣式
-const Title = styled.h1`
+const TitleHeader = styled.h1`
   font-size: ${({ theme }) => theme.typography.fontSize.large};
   color: ${({ theme }) => theme.colors.text};
   margin-bottom: ${({ theme }) => theme.spacing.medium};
-  padding-bottom: ${({ theme }) => theme.spacing.small};
+  padding: ${({ theme }) => theme.spacing.medium};
   border-bottom: 1px solid ${({ theme }) => theme.colors.border};
   display: flex;
   align-items: center;
@@ -74,17 +84,6 @@ const BlockContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-// 定義進度條樣式
-const Progress = styled.div`
-  height: 20px;
-  margin: ${({ theme }) => theme.spacing.medium} 0;
-  background-color: ${({ theme }) => theme.colors.primary}15;
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
 `;
 
 // 定義機會/命樣式
@@ -122,81 +121,146 @@ const GameButton = styled.button`
   }
 `;
 
+// MemoryBlocks 組件：管理整個記憶方塊遊戲的邏輯和狀態
 const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
-  // 定義生成隨機整數的工具函數
-  const getRandomInt = (max) => {
-    return Math.floor(Math.random() * max);
+  // 遊戲狀態相關的 state
+  const [currentLevel, setCurrentLevel] = useState(1);  // 當前關卡
+  const [gameStatus, setGameStatus] = useState(GAME_STATUS.READY);  // 遊戲狀態
+  const [matchedPairs, setMatchedPairs] = useState(0);  // 已匹配的對數
+  const [timeRemaining, setTimeRemaining] = useState(LEVELS[0].timeLimit);  // 剩餘時間
+  const [questions, setQuestions] = useState([]);  // 題目（需要記憶的方塊）
+  const [answer, setAnswer] = useState([]);  // 玩家的答案
+  const [isLoading, setIsLoading] = useState(false);  // 加載狀態
+
+  // 初始化關卡
+  useEffect(() => {
+    const levelInfo = LEVELS[currentLevel - 1];
+    const blockCount = levelInfo.gridSize * levelInfo.gridSize;
+    // 生成新的隨機題目
+    const newQuestions = Array(levelInfo.requiredMatches).fill(0)
+      .map(() => Math.floor(Math.random() * blockCount));
+    setQuestions(newQuestions);
+    setTimeRemaining(levelInfo.timeLimit);
+    setMatchedPairs(0);
+    setAnswer([]);
+  }, [currentLevel]);
+
+  // 計時器邏輯
+  useEffect(() => {
+    let timer;
+    if (gameStatus === GAME_STATUS.PLAYING && timeRemaining > 0) {
+      timer = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            setGameStatus(GAME_STATUS.FAILED);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);  // 清理計時器
+  }, [gameStatus, timeRemaining]);
+
+  // 開始遊戲
+  const startGame = () => {
+    setGameStatus(GAME_STATUS.PLAYING);
   };
 
-  // 定義生成問題的函數，根據當前等級和方塊數量
-  const generateQuestions = (level, blockNum) => {
-    const num = level + 2;
-    const questions = new Array(num).fill(0).map(() => 
-      getRandomInt(blockNum));    
-    return questions;
+  // 重試當前關卡
+  const retryLevel = () => {
+    const levelInfo = LEVELS[currentLevel - 1];
+    setTimeRemaining(levelInfo.timeLimit);
+    setMatchedPairs(0);
+    setAnswer([]);
+    setGameStatus(GAME_STATUS.READY);
   };
 
-  // 定義遊戲的初始等級
-  const DEFAULT_LEVEL = 1;
-  // 使用 useState 鉤子管理當前等級狀態
-  const [level, setLevel] = useState(DEFAULT_LEVEL);
-  
-  // 定義不同等級對應的方塊數量
-  const blockNumSet = [4, 9, 16, 25];
-  // 定義每隔多少等級增加方塊數量
-  const levelGap = 4;
-  // 計算當前等級對應的方塊數量索引
-  const blockNumSetIndex = Math.min(Math.floor(level / levelGap), 3);
-  // 獲取當前等級的方塊數量
-  const blockNum = blockNumSet[blockNumSetIndex];
-  // 使用 useState 鉤子管理問題狀態，初始值為第一級的問題
-  const [questions, setQuestions] = useState(generateQuestions(DEFAULT_LEVEL, blockNumSet[0]));
-  
-  // 定義初始答案為空數組
-  const DEFAULT_ANSWER = [];
-  // 使用 useState 鉤子管理答案狀態
-  const [answer, setAnswer] = useState(DEFAULT_ANSWER);
+  // 進入下一關
+  const nextLevel = () => {
+    if (currentLevel < LEVELS.length) {
+      setCurrentLevel(prev => prev + 1);
+      setGameStatus(GAME_STATUS.READY);
+    }
+  };
 
-  // 使用 useState 鉤子管理遊戲是否開始的狀態
-  const [isGameStart, setIsGameStart] = useState(false);
-  
-  // 定義初始機會數
-  const DEFAULT_CHANCE = 3;
-  // 使用 useState 鉤子管理剩餘機會數狀態
-  const [chance, setChance] = useState(DEFAULT_CHANCE);
-  // 使用 useState 鉤子管理加載狀態
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 定義處理方塊點擊的函數
+  // 處理方塊點擊
   const handleBlockClick = (index) => {
-    // 如果正在加載中，則不處理點擊事件
-    if (isLoading) return;
-    // 將點擊的方塊索引添加到答案數組中
-    setAnswer([...answer, index]);
+    if (isLoading || gameStatus !== GAME_STATUS.PLAYING) return;
+
+    const newAnswer = [...answer, index];
+    setAnswer(newAnswer);
+
+    // 檢查答案
+    if (newAnswer.length === questions.length) {
+      const isCorrect = newAnswer.every((ans, i) => ans === questions[i]);
+      if (isCorrect) {
+        setMatchedPairs(prev => {
+          const newMatched = prev + 1;
+          const levelInfo = LEVELS[currentLevel - 1];
+          if (newMatched >= levelInfo.requiredMatches) {
+            setGameStatus(GAME_STATUS.COMPLETED);
+          }
+          return newMatched;
+        });
+      } else {
+        setGameStatus(GAME_STATUS.FAILED);
+      }
+      setAnswer([]);
+    }
   };
 
+  // 渲染 UI
   return (
     <Background>
       <Container>
-        <Title>
-          Memory Blocks 記憶方塊
-          <GameButton onClick={() => setIsDarkMode(!isDarkMode)}>
-            <span className="icon">🌓</span>
-            主題
-          </GameButton>
-        </Title>
-        <Level>第 {level} 關</Level>
+        <TitleHeader>
+          <span>Memory Blocks 記憶方塊</span>
+          <ButtonGroup>
+            {/* 切換主題按鈕 */}
+            <GameButton onClick={() => setIsDarkMode(!isDarkMode)}>
+              <span className="icon">🌓</span>
+              主題
+            </GameButton>
+            {/* 根據遊戲狀態顯示不同的按鈕 */}
+            {gameStatus === GAME_STATUS.READY && (
+              <GameButton onClick={startGame}>
+                開始遊戲
+              </GameButton>
+            )}
+            {gameStatus === GAME_STATUS.COMPLETED && (
+              <GameButton onClick={nextLevel}>
+                下一關
+              </GameButton>
+            )}
+            {gameStatus === GAME_STATUS.FAILED && (
+              <GameButton onClick={retryLevel}>
+                重試
+              </GameButton>
+            )}
+          </ButtonGroup>
+        </TitleHeader>
+        
+        {/* 顯示當前關卡標題 */}
+        <Title currentLevel={currentLevel} />
+        
+        {/* 顯示遊戲進度 */}
+        <Progress 
+          currentLevel={currentLevel}
+          matchedPairs={matchedPairs}
+          timeRemaining={timeRemaining}
+        />
+
+        {/* 顯示方塊區域 */}
         <BlockContainer>
           <Blocks
-            blockNum={blockNum}
+            blockNum={LEVELS[currentLevel - 1].gridSize * LEVELS[currentLevel - 1].gridSize}
             questions={questions}
             answer={answer}
-            isGameStart={isGameStart}
+            isGameStart={gameStatus === GAME_STATUS.PLAYING}
             onBlockClick={handleBlockClick}
           />
         </BlockContainer>
-        <Progress>進度條</Progress>
-        <Chance>剩餘機會: {chance}</Chance>
       </Container>
     </Background>
   );
