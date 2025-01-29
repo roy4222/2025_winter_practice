@@ -1,9 +1,25 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 import Blocks from './components/blocks';
 import Title from './components/title';
 import Progress from './components/progress';
-import { LEVELS, GAME_STATUS } from './components/constants';
+import { GAME_STATUS } from './components/constants';
+import { LevelManager } from './components/level';
+
+// 成功動畫
+const successAnimation = keyframes`
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+`;
+
+// 失敗動畫
+const failureAnimation = keyframes`
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+  100% { transform: translateX(0); }
+`;
 
 // 定義背景容器樣式
 const Background = styled.div`
@@ -84,6 +100,13 @@ const BlockContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  // 添加動畫效果
+  animation: ${props => {
+    if (props.$gameStatus === GAME_STATUS.COMPLETED) return successAnimation;
+    if (props.$gameStatus === GAME_STATUS.FAILED) return failureAnimation;
+    return 'none';
+  }} 0.5s ease;
 `;
 
 // 定義機會/命樣式
@@ -123,24 +146,62 @@ const GameButton = styled.button`
 
 // MemoryBlocks 組件：管理整個記憶方塊遊戲的邏輯和狀態
 const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
+  // 關卡管理器
+  const levelManager = useRef(new LevelManager());
+  
   // 遊戲狀態相關的 state
-  const [currentLevel, setCurrentLevel] = useState(1);  // 當前關卡
-  const [gameStatus, setGameStatus] = useState(GAME_STATUS.READY);  // 遊戲狀態
-  const [matchedPairs, setMatchedPairs] = useState(0);  // 已匹配的對數
-  const [timeRemaining, setTimeRemaining] = useState(LEVELS[0].timeLimit);  // 剩餘時間
-  const [questions, setQuestions] = useState([]);  // 題目（需要記憶的方塊）
-  const [answer, setAnswer] = useState([]);  // 玩家的答案
-  const [isLoading, setIsLoading] = useState(false);  // 加載狀態
-  const [isPlaying, setIsPlaying] = useState(false);  // 題目播放狀態
-  const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);  // 當前播放的題目索引
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [gameStatus, setGameStatus] = useState(GAME_STATUS.READY);
+  const [matchedPairs, setMatchedPairs] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(levelManager.current.getCurrentLevelInfo().timeLimit);
+  const [questions, setQuestions] = useState([]);
+  const [answer, setAnswer] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);
+  
+  // 音效函數
+  const playSound = (type) => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    // 設置音效類型
+    switch (type) {
+      case 'success':
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.5);
+        break;
+      case 'failure':
+        oscillator.type = 'sawtooth';
+        oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.3);
+        break;
+      case 'match':
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+        gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + 0.2);
+        break;
+    }
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+  };
 
   // 初始化關卡
   useEffect(() => {
-    const levelInfo = LEVELS[currentLevel - 1];
-    const blockCount = levelInfo.gridSize * levelInfo.gridSize;
-    // 生成新的隨機題目
-    const newQuestions = Array(levelInfo.requiredMatches).fill(0)
-      .map(() => Math.floor(Math.random() * blockCount));
+    const levelInfo = levelManager.current.getCurrentLevelInfo();
+    const newQuestions = levelManager.current.generateQuestions();
     setQuestions(newQuestions);
     setTimeRemaining(levelInfo.timeLimit);
     setMatchedPairs(0);
@@ -154,7 +215,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     if (isPlaying && currentPlayIndex < questions.length) {
       timer = setTimeout(() => {
         setCurrentPlayIndex(prev => prev + 1);
-      }, 1000); // 每個方塊顯示1秒
+      }, 1000);
     } else if (isPlaying && currentPlayIndex >= questions.length) {
       setIsPlaying(false);
       setCurrentPlayIndex(-1);
@@ -162,6 +223,25 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     }
     return () => clearTimeout(timer);
   }, [isPlaying, currentPlayIndex, questions.length]);
+
+  // 計時器邏輯
+  useEffect(() => {
+    let timer;
+    if (gameStatus === GAME_STATUS.PLAYING) {
+      timer = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            // 時間到，遊戲結束
+            setGameStatus(GAME_STATUS.FAILED);
+            playSound('failure');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+    return () => clearInterval(timer);
+  }, [gameStatus]);
 
   // 播放題目
   const playQuestions = () => {
@@ -172,12 +252,18 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
 
   // 開始遊戲
   const startGame = () => {
+    setGameStatus(GAME_STATUS.READY);
+    const newQuestions = levelManager.current.generateQuestions();
+    setQuestions(newQuestions);
+    setAnswer([]);
+    setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
     playQuestions();
   };
 
   // 重試當前關卡
   const retryLevel = () => {
-    const levelInfo = LEVELS[currentLevel - 1];
+    levelManager.current.resetLevel();
+    const levelInfo = levelManager.current.getCurrentLevelInfo();
     setTimeRemaining(levelInfo.timeLimit);
     setMatchedPairs(0);
     setAnswer([]);
@@ -187,10 +273,11 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
 
   // 進入下一關
   const nextLevel = () => {
-    if (currentLevel < LEVELS.length) {
-      setCurrentLevel(prev => prev + 1);
+    if (levelManager.current.nextLevel()) {
+      setCurrentLevel(levelManager.current.currentLevel);
       setGameStatus(GAME_STATUS.READY);
-      // 新關卡的題目會在 useEffect 中生成
+      setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
+      setMatchedPairs(0);
     }
   };
 
@@ -205,18 +292,29 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     if (newAnswer.length === questions.length) {
       const isCorrect = newAnswer.every((ans, i) => ans === questions[i]);
       if (isCorrect) {
+        playSound('match');
         setMatchedPairs(prev => {
           const newMatched = prev + 1;
-          const levelInfo = LEVELS[currentLevel - 1];
+          const levelInfo = levelManager.current.getCurrentLevelInfo();
           if (newMatched >= levelInfo.requiredMatches) {
             setGameStatus(GAME_STATUS.COMPLETED);
+            playSound('success');
+          } else {
+            // 如果還沒達到目標配對數，生成新題目並開始播放
+            setTimeout(() => {
+              const newQuestions = levelManager.current.generateQuestions();
+              setQuestions(newQuestions);
+              setAnswer([]);
+              playQuestions();
+            }, 1000);
           }
           return newMatched;
         });
       } else {
         setGameStatus(GAME_STATUS.FAILED);
+        playSound('failure');
       }
-      setAnswer([]);
+      setAnswer(questions);
     }
   };
 
@@ -238,6 +336,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
                 開始遊戲
               </GameButton>
             )}
+            {/* 在完成關卡時顯示下一關按鈕 */}
             {!isPlaying && gameStatus === GAME_STATUS.COMPLETED && (
               <GameButton onClick={nextLevel}>
                 下一關
@@ -262,15 +361,16 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
         />
 
         {/* 顯示方塊區域 */}
-        <BlockContainer>
+        <BlockContainer $gameStatus={gameStatus}>
           <Blocks
-            blockNum={LEVELS[currentLevel - 1].gridSize * LEVELS[currentLevel - 1].gridSize}
+            blockNum={levelManager.current.getCurrentLevelInfo().gridSize * levelManager.current.getCurrentLevelInfo().gridSize}
             questions={questions}
             answer={answer}
             isGameStart={gameStatus === GAME_STATUS.PLAYING}
             onBlockClick={handleBlockClick}
             currentPlayIndex={currentPlayIndex}
             isPlaying={isPlaying}
+            showAllAnswers={gameStatus === GAME_STATUS.FAILED || gameStatus === GAME_STATUS.COMPLETED}
           />
         </BlockContainer>
       </Container>

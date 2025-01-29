@@ -342,7 +342,8 @@ const Blocks = ({
     isGameStart = false,
     onBlockClick,
     currentPlayIndex = -1,
-    isPlaying = false
+    isPlaying = false,
+    showAllAnswers = false
 }) => {
     // 生成方塊陣列並分配顏色
     const blocks = new Array(blockNum).fill(0).map((_, index) => ({
@@ -360,12 +361,15 @@ const Blocks = ({
                    currentPlayIndex < questions.length && 
                    index === questions[currentPlayIndex];
         }
+        if (showAllAnswers) {
+            return questions.includes(index);
+        }
         return false;
     };
 
     // 檢查方塊是否已經被回答
     const isBlockAnswered = (index) => {
-        return answer.includes(index);
+        return answer.includes(index) || (showAllAnswers && questions.includes(index));
     };
 
     // 檢查方塊是否正在播放
@@ -378,7 +382,7 @@ const Blocks = ({
 
     // 處理方塊點擊
     const handleBlockClick = (index) => {
-        if (onBlockClick && isGameStart && !isPlaying) {
+        if (onBlockClick && isGameStart && !isPlaying && !showAllAnswers) {
             onBlockClick(index);
         }
     };
