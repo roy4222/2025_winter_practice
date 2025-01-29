@@ -1,5 +1,6 @@
-import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import React, { useMemo } from 'react';
+import styled, { keyframes, css } from 'styled-components';
+import { BLOCK_COLORS } from './constants';
 
 // 縮放動畫
 const pulse = keyframes`
@@ -159,6 +160,22 @@ const flip = keyframes`
     }
 `;
 
+// 播放動畫
+const playPulse = keyframes`
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+    }
+    70% {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+`;
+
 // 容器樣式
 const Container = styled.div`
     width: 100%;
@@ -177,20 +194,42 @@ const GridContainer = styled.div`
 `;
 
 // 方塊樣式
-const Block = styled.div`
+const Block = styled.div.attrs(props => {
+    // 計算動畫延遲
+    const delays = useMemo(() => ({
+        glowDelay: -Math.random() * 2,
+        borderDelay: -Math.random() * 1.5
+    }), []);
+
+    // 計算動畫持續時間
+    const durations = useMemo(() => ({
+        glowDuration: 2 + Math.random() * 2,
+        borderDuration: 1.5 + Math.random() * 1
+    }), []);
+
+    return {
+        style: {
+            animationDelay: props.$isPlaying 
+                ? '0s' 
+                : `${delays.glowDelay}s, ${delays.borderDelay}s`,
+            animationDuration: props.$isPlaying
+                ? '1s'
+                : `${durations.glowDuration}s, ${durations.borderDuration}s`
+        }
+    };
+})`
     // 基本定位和尺寸
     position: relative;
     width: 100%;
     aspect-ratio: 1;
 
     // 背景顏色設置
-    background: ${({ theme, $isActive }) => 
-        $isActive 
-            ? `linear-gradient(120deg, 
-                ${theme.colors.primary}, 
-                ${theme.colors.secondary}, 
-                ${theme.colors.primary})`
-            : theme.colors.background};
+    background: ${({ theme, $isActive, $isPlaying, $color, $isAnswered }) => 
+        $isPlaying 
+            ? BLOCK_COLORS[$color].gradient
+            : $isAnswered 
+                ? BLOCK_COLORS[$color].gradient
+                : theme.colors.background};
     background-size: 200% 200%;
 
     // 邊框和圓角設置
@@ -206,13 +245,15 @@ const Block = styled.div`
     cursor: pointer;
 
     // 基礎動畫效果
-    animation: 
-        ${glowEffect} ${() => 2 + Math.random() * 2}s infinite ease-in-out,
-        ${borderShine} ${() => 1.5 + Math.random() * 1}s infinite ease-in-out;
-    
-    animation-delay: 
-        ${() => -Math.random() * 2}s,
-        ${() => -Math.random() * 1.5}s;
+    ${props => props.$isPlaying 
+        ? css`
+            animation: ${playPulse} ease-in-out;
+          `
+        : css`
+            animation: 
+                ${glowEffect} infinite ease-in-out,
+                ${borderShine} infinite ease-in-out;
+          `}
 
     // 保持正方形比例
     &::before {
@@ -237,7 +278,7 @@ const Block = styled.div`
     }
 
     // 活動狀態的額外樣式
-    ${({ $isActive }) => $isActive && `
+    ${({ $isActive }) => $isActive && css`
         animation: 
             ${glowEffect} 1.5s infinite ease-in-out,
             ${borderShine} 1s infinite ease-in-out,
@@ -274,7 +315,7 @@ const Block = styled.div`
             0 0 50px rgba(0, 255, 255, 0.1);
             
         &::after {
-            animation: ${rippleEffect} 0.8s ease-out;
+            ${css`animation: ${rippleEffect} 0.8s ease-out;`}
         }
     }
 `;
@@ -299,23 +340,45 @@ const Blocks = ({
     questions = [], 
     answer = [],
     isGameStart = false,
-    onBlockClick 
+    onBlockClick,
+    currentPlayIndex = -1,
+    isPlaying = false
 }) => {
-    // 生成方塊陣列
-    const blocks = new Array(blockNum).fill(0).map((_, index) => index);
+    // 生成方塊陣列並分配顏色
+    const blocks = new Array(blockNum).fill(0).map((_, index) => ({
+        index,
+        color: index % BLOCK_COLORS.length
+    }));
     
     // 計算邊長
     const sideNum = Math.sqrt(blockNum);
 
     // 檢查方塊是否處於激活狀態
     const isBlockActive = (index) => {
-        if (!isGameStart) return false;
-        return questions.includes(index) || answer.includes(index);
+        if (isPlaying) {
+            return currentPlayIndex >= 0 && 
+                   currentPlayIndex < questions.length && 
+                   index === questions[currentPlayIndex];
+        }
+        return false;
+    };
+
+    // 檢查方塊是否已經被回答
+    const isBlockAnswered = (index) => {
+        return answer.includes(index);
+    };
+
+    // 檢查方塊是否正在播放
+    const isBlockPlaying = (index) => {
+        return isPlaying && 
+               currentPlayIndex >= 0 && 
+               currentPlayIndex < questions.length && 
+               index === questions[currentPlayIndex];
     };
 
     // 處理方塊點擊
     const handleBlockClick = (index) => {
-        if (onBlockClick && isGameStart) {
+        if (onBlockClick && isGameStart && !isPlaying) {
             onBlockClick(index);
         }
     };
@@ -323,15 +386,16 @@ const Blocks = ({
     return (
         <Container>
             <GridContainer $sideNum={sideNum}>
-                {blocks.map((index) => (
+                {blocks.map(({ index, color }) => (
                     <Block 
                         key={index}
                         $isActive={isBlockActive(index)}
+                        $isPlaying={isBlockPlaying(index)}
+                        $isAnswered={isBlockAnswered(index)}
+                        $color={color}
                         onClick={() => handleBlockClick(index)}
                     >
-                        <BlockContent>
-                            {isBlockActive(index) ? index : ''}
-                        </BlockContent>
+                        <BlockContent />
                     </Block>
                 ))}
             </GridContainer>

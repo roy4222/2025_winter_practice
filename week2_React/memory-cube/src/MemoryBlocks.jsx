@@ -131,6 +131,8 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   const [questions, setQuestions] = useState([]);  // 題目（需要記憶的方塊）
   const [answer, setAnswer] = useState([]);  // 玩家的答案
   const [isLoading, setIsLoading] = useState(false);  // 加載狀態
+  const [isPlaying, setIsPlaying] = useState(false);  // 題目播放狀態
+  const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);  // 當前播放的題目索引
 
   // 初始化關卡
   useEffect(() => {
@@ -143,28 +145,34 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     setTimeRemaining(levelInfo.timeLimit);
     setMatchedPairs(0);
     setAnswer([]);
+    setCurrentPlayIndex(-1);
   }, [currentLevel]);
 
-  // 計時器邏輯
+  // 題目播放邏輯
   useEffect(() => {
     let timer;
-    if (gameStatus === GAME_STATUS.PLAYING && timeRemaining > 0) {
-      timer = setInterval(() => {
-        setTimeRemaining(prev => {
-          if (prev <= 1) {
-            setGameStatus(GAME_STATUS.FAILED);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
+    if (isPlaying && currentPlayIndex < questions.length) {
+      timer = setTimeout(() => {
+        setCurrentPlayIndex(prev => prev + 1);
+      }, 1000); // 每個方塊顯示1秒
+    } else if (isPlaying && currentPlayIndex >= questions.length) {
+      setIsPlaying(false);
+      setCurrentPlayIndex(-1);
+      setGameStatus(GAME_STATUS.PLAYING);
     }
-    return () => clearInterval(timer);  // 清理計時器
-  }, [gameStatus, timeRemaining]);
+    return () => clearTimeout(timer);
+  }, [isPlaying, currentPlayIndex, questions.length]);
+
+  // 播放題目
+  const playQuestions = () => {
+    setIsPlaying(true);
+    setCurrentPlayIndex(0);
+    setAnswer([]);
+  };
 
   // 開始遊戲
   const startGame = () => {
-    setGameStatus(GAME_STATUS.PLAYING);
+    playQuestions();
   };
 
   // 重試當前關卡
@@ -174,6 +182,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     setMatchedPairs(0);
     setAnswer([]);
     setGameStatus(GAME_STATUS.READY);
+    playQuestions();
   };
 
   // 進入下一關
@@ -181,6 +190,7 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
     if (currentLevel < LEVELS.length) {
       setCurrentLevel(prev => prev + 1);
       setGameStatus(GAME_STATUS.READY);
+      // 新關卡的題目會在 useEffect 中生成
     }
   };
 
@@ -223,17 +233,17 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
               主題
             </GameButton>
             {/* 根據遊戲狀態顯示不同的按鈕 */}
-            {gameStatus === GAME_STATUS.READY && (
+            {!isPlaying && gameStatus === GAME_STATUS.READY && (
               <GameButton onClick={startGame}>
                 開始遊戲
               </GameButton>
             )}
-            {gameStatus === GAME_STATUS.COMPLETED && (
+            {!isPlaying && gameStatus === GAME_STATUS.COMPLETED && (
               <GameButton onClick={nextLevel}>
                 下一關
               </GameButton>
             )}
-            {gameStatus === GAME_STATUS.FAILED && (
+            {!isPlaying && gameStatus === GAME_STATUS.FAILED && (
               <GameButton onClick={retryLevel}>
                 重試
               </GameButton>
@@ -259,6 +269,8 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
             answer={answer}
             isGameStart={gameStatus === GAME_STATUS.PLAYING}
             onBlockClick={handleBlockClick}
+            currentPlayIndex={currentPlayIndex}
+            isPlaying={isPlaying}
           />
         </BlockContainer>
       </Container>
