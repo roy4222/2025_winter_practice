@@ -48,7 +48,9 @@ const Container = styled.div`
 const ButtonGroup = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.small};
+  gap: ${({ theme }) => theme.spacing.medium};
+  position: relative;
+  z-index: 1;
 `;
 
 // 定義標題樣式
@@ -87,45 +89,76 @@ const BlockContainer = styled.div`
 // 定義遊戲按鈕樣式
 const GameButton = styled.button`
   padding: ${({ theme }) => `${theme.spacing.small} ${theme.spacing.medium}`};
-  margin-left: ${({ theme }) => theme.spacing.medium};
+  margin-left: ${({ theme }) => theme.spacing.small};
   border: none;
-  border-radius: 12px;
+  border-radius: 16px;
   background: ${({ $variant, theme }) => {
     switch ($variant) {
       case 'start':
-        return `linear-gradient(135deg, ${theme.colors.primary}, #4CAF50)`;
+        return `linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(33, 150, 243, 0.9))`;
       case 'next':
-        return `linear-gradient(135deg, ${theme.colors.primary}, #2196F3)`;
+        return `linear-gradient(135deg, rgba(33, 150, 243, 0.9), rgba(156, 39, 176, 0.9))`;
       case 'retry':
-        return `linear-gradient(135deg, ${theme.colors.secondary}, #F44336)`;
+        return `linear-gradient(135deg, rgba(244, 67, 54, 0.9), rgba(233, 30, 99, 0.9))`;
       default:
-        return `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`;
+        return `linear-gradient(135deg, rgba(158, 158, 158, 0.9), rgba(96, 125, 139, 0.9))`;
     }
   }};
-  color: ${({ theme }) => theme.colors.background};
+  color: white;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
-  font-weight: bold;
-  min-width: 120px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  min-width: 130px;
+  height: 42px;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, 
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%);
+    transform: translateX(-100%);
+    transition: transform 0.6s;
+  }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     filter: brightness(1.1);
+
+    &::before {
+      transform: translateX(100%);
+    }
   }
 
   &:active {
     transform: translateY(1px);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .icon {
-    font-size: ${({ theme }) => theme.typography.fontSize.medium};
+    font-size: 1.2rem;
+    margin-right: ${({ theme }) => theme.spacing.small};
+    transition: transform 0.3s ease;
+  }
+
+  &:hover .icon {
+    transform: scale(1.2);
   }
 `;
 
@@ -134,16 +167,16 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   const levelManager = useRef(new LevelManager());
   
   // 遊戲狀態相關的 state
-  const [currentLevel, setCurrentLevel] = useState(1);
-  const [gameStatus, setGameStatus] = useState(GAME_STATUS.READY);
-  const [matchedPairs, setMatchedPairs] = useState(0);
-  const [timeRemaining, setTimeRemaining] = useState(levelManager.current.getCurrentLevelInfo().timeLimit);
-  const [questions, setQuestions] = useState([]);
-  const [answer, setAnswer] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);
-  const [chances, setChances] = useState(3);
+  const [currentLevel, setCurrentLevel] = useState(1);         // 當前關卡
+  const [gameStatus, setGameStatus] = useState(GAME_STATUS.READY);  // 遊戲狀態
+  const [matchedPairs, setMatchedPairs] = useState(0);         // 已匹配的配對數
+  const [timeRemaining, setTimeRemaining] = useState(levelManager.current.getCurrentLevelInfo().timeLimit);  // 剩餘時間
+  const [questions, setQuestions] = useState([]);              // 當前關卡的題目序列
+  const [answer, setAnswer] = useState([]);                    // 玩家的答案序列
+  const [isLoading, setIsLoading] = useState(false);           // 加載狀態
+  const [isPlaying, setIsPlaying] = useState(false);           // 是否正在播放題目
+  const [currentPlayIndex, setCurrentPlayIndex] = useState(-1);  // 當前播放的題目索引
+  const [chances, setChances] = useState(3);                   // 玩家剩餘機會
 
   // 音效函數
   const playSound = (type) => {
@@ -198,16 +231,20 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   useEffect(() => {
     let timer;
     if (isPlaying && currentPlayIndex < questions.length) {
+      // 如果正在播放且還有未播放的題目，設置一個定時器
       timer = setTimeout(() => {
+        // 1秒後將當前播放索引加1
         setCurrentPlayIndex(prev => prev + 1);
       }, 1000);
     } else if (isPlaying && currentPlayIndex >= questions.length) {
-      setIsPlaying(false);
-      setCurrentPlayIndex(-1);
-      setGameStatus(GAME_STATUS.PLAYING);
+      // 如果所有題目都已播放完畢
+      setIsPlaying(false);        // 停止播放
+      setCurrentPlayIndex(-1);    // 重置播放索引
+      setGameStatus(GAME_STATUS.PLAYING);  // 將遊戲狀態設置為正在進行
     }
+    // 清理函數：在組件卸載或依賴項變化時清除定時器
     return () => clearTimeout(timer);
-  }, [isPlaying, currentPlayIndex, questions.length]);
+  }, [isPlaying, currentPlayIndex, questions.length]);  // 依賴項：播放狀態、當前索引、題目長度
 
   // 計時器邏輯
   useEffect(() => {
@@ -344,21 +381,19 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
         <TitleHeader>
           <span>Memory Blocks 記憶方塊</span>
           <ButtonGroup>
-            {/* 切換主題按鈕 */}
             <GameButton onClick={() => setIsDarkMode(!isDarkMode)}>
-              <span className="icon">🌓</span>
-              主題切換
+              <span className="icon">{isDarkMode ? '🌙' : '☀️'}</span>
+              {isDarkMode ? '暗色模式' : '亮色模式'}
             </GameButton>
-            {/* 根據遊戲狀態顯示不同的按鈕 */}
             {!isPlaying && gameStatus === GAME_STATUS.READY && (
               <GameButton $variant="start" onClick={startGame}>
-                <span className="icon">🎮</span>
+                <span className="icon">▶</span>
                 開始遊戲
               </GameButton>
             )}
             {!isPlaying && gameStatus === GAME_STATUS.COMPLETED && (
               <GameButton $variant="next" onClick={nextLevel}>
-                <span className="icon">🎯</span>
+                <span className="icon">▶▶</span>
                 下一關
               </GameButton>
             )}
