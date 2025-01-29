@@ -89,18 +89,39 @@ const GameButton = styled.button`
   padding: ${({ theme }) => `${theme.spacing.small} ${theme.spacing.medium}`};
   margin-left: ${({ theme }) => theme.spacing.medium};
   border: none;
-  border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary};
+  border-radius: 12px;
+  background: ${({ $variant, theme }) => {
+    switch ($variant) {
+      case 'start':
+        return `linear-gradient(135deg, ${theme.colors.primary}, #4CAF50)`;
+      case 'next':
+        return `linear-gradient(135deg, ${theme.colors.primary}, #2196F3)`;
+      case 'retry':
+        return `linear-gradient(135deg, ${theme.colors.secondary}, #F44336)`;
+      default:
+        return `linear-gradient(135deg, ${theme.colors.primary}, ${theme.colors.secondary})`;
+    }
+  }};
   color: ${({ theme }) => theme.colors.background};
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.small};
+  font-weight: bold;
+  min-width: 120px;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 
   &:hover {
-    transform: scale(1.05);
-    background-color: ${({ theme }) => theme.colors.secondary};
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
 
   .icon {
@@ -215,14 +236,22 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
 
   // 開始遊戲
   const startGame = () => {
+    // 設置遊戲狀態為準備中
     setGameStatus(GAME_STATUS.READY);
+    // 重置當前關卡為第一關
     setCurrentLevel(1);
+    // 重置關卡管理器
     levelManager.current.resetLevel();
+    // 生成新的題目序列
     const newQuestions = levelManager.current.generateQuestions();
     setQuestions(newQuestions);
+    // 清空玩家答案
     setAnswer([]);
+    // 設置剩餘時間為當前關卡的時間限制
     setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
+    // 重置玩家機會為3次
     setChances(3);
+    // 開始播放題目序列
     playQuestions();
   };
 
@@ -258,11 +287,16 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
   // 進入下一關
   const nextLevel = () => {
     if (levelManager.current.nextLevel()) {
-      setCurrentLevel(levelManager.current.currentLevel);
+      setCurrentLevel(prev => prev + 1);
       setGameStatus(GAME_STATUS.READY);
-      setTimeRemaining(levelManager.current.getCurrentLevelInfo().timeLimit);
+      const levelInfo = levelManager.current.getCurrentLevelInfo();
+      setTimeRemaining(levelInfo.timeLimit);
       setMatchedPairs(0);
       setChances(prev => Math.min(prev + 1, 3)); // 過關時加一命，但最多3命
+      const newQuestions = levelManager.current.generateQuestions();
+      setQuestions(newQuestions);
+      setAnswer([]);
+      playQuestions();
     }
   };
 
@@ -282,8 +316,10 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
           const newMatched = prev + 1;
           const levelInfo = levelManager.current.getCurrentLevelInfo();
           if (newMatched >= levelInfo.requiredMatches) {
+            // 達到目標配對數，完成關卡
             setGameStatus(GAME_STATUS.COMPLETED);
             playSound('success');
+            return newMatched;
           } else {
             // 如果還沒達到目標配對數，生成新題目並開始播放
             setTimeout(() => {
@@ -292,8 +328,8 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
               setAnswer([]);
               playQuestions();
             }, 1000);
+            return newMatched;
           }
-          return newMatched;
         });
       } else {
         handleGameFail();
@@ -311,21 +347,24 @@ const MemoryBlocks = ({ isDarkMode, setIsDarkMode }) => {
             {/* 切換主題按鈕 */}
             <GameButton onClick={() => setIsDarkMode(!isDarkMode)}>
               <span className="icon">🌓</span>
-              主題
+              主題切換
             </GameButton>
             {/* 根據遊戲狀態顯示不同的按鈕 */}
             {!isPlaying && gameStatus === GAME_STATUS.READY && (
-              <GameButton onClick={startGame}>
+              <GameButton $variant="start" onClick={startGame}>
+                <span className="icon">🎮</span>
                 開始遊戲
               </GameButton>
             )}
             {!isPlaying && gameStatus === GAME_STATUS.COMPLETED && (
-              <GameButton onClick={nextLevel}>
+              <GameButton $variant="next" onClick={nextLevel}>
+                <span className="icon">🎯</span>
                 下一關
               </GameButton>
             )}
             {!isPlaying && gameStatus === GAME_STATUS.FAILED && chances > 0 && (
-              <GameButton onClick={retryLevel}>
+              <GameButton $variant="retry" onClick={retryLevel}>
+                <span className="icon">🔄</span>
                 重試
               </GameButton>
             )}

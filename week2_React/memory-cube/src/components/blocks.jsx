@@ -335,15 +335,16 @@ const BlockContent = styled.div`
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
 `;
 
+// 方塊組件
 const Blocks = ({ 
-    blockNum,
-    questions = [], 
-    answer = [],
-    isGameStart = false,
-    onBlockClick,
-    currentPlayIndex = -1,
-    isPlaying = false,
-    showAllAnswers = false
+    blockNum,               // 方塊總數
+    questions = [],         // 題目序列
+    answer = [],            // 玩家答案
+    isGameStart = false,    // 遊戲是否開始
+    onBlockClick,           // 方塊點擊處理函數
+    currentPlayIndex = -1,  // 當前播放的題目索引
+    isPlaying = false,      // 是否正在播放題目
+    showAllAnswers = false  // 是否顯示所有答案
 }) => {
     // 生成方塊陣列並分配顏色
     const blocks = new Array(blockNum).fill(0).map((_, index) => ({
@@ -351,17 +352,19 @@ const Blocks = ({
         color: index % BLOCK_COLORS.length
     }));
     
-    // 計算邊長
+    // 計算網格邊長
     const sideNum = Math.sqrt(blockNum);
 
     // 檢查方塊是否處於激活狀態
     const isBlockActive = (index) => {
         if (isPlaying) {
+            // 播放模式：當前播放的方塊為激活狀態
             return currentPlayIndex >= 0 && 
                    currentPlayIndex < questions.length && 
                    index === questions[currentPlayIndex];
         }
         if (showAllAnswers) {
+            // 顯示所有答案模式：題目中的方塊為激活狀態
             return questions.includes(index);
         }
         return false;
@@ -387,6 +390,7 @@ const Blocks = ({
         }
     };
 
+    // 渲染方塊網格
     return (
         <Container>
             <GridContainer $sideNum={sideNum}>
