@@ -1,32 +1,43 @@
-// 表達式函式（Function Expression）範例
+let hatPrice = 100;
+console.log(hatPrice);
+let bootPrice = 200;
+console.log(bootPrice);
 
-// 匿名函式表達式
-let greet = function(name) {
-    return `Hello, ${name}!`;
-};
-console.log(greet("Alice"));  // "Hello, Alice!"
+function sumPrice(a,b,c){
+    return a + b+c;
+}
 
-// 具名函式表達式
-let factorial = function fact(n) {
-    if (n <= 1) return 1;
-    return n * fact(n - 1);
-};
-console.log(factorial(5));  // 120
+let totalPrice = sumPrice(hatPrice,bootPrice);
+console.log(totalPrice);
 
-// 箭頭函式表達式
-let square = (x) => x * x;
-console.log(square(4));  // 16
+totalPrice = sumPrice(100,200,300);
+console.log(totalPrice);
 
-// 立即調用的函式表達式 (IIFE)
-let result = (function() {
-    let x = 10;
-    return x * 2;
-})();
-console.log(result);  // 20
+// 定義一個函數 sumPrices，使用剩餘參數語法接收任意數量的價格
+function sumPrices(...prices) {
+    // 使用 reduce 方法計算所有價格的總和
+    // 初始值設為 0，遍歷每個價格並加到總和中
+    return prices.reduce((total, price) => total + price, 0);
+}
 
-// 函式表達式作為參數
-let numbers = [1, 2, 3, 4, 5];
-let doubled = numbers.map(function(num) {
-    return num * 2;
-});
-console.log(doubled);  // [2, 4, 6, 8, 10]
+// 調用 sumPrices 函數並打印結果
+// 傳入四個價格：100, 200, 300, 400
+console.log(sumPrices(100, 200, 300, 400));
+
+// 使用展開運算子合併陣列
+const fruits = ['apple', 'banana'];
+const vegetables = ['carrot', 'tomato'];
+const allItems = [...fruits, ...vegetables];
+console.log(allItems);
+
+// 使用展開運算子複製物件並添加新屬性
+const person = { name: 'John', age: 30 };
+const updatedPerson = { ...person, job: 'Developer' };
+console.log(updatedPerson);
+
+// 在函數調用中使用展開運算子
+function greet(firstName, lastName) {
+    console.log(`Hello, ${firstName} ${lastName}!`);
+}
+const names = ['Jane', 'Doe'];
+greet(...names);
