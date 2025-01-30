@@ -58,9 +58,8 @@
 
 # **第二週 (2025/1/20~2025/1/29) - React 基礎專案  ✅**
 
-**學習資源**：
+- **學習資源**：
     1. 《React 思維進化：一次打破常見的觀念誤解，躍升專業前端開發者（iThome鐵人賽系列書）》
-    
     2. 《哎呀！原來 React 這麼有趣好玩：圈叉、貪吃蛇、記憶方塊三款經典遊戲實戰練習（iThome鐵人賽系列書）》
     
     
@@ -309,8 +308,6 @@
         - 建立基礎的 Bot 架構，連接 Discord API，實現簡單的命令處理（如回應 `/ping` 命令）。
             
             ```jsx
-            javascript
-            複製程式碼
             const { Client, Intents } = require('discord.js');
             const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
             
@@ -373,8 +370,6 @@
     - 文字識別
     
     ```tsx
-    Code
-    CopyInsert
     // 技術重點：AI API整合、結果處理
     
     ```
@@ -401,7 +396,6 @@
     - 效能監控
     
     ```tsx
-    
     // 技術重點：效能優化、監控系統
     ```
     
