@@ -41,3 +41,24 @@ function greet(firstName, lastName) {
 }
 const names = ['Jane', 'Doe'];
 greet(...names);
+
+// 使用剩餘參數計算平均值
+function calculateAverage(...numbers) {
+    const sum = numbers.reduce((total, num) => total + num, 0);
+    return sum / numbers.length;
+}
+console.log(calculateAverage(10, 20, 30, 40, 50,60));
+
+// 使用剩餘參數收集額外的參數
+function logPerson(name, age, ...hobbies) {
+    console.log(`Name: ${name}, Age: ${age}`);
+    if (hobbies.length > 0) {
+        console.log(`Hobbies: ${hobbies.join(', ')}`);
+    }
+}
+logPerson('Alice', 25, 'reading', 'swimming', 'cooking');
+
+// 在數組解構中使用剩餘參數
+const [first, second, ...rest] = [1, 2, 3, 4, 5];
+console.log(first, second, rest);
+
