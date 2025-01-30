@@ -1,64 +1,17 @@
-let hatPrice = 100;
-console.log(hatPrice);
-let bootPrice = 200;
-console.log(bootPrice);
 
-function sumPrice(a,b,c){
-    return a + b+c;
-}
+// 使用 reduce 計算數組中所有數字的總和
+const numbers = [1, 2, 3, 4, 5];
+const sum = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+console.log(sum); // 輸出: 15
 
-let totalPrice = sumPrice(hatPrice,bootPrice);
-console.log(totalPrice);
+// 使用 reduce 找出數組中的最大值
+const maxNumber = numbers.reduce((max, current) => Math.max(max, current), numbers[0]);
+console.log(maxNumber); // 輸出: 5
 
-totalPrice = sumPrice(100,200,300);
-console.log(totalPrice);
-
-// 定義一個函數 sumPrices，使用剩餘參數語法接收任意數量的價格
-function sumPrices(...prices) {
-    // 使用 reduce 方法計算所有價格的總和
-    // 初始值設為 0，遍歷每個價格並加到總和中
-    return prices.reduce((total, price) => total + price, 0);
-}
-
-// 調用 sumPrices 函數並打印結果
-// 傳入四個價格：100, 200, 300, 400
-console.log(sumPrices(100, 200, 300, 400));
-
-// 使用展開運算子合併陣列
-const fruits = ['apple', 'banana'];
-const vegetables = ['carrot', 'tomato'];
-const allItems = [...fruits, ...vegetables];
-console.log(allItems);
-
-// 使用展開運算子複製物件並添加新屬性
-const person = { name: 'John', age: 30 };
-const updatedPerson = { ...person, job: 'Developer' };
-console.log(updatedPerson);
-
-// 在函數調用中使用展開運算子
-function greet(firstName, lastName) {
-    console.log(`Hello, ${firstName} ${lastName}!`);
-}
-const names = ['Jane', 'Doe'];
-greet(...names);
-
-// 使用剩餘參數計算平均值
-function calculateAverage(...numbers) {
-    const sum = numbers.reduce((total, num) => total + num, 0);
-    return sum / numbers.length;
-}
-console.log(calculateAverage(10, 20, 30, 40, 50,60));
-
-// 使用剩餘參數收集額外的參數
-function logPerson(name, age, ...hobbies) {
-    console.log(`Name: ${name}, Age: ${age}`);
-    if (hobbies.length > 0) {
-        console.log(`Hobbies: ${hobbies.join(', ')}`);
-    }
-}
-logPerson('Alice', 25, 'reading', 'swimming', 'cooking');
-
-// 在數組解構中使用剩餘參數
-const [first, second, ...rest] = [1, 2, 3, 4, 5];
-console.log(first, second, rest);
-
+// 使用 reduce 將數組轉換為對象
+const fruits = ['apple', 'banana', 'apple', 'cherry', 'banana', 'cherry'];
+const fruitCount = fruits.reduce((count, fruit) => {
+    count[fruit] = (count[fruit] || 0) + 1;
+    return count;
+}, {});
+console.log(fruitCount); // 輸出: { apple: 2, banana: 2, cherry: 2 }
