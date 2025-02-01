@@ -1,0 +1,52 @@
+/* 設置整個頁面的背景色 */
+body {
+  background-color: #0a0a23;
+}
+
+/* 設置文本區域的樣式 */
+#text {
+  background-color: #0a0a23;
+  color: #ffffff;
+  padding: 10px;
+}
+
+/* 設置遊戲主區域的樣式 */
+#game {
+  max-width: 500px;
+  max-height: 400px;
+  background-color: #ffffff;
+  color: #ffffff;
+  margin: 30px auto 0px;
+  padding: 10px;
+}
+
+/* 設置控制區和狀態區的樣式 */
+#controls,
+#stats {
+  border: 1px solid #0a0a23;
+  padding: 5px;
+  color: #0a0a23;
+}
+
+/* 設置怪物狀態區的樣式 */
+#monsterStats {
+  display: none;
+  border: 1px solid #0a0a23;
+  padding: 5px;
+  color: #ffffff;
+  background-color: #c70d0d;
+}
+
+/* 設置統計數據的樣式 */
+.stat {
+  padding-right: 10px;
+}
+
+/* 設置按鈕的樣式 */
+button {
+  cursor: pointer;
+  color: #0a0a23;
+  background-color: #feac32;
+  background-image: linear-gradient(#fecc4c, #ffac33);
+  border: 3px solid #feac32;
+}
