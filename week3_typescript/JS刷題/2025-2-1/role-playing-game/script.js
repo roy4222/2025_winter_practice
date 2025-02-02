@@ -1,13 +1,13 @@
-// 初始化遊戲變數
+// 初始化玩家的遊戲狀態
 let xp = 0;
 let health = 100;
 let gold = 50;
-let currentWeaponIndex = 0;
+let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 let inventory = ["stick"];
 
-// 獲取 DOM 元素
+// 選取 DOM 元素
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
@@ -19,7 +19,7 @@ const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
 
-// 定義武器列表
+// 定義武器數組，包含名稱和攻擊力
 const weapons = [
   { name: 'stick', power: 5 },
   { name: 'dagger', power: 30 },
@@ -27,7 +27,7 @@ const weapons = [
   { name: 'sword', power: 100 }
 ];
 
-// 定義怪物列表
+// 定義怪物數組，包含名稱、等級和生命值
 const monsters = [
   {
     name: "slime",
@@ -46,53 +46,59 @@ const monsters = [
   }
 ]
 
-// 定義遊戲位置
+// 定義遊戲中的不同位置，包含按鈕文本、按鈕功能和描述文本
 const locations = [
   {
-    name: "town square",
-    "button text": ["Go to store", "Go to cave", "Fight dragon"],
-    "button functions": [goStore, goCave, fightDragon],
-    text: "You are in the town square. You see a sign that says \"Store\"."
+    name: "town square", // 城鎮廣場
+    "button text": ["Go to store", "Go to cave", "Fight dragon"], // 按鈕文字：去商店、去洞穴、與龍戰鬥
+    "button functions": [goStore, goCave, fightDragon], // 對應的按鈕功能
+    text: "You are in the town square. You see a sign that says \"Store\"." // 位置描述
   },
   {
-    name: "store",
-    "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"],
-    "button functions": [buyHealth, buyWeapon, goTown],
-    text: "You enter the store."
+    name: "store", // 商店
+    "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"], // 按鈕：購買生命值、購買武器、返回廣場
+    "button functions": [buyHealth, buyWeapon, goTown], // 對應的功能
+    text: "You enter the store." // 商店描述
   },
   {
-    name: "cave",
-    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
-    "button functions": [fightSlime, fightBeast, goTown],
-    text: "You enter the cave. You see some monsters."
+    name: "cave", // 洞穴
+    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"], // 按鈕：戰鬥史萊姆、戰鬥獠牙野獸、返回廣場
+    "button functions": [fightSlime, fightBeast, goTown], // 對應的功能
+    text: "You enter the cave. You see some monsters." // 洞穴描述
   },
   {
-    name: "fight",
-    "button text": ["Attack", "Dodge", "Run"],
-    "button functions": [attack, dodge, goTown],
-    text: "You are fighting a monster."
+    name: "fight", // 戰鬥場景
+    "button text": ["Attack", "Dodge", "Run"], // 按鈕：攻擊、閃避、逃跑
+    "button functions": [attack, dodge, goTown], // 對應的功能
+    text: "You are fighting a monster." // 戰鬥描述
   },
   {
-    name: "kill monster",
-    "button text": ["Go to town square", "Go to town square", "Go to town square"],
-    "button functions": [goTown, goTown, goTown],
-    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
+    name: "kill monster", // 殺死怪物後的場景
+    "button text": ["Go to town square", "Go to town square", "Go to town square"], // 按鈕：返回廣場（三個相同選項）
+    "button functions": [goTown, goTown, goTown], // 對應的功能
+    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.' // 殺死怪物後的描述
   },
   {
-    name: "lose",
-    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
-    "button functions": [restart, restart, restart],
-    text: "You die. &#x2620;"
+    name: "lose", // 失敗場景
+    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"], // 按鈕：重新開始（三個相同選項）
+    "button functions": [restart, restart, restart], // 對應的功能
+    text: "You die. &#x2620;" // 失敗描述，包含骷髏頭表情符號
   },
   { 
-    name: "win", 
-    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"], 
-    "button functions": [restart, restart, restart], 
-    text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;" 
+    name: "win", // 勝利場景
+    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"], // 按鈕：重新開始（三個相同選項）
+    "button functions": [restart, restart, restart], // 對應的功能
+    text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;" // 勝利描述，包含慶祝表情符號
+  },
+  {
+    name: "easter egg", // 彩蛋遊戲
+    "button text": ["2", "8", "Go to town square?"], // 按鈕：選擇2、選擇8、返回廣場
+    "button functions": [pickTwo, pickEight, goTown], // 對應的功能
+    text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!" // 彩蛋遊戲描述
   }
 ];
 
-// 初始化按鈕
+// initialize buttons
 button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
@@ -124,7 +130,7 @@ function goCave() {
   update(locations[2]);
 }
 
-// 購買健康
+// 購買生命值
 function buyHealth() {
   if (gold >= 10) {
     gold -= 10;
@@ -138,12 +144,12 @@ function buyHealth() {
 
 // 購買武器
 function buyWeapon() {
-  if (currentWeaponIndex < weapons.length - 1) {
+  if (currentWeapon < weapons.length - 1) {
     if (gold >= 30) {
       gold -= 30;
-      currentWeaponIndex++;
+      currentWeapon++;
       goldText.innerText = gold;
-      let newWeapon = weapons[currentWeaponIndex].name;
+      let newWeapon = weapons[currentWeapon].name;
       text.innerText = "You now have a " + newWeapon + ".";
       inventory.push(newWeapon);
       text.innerText += " In your inventory you have: " + inventory;
@@ -172,32 +178,23 @@ function sellWeapon() {
 
 // 戰鬥史萊姆
 function fightSlime() {
-  // 設置 fighting 變量為 0，表示正在與史萊姆戰鬥
-  // monsters 數組中的第一個元素（索引 0）是史萊姆
   fighting = 0;
-  // 調用 goFight 函數開始戰鬥
   goFight();
 }
 
-// 戰鬥野獸
+// 戰鬥獠牙野獸
 function fightBeast() {
-  // 設置 fighting 變量為 1，表示正在與野獸戰鬥
-  // monsters 數組中的第二個元素（索引 1）是野獸
   fighting = 1;
-  // 調用 goFight 函數開始戰鬥
   goFight();
 }
 
 // 戰鬥龍
 function fightDragon() {
-  // 設置 fighting 變量為 2，表示正在與龍戰鬥
-  // monsters 數組中的第三個元素（索引 2）是龍
   fighting = 2;
-  // 調用 goFight 函數開始戰鬥
   goFight();
 }
 
-// 進入戰鬥
+// 進入戰鬥狀態
 function goFight() {
   update(locations[3]);
   monsterHealth = monsters[fighting].health;
@@ -208,43 +205,44 @@ function goFight() {
 
 // 攻擊
 function attack() {
-  // 顯示怪物攻擊的訊息
   text.innerText = "The " + monsters[fighting].name + " attacks.";
-  // 顯示玩家使用武器攻擊的訊息
-  text.innerText += " You attack it with your " + weapons[currentWeaponIndex].name + ".";
-
-  // 計算怪物對玩家造成的傷害，並減少玩家的生命值
+  text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
   health -= getMonsterAttackValue(monsters[fighting].level);
-  // 計算玩家對怪物造成的傷害，包括武器威力、隨機因素和經驗值，並減少怪物的生命值
-  monsterHealth -= weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
-
-  // 更新顯示的玩家生命值
+  if (isMonsterHit()) {
+    monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;    
+  } else {
+    text.innerText += " You miss.";
+  }
   healthText.innerText = health;
-  // 更新顯示的怪物生命值
   monsterHealthText.innerText = monsterHealth;
-
-  // 檢查戰鬥結果
   if (health <= 0) {
-    // 如果玩家生命值小於等於0，遊戲失敗
     lose();
   } else if (monsterHealth <= 0) {
-    // 如果怪物生命值小於等於0
     if (fighting === 2) {
-      // 如果正在與最終Boss（龍）戰鬥，玩家獲勝
       winGame();
     } else {
-      // 如果是其他怪物，玩家擊敗怪物
       defeatMonster();
     }
   }
+  if (Math.random() <= .1 && inventory.length !== 1) {
+    text.innerText += " Your " + inventory.pop() + " breaks.";
+    currentWeapon--;
+  }
 }
 
-// 獲取怪物攻擊值
+// 計算怪物的攻擊值
 function getMonsterAttackValue(level) {
   const hit = (level * 5) - (Math.floor(Math.random() * xp));
+  console.log(hit);
+  return hit > 0 ? hit : 0;
 }
 
-// 閃避
+// 判斷是否擊中怪物
+function isMonsterHit() {
+  return Math.random() > .2 || health < 20;
+}
+
+// 閃避攻擊
 function dodge() {
   text.innerText = "You dodge the attack from the " + monsters[fighting].name;
 }
@@ -263,7 +261,7 @@ function lose() {
   update(locations[5]);
 }
 
-// 贏得遊戲
+// 遊戲勝利
 function winGame() {
   update(locations[6]);
 }
@@ -273,10 +271,61 @@ function restart() {
   xp = 0;
   health = 100;
   gold = 50;
-  currentWeaponIndex = 0;
+  currentWeapon = 0;
   inventory = ["stick"];
   goldText.innerText = gold;
   healthText.innerText = health;
   xpText.innerText = xp;
   goTown();
+}
+
+// 彩蛋遊戲
+function easterEgg() {
+  update(locations[7]);
+}
+
+// 選擇數字 2
+function pickTwo() {
+  pick(2);
+}
+
+// 選擇數字 8
+function pickEight() {
+  pick(8);
+}
+
+// 彩蛋遊戲邏輯
+function pick(guess) {
+  // 創建一個空數組來存儲隨機數
+  const numbers = [];
+  
+  // 生成10個0到10之間的隨機整數
+  while (numbers.length < 10) {
+    numbers.push(Math.floor(Math.random() * 11));
+  }
+  
+  // 顯示玩家的選擇和生成的隨機數
+  text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
+  for (let i = 0; i < 10; i++) {
+    text.innerText += numbers[i] + "\n";
+  }
+  
+  // 檢查玩家的猜測是否在隨機數中
+  if (numbers.includes(guess)) {
+    // 如果猜對了，獎勵20金幣
+    text.innerText += "Right! You win 20 gold!";
+    gold += 20;
+    goldText.innerText = gold;
+  } else {
+    // 如果猜錯了，扣除10點生命值
+    text.innerText += "Wrong! You lose 10 health!";
+    health -= 10;
+    healthText.innerText = health;
+    
+    // 檢查玩家是否還有生命值
+    if (health <= 0) {
+      // 如果生命值歸零，遊戲結束
+      lose();
+    }
+  }
 }
