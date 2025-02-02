@@ -1,0 +1,102 @@
+/* 重置所有元素的基本樣式 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 定義全局顏色變量 */
+:root {
+  --very-dark-blue: #0a0a23;
+  --white: #ffffff;
+  --yellow: #f1be32;
+  --golden-yellow: #feac32;
+}
+
+/* 設置頁面主體樣式 */
+body {
+  background-color: var(--very-dark-blue);
+  text-align: center;
+  color: var(--white);
+}
+
+/* 標題樣式 */
+h1 {
+  margin: 15px 0 20px;
+}
+
+/* 按鈕基本樣式 */
+.btn {
+  cursor: pointer;
+  width: 100px;
+  margin: 10px;
+  color: var(--very-dark-blue);
+  background-color: var(--golden-yellow);
+  background-image: linear-gradient(#fecc4c, #ffac33);
+  border-color: var(--golden-yellow);
+  border-width: 3px;
+}
+
+/* 按鈕懸停效果 */
+.btn:hover {
+  background-image: linear-gradient(#ffcc4c, #f89808);
+}
+
+/* 規則容器樣式 */
+.rules-container {
+  padding: 10px 0;
+  margin: auto;
+  border-radius: 15px;
+  border: 5px solid var(--yellow);
+  background-color: var(--white);
+  color: var(--very-dark-blue);
+}
+
+/* 規則列表樣式 */
+.rules-container ul {
+  list-style-type: none;
+}
+
+/* 規則段落樣式 */
+.rules-container p {
+  margin: 10px 0;
+}
+
+/* 響應式設計：大屏幕規則容器寬度 */
+@media (min-width: 760px) {
+  .rules-container {
+    width: 60%;
+  }
+}
+
+/* 得分容器樣式 */
+.score-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 30px 0;
+  font-size: 1.2rem;
+}
+
+/* 得分文字樣式 */
+.score {
+  font-weight: 500;
+}
+
+/* 結果容器樣式 */
+.results-container {
+  font-size: 1.3rem;
+  margin: 15px 0;
+}
+
+/* 勝利訊息樣式 */
+#winner-msg {
+  margin-top: 25px;
+}
+
+/* 重置遊戲按鈕樣式 */
+#reset-game-btn {
+  display: none;
+  margin: 20px auto;
+}
