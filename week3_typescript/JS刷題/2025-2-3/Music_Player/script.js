@@ -78,19 +78,16 @@ const allSongs = [
   },
 ];
 
-// 建立一個新的 Audio 物件，用於播放音樂
 const audio = new Audio();
-
-// 定義使用者資料物件，包含歌曲列表、當前播放歌曲和播放時間
 let userData = {
   songs: [...allSongs],
   currentSong: null,
   songCurrentTime: 0,
 };
 
-// 播放指定 ID 的歌曲
+// 定義播放歌曲的函數，接受歌曲id作為參數
 const playSong = (id) => {
-  // 在歌曲列表中找到對應 ID 的歌曲
+  // 從userData中找到對應id的歌曲
   const song = userData?.songs.find((song) => song.id === id);
   // 設置音頻源和標題
   audio.src = song.src;
@@ -102,36 +99,30 @@ const playSong = (id) => {
   } else {
     audio.currentTime = userData?.songCurrentTime;
   }
-  // 更新當前播放歌曲
+  // 更新當前播放的歌曲
   userData.currentSong = song;
-  // 添加播放按鈕的樣式
+  // 添加播放按鈕的視覺效果
   playButton.classList.add("playing");
 
-  // 更新 UI
+  // 更新UI顯示
   highlightCurrentSong();
   setPlayerDisplay();
-  // 開始播放
+  setPlayButtonAccessibleText();
+  // 開始播放音頻
   audio.play();
 };
 
-// 暫停當前播放的歌曲
 const pauseSong = () => {
-  // 保存當前播放時間
   userData.songCurrentTime = audio.currentTime;
   
-  // 移除播放按鈕的樣式
   playButton.classList.remove("playing");
-  // 暫停音頻播放
   audio.pause();
 };
 
-// 播放下一首歌曲
 const playNextSong = () => {
   if (userData?.currentSong === null) {
-    // 如果當前沒有播放歌曲，播放第一首
     playSong(userData?.songs[0].id);
   } else {
-    // 獲取當前歌曲索引，播放下一首
     const currentSongIndex = getCurrentSongIndex();
     const nextSong = userData?.songs[currentSongIndex + 1];
 
@@ -139,11 +130,9 @@ const playNextSong = () => {
   }
 };
 
-// 播放上一首歌曲
 const playPreviousSong = () => {
    if (userData?.currentSong === null) return;
    else {
-    // 獲取當前歌曲索引，播放上一首
     const currentSongIndex = getCurrentSongIndex();
     const previousSong = userData?.songs[currentSongIndex - 1];
 
@@ -151,39 +140,59 @@ const playPreviousSong = () => {
    }
 };
 
-// 設置播放器顯示
+// 定義一個隨機播放函數
+const shuffle = () => {
+  // 使用 sort 方法和隨機比較函數來打亂歌曲順序
+  userData?.songs.sort(() => Math.random() - 0.5);
+  
+  // 重置當前歌曲和播放時間
+  userData.currentSong = null;
+  userData.songCurrentTime = 0;
+
+  // 重新渲染打亂後的歌曲列表
+  renderSongs(userData?.songs);
+  
+  // 暫停當前播放的歌曲（如果有的話）
+  pauseSong();
+  
+  // 更新播放器顯示信息
+  setPlayerDisplay();
+  
+  // 更新播放按鈕的輔助文本
+  setPlayButtonAccessibleText();
+};
+
+// 定義一個刪除歌曲的函數
+const deleteSong = (id) => {
+  // 函數體待實現
+};
+
 const setPlayerDisplay = () => {
   const playingSong = document.getElementById("player-song-title");
   const songArtist = document.getElementById("player-song-artist");
   const currentTitle = userData?.currentSong?.title;
   const currentArtist = userData?.currentSong?.artist;
 
-  // 更新歌曲標題和藝術家信息
   playingSong.textContent = currentTitle ? currentTitle : "";
   songArtist.textContent = currentArtist ? currentArtist : "";
 };
 
-// 高亮當前播放的歌曲
 const highlightCurrentSong = () => {
   const playlistSongElements = document.querySelectorAll(".playlist-song");
   const songToHighlight = document.getElementById(
     `song-${userData?.currentSong?.id}`
   );
 
-  // 移除所有歌曲的高亮
   playlistSongElements.forEach((songEl) => {
     songEl.removeAttribute("aria-current");
   });
 
-  // 為當前播放的歌曲添加高亮
   if (songToHighlight) songToHighlight.setAttribute("aria-current", "true");
 };
 
-// 渲染歌曲列表
 const renderSongs = (array) => {
   const songsHTML = array
     .map((song)=> {
-      // 為每首歌曲創建 HTML 結構
       return `
       <li id="song-${song.id}" class="playlist-song">
       <button class="playlist-song-info" onclick="playSong(${song.id})">
@@ -200,34 +209,36 @@ const renderSongs = (array) => {
     })
     .join("");
 
-  // 更新播放列表 HTML
   playlistSongs.innerHTML = songsHTML;
 };
 
-// 獲取當前播放歌曲的索引
+const setPlayButtonAccessibleText = () => {
+  const song = userData?.currentSong || userData?.songs[0];
+
+  playButton.setAttribute(
+    "aria-label",
+    song?.title ? `Play ${song.title}` : "Play"
+  );
+};
+
 const getCurrentSongIndex = () => userData?.songs.indexOf(userData?.currentSong);
 
-// 播放按鈕點擊事件
 playButton.addEventListener("click", () => {
     if (userData?.currentSong === null) {
-    // 如果沒有當前歌曲，播放第一首
     playSong(userData?.songs[0].id);
   } else {
-    // 否則播放當前歌曲
     playSong(userData?.currentSong.id);
   }
 });
 
-// 暫停按鈕點擊事件
 pauseButton.addEventListener("click",  pauseSong);
 
-// 下一首按鈕點擊事件
 nextButton.addEventListener("click", playNextSong);
 
-// 上一首按鈕點擊事件
 previousButton.addEventListener("click", playPreviousSong);
 
-// 對歌曲進行排序
+shuffleButton.addEventListener("click", shuffle);
+
 const sortSongs = () => {
   userData?.songs.sort((a,b) => {
     if (a.title < b.title) {
@@ -244,5 +255,4 @@ const sortSongs = () => {
   return userData?.songs;
 };
 
-// 渲染排序後的歌曲列表
 renderSongs(sortSongs());
