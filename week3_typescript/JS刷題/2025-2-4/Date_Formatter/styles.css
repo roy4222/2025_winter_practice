@@ -1,0 +1,116 @@
+/* 重置所有元素的基本樣式 */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 定義全局顏色變量 */
+:root {
+  --dark-grey: #0a0a23;
+  --white: #ffffff;
+  --yellow: #f1be32;
+}
+
+/* 設置頁面主體樣式 */
+body {
+  color: var(--white);
+  background-color: var(--dark-grey);
+}
+
+/* 標題容器樣式 */
+.title-container {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 標題文字樣式 */
+.title {
+  font-size: 2.5rem;
+}
+
+/* 日期圖標樣式 */
+.date-svg {
+  width: 30px;
+  height: 30px;
+}
+
+/* 分隔線樣式 */
+.divider {
+  margin: auto;
+  width: 150px;
+  height: 10px;
+  background-color: var(--yellow);
+}
+
+/* 下拉選單容器樣式 */
+.dropdown-container {
+  width: 50%;
+  margin: 40px auto;
+  position: relative;
+}
+
+/* 下拉選單樣式 */
+select {
+  display: block;
+  margin: 20px auto 0;
+  width: 100%;
+  height: 50px;
+  font-size: 100%;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: var(--white);
+  border: none;
+  color: var(--dark-grey);
+  appearance: none;
+  padding: 10px;
+  padding-right: 38px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: color 0.3s ease, background-color 0.3s ease,
+    border-bottom-color 0.3s ease;
+}
+
+/* 下拉選單圖標容器樣式 */
+.select-icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 30px;
+  height: 36px;
+  pointer-events: none;
+  padding-left: 5px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 下拉選單圖標樣式 */
+.select-icon svg.icon {
+  transition: fill 0.3s ease;
+  fill: var(--dark-grey);
+}
+
+/* 當前日期顯示樣式 */
+#current-date {
+  font-size: 2rem;
+  text-align: center;
+}
+
+/* 響應式設計：小屏幕適配 */
+@media (max-width: 375px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .dropdown-container {
+    width: 80%;
+  }
+
+  .date-svg {
+    display: none;
+  }
+}
