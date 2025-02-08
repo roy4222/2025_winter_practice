@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>進階音樂播放器</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="player-section">
+            <h1>進階音樂播放器</h1>
+            
+            <!-- 視覺化效果區域 -->
+            <canvas id="visualizer"></canvas>
+            
+            <!-- 音樂控制區 -->
+            <div class="controls">
+                <input type="file" id="audioFile" accept="audio/*" multiple>
+                <div class="main-controls">
+                    <button id="prevBtn">上一首</button>
+                    <div class="playback-controls">
+                        <button id="playBtn">播放</button>
+                    </div>
+                    <button id="nextBtn">下一首</button>
+                    
+                    <div class="volume-control">
+                        <i class="volume-icon">🔊</i>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="100">
+                        <span class="volume-value">100%</span>
+                    </div>
+                    
+                    <div class="time-display">
+                        <span id="currentTime">00:00</span>
+                        <span id="duration">00:00</span>
+                    </div>
+                </div>
+                <input type="range" id="progressBar" value="0">
+            </div>
+
+            <!-- 均衡器控制區 -->
+            <div class="equalizer">
+                <h3>均衡器</h3>
+                <div class="eq-sliders">
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>60Hz</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>170Hz</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>310Hz</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>600Hz</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>1K</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>3K</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>6K</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>12K</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>14K</label>
+                    </div>
+                    <div class="eq-control">
+                        <input type="range" class="eq-slider" min="-20" max="20" value="0" orient="vertical">
+                        <label>16K</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 播放列表區域 -->
+        <div class="playlist">
+            <h3>播放列表</h3>
+            <ul id="playlist-container"></ul>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
