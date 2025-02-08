@@ -1,0 +1,94 @@
+/* 重置所有元素的基本樣式 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 定義全局顏色變量 */
+:root {
+  --dark-grey: #1b1b32;
+  --light-grey: #f5f6f7;
+  --golden-yellow: #fecc4c;
+  --yellow: #ffcc4c;
+  --gold: #feac32;
+  --orange: #ffac33;
+  --dark-orange: #f89808;
+}
+
+/* 設置頁面主體樣式 */
+body {
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+}
+
+/* 設置主體和輸入框的文本對齊方式 */
+body,
+#message-input:placeholder-shown {
+  text-align: center;
+}
+
+/* 限制文本區域的最大寬度 */
+textarea {
+  max-width: 90%;
+}
+
+/* 設置主要文本的邊距 */
+.main-text {
+  margin: 25px 0;
+}
+
+/* 設置標題字體大小 */
+.title {
+  font-size: 2.5rem;
+}
+
+/* 設置描述文本的樣式 */
+.description {
+  margin-top: 15px;
+  font-size: 1.4rem;
+}
+
+/* 設置消息標籤的樣式 */
+.message-label {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+/* 設置輸入框和文本區域的字體大小 */
+#message-input:placeholder-shown,
+textarea {
+  font-size: 1.1rem;
+}
+
+/* 設置按鈕的基本樣式 */
+.btn {
+  display: block;
+  cursor: pointer;
+  width: 200px;
+  margin: 10px auto;
+  color: var(--dark-grey);
+  background-color: var(--gold);
+  background-image: linear-gradient(var(--golden-yellow), var(--orange));
+  border-color: var(--gold);
+  border-width: 3px;
+}
+
+/* 設置按鈕懸停效果 */
+.btn:hover {
+  background-image: linear-gradient(var(--yellow), var(--dark-orange));
+}
+
+/* 設置結果顯示的樣式 */
+#result {
+  font-size: 2rem;
+  margin: 20px 0;
+}
+
+/* 設置頁腳樣式 */
+.footer {
+  margin-top: 10px;
+}

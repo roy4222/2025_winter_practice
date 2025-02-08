@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!-- 頁面標題 -->
+    <title>通過構建垃圾郵件過濾器學習正則表達式</title>
+    <!-- 連接外部樣式表 -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <!-- 頁面頭部 -->
+    <header class="main-text">
+      <h1 class="title">這是垃圾郵件嗎？</h1>
+      <p class="description">
+        輸入一個短語，檢查它是否會被標記為垃圾郵件。
+      </p>
+    </header>
+
+    <!-- 主要內容區 -->
+    <main>
+      <!-- 訊息輸入標籤 -->
+      <label class="message-label" for="message-input">訊息：</label>
+      <!-- 文本區域用於輸入訊息 -->
+      <textarea
+        placeholder="在此輸入訊息"
+        value=""
+        type="text"
+        name="message"
+        id="message-input"
+        rows="10"
+        cols="40"
+      ></textarea>
+      <!-- 檢查訊息按鈕 -->
+      <button class="btn" id="check-message-btn" type="button">
+        檢查訊息
+      </button>
+      <!-- 結果顯示區域 -->
+      <p id="result"></p>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">&copy; freeCodeCamp</footer>
+    <!-- 引入外部JavaScript文件 -->
+    <script src="./script.js"></script>
+  </body>
+</html>
