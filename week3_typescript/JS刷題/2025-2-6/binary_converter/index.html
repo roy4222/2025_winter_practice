@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 頁面標題 -->
+    <title>十進制轉二進制轉換器</title>
+    <!-- 連結外部CSS樣式表 -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- 主標題 -->
+    <h1>
+      十進制轉二進制轉換器
+    </h1>
+    <!-- 輸入區域 -->
+    <section class="input-container">
+      <!-- 輸入標籤 -->
+      <label for="number-input">輸入十進制數字:</label>
+      <!-- 數字輸入框 -->
+      <input
+        value=""
+        type="number"
+        name="decimal number input"
+        id="number-input"
+        class="number-input"
+      />
+      <!-- 轉換按鈕 -->
+      <button class="convert-btn" id="convert-btn">轉換</button> 
+    </section>
+    <!-- 輸出區域 -->
+    <section class="output-container">
+      <!-- 結果輸出 -->
+      <output id="result" for="number-input"></output>
+      <!-- 調用堆疊標題 -->
+      <h2>Call stack</h2>
+      <!-- 動畫容器 -->
+      <div id="animation-container"></div>
+    </section>
+    <!-- 引入JavaScript文件 -->
+    <script src="script.js"></script>
+  </body>
+</html>
