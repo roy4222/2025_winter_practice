@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js"></script>
+    <title>統計計算器</title>
+  </head>
+  <body>
+    <h1>統計計算器</h1>
+    <p>請輸入一串以逗號分隔的數字。</p>
+
+    <form onsubmit="calculate();">
+      <label for="numbers">數字：</label>
+      <input type="text" name="numbers" id="numbers" />
+      <button type="submit">計算</button>
+    </form>
+    <div class="results">
+      <p>
+        一串數字的<dfn>平均值</dfn>是通過將所有數字相加然後除以數字的總數來計算的平均數。
+      </p>
+      <p class="bold">平均值：<span id="mean"></span></p>
+      <p>
+        一串數字的<dfn>中位數</dfn>是將數字從小到大排序後，位於中間的那個數字。
+      </p>
+      <p class="bold">中位數：<span id="median"></span></p>
+      <p>
+        一串數字的<dfn>眾數</dfn>是在列表中出現次數最多的數字。
+      </p>
+      <p class="bold">眾數：<span id="mode"></span></p>
+      <p>
+        一串數字的<dfn>範圍</dfn>是列表中最大數字和最小數字之間的差。
+      </p>
+      <p class="bold">範圍：<span id="range"></span></p>
+      <p>
+        一串數字的<dfn>方差</dfn>衡量的是數值平均偏離平均值的程度。
+      </p>
+      <p class="bold">方差：<span id="variance"></span></p>
+      <p>
+        一串數字的<dfn>標準差</dfn>是方差的平方根。
+      </p>
+      <p class="bold">
+        標準差：<span id="standardDeviation"></span>
+      </p>
+    </div>
+  </body>
+</html>
