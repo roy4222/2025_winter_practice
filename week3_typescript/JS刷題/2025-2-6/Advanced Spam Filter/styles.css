@@ -1,0 +1,231 @@
+/* 定義全局CSS變量 */
+:root {
+  --primary-color: #2196f3;
+  --secondary-color: #f50057;
+  --background-color: #f5f5f5;
+  --surface-color: #ffffff;
+  --text-color: #333333;
+  --border-radius: 8px;
+  --spacing: 20px;
+}
+
+/* 重置所有元素的默認樣式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 設置body的基本樣式 */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* 容器樣式 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing);
+}
+
+/* 頁頭樣式 */
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing);
+}
+
+/* 頁頭標題樣式 */
+.header h1 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* 主要內容區域樣式 */
+.main-content {
+  display: grid;
+  gap: var(--spacing);
+}
+
+/* 輸入區域樣式 */
+.input-section {
+  background-color: var(--surface-color);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 消息標籤樣式 */
+.message-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* 文本區域樣式 */
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  resize: vertical;
+  font-size: 16px;
+}
+
+/* 按鈕基本樣式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* 主要按鈕樣式 */
+.btn.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* 次要按鈕樣式 */
+.btn.secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+/* 按鈕懸停效果 */
+.btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* 結果區域樣式 */
+.result-section {
+  background-color: var(--surface-color);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 分數容器樣式 */
+.score-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing);
+}
+
+/* 分數圓圈樣式 */
+.score-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary-color) 0%, #ddd 0%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* 分數圓圈內部白色背景 */
+.score-circle::before {
+  content: '';
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  background-color: var(--surface-color);
+  border-radius: 50%;
+}
+
+/* 垃圾郵件分數樣式 */
+#spam-score {
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--primary-color);
+  position: relative;
+  z-index: 1;
+}
+
+/* 分數標籤樣式 */
+.score-label {
+  font-size: 14px;
+  color: var(--text-color);
+  position: relative;
+  z-index: 1;
+}
+
+/* 詳細信息容器樣式 */
+.details-container {
+  margin-top: var(--spacing);
+}
+
+/* 規則匹配項樣式 */
+.rule-match {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: var(--border-radius);
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--primary-color);
+}
+
+/* 自定義規則和歷史記錄區域樣式 */
+.custom-rules-section,
+.history-section {
+  background-color: var(--surface-color);
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 自定義規則輸入區域樣式 */
+.custom-rule-input {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr auto;
+  gap: 10px;
+  margin-bottom: var(--spacing);
+}
+
+/* 自定義規則輸入框樣式 */
+.custom-rule-input input {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+}
+
+/* 歷史記錄項目樣式 */
+.history-item {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: var(--border-radius);
+  background-color: #f8f9fa;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* 頁腳樣式 */
+.footer {
+  text-align: center;
+  margin-top: var(--spacing);
+  padding: var(--spacing);
+  color: #666;
+}
+
+/* 響應式設計：適應小屏幕 */
+@media (max-width: 768px) {
+  .custom-rule-input {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

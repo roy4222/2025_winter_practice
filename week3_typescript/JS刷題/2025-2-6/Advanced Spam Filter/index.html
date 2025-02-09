@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>進階垃圾郵件過濾器</title>
+    <!-- 引入自定義樣式表 -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- 引入 Google Material Icons 字體 -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+      <!-- 頁面標題區 -->
+      <header class="header">
+        <h1>進階垃圾郵件過濾器</h1>
+        <p class="description">
+          輸入訊息進行多維度垃圾郵件分析
+        </p>
+      </header>
+
+      <main class="main-content">
+        <!-- 輸入區域 -->
+        <div class="input-section">
+          <label class="message-label" for="message-input">訊息內容：</label>
+          <textarea
+            placeholder="在此輸入要檢查的訊息..."
+            id="message-input"
+            rows="8"
+          ></textarea>
+          <button class="btn primary" id="check-message-btn">
+            <span class="material-icons">search</span>
+            分析訊息
+          </button>
+        </div>
+
+        <!-- 結果顯示區域 -->
+        <div class="result-section" id="result-section">
+          <!-- 垃圾郵件指數顯示 -->
+          <div class="score-container">
+            <div class="score-circle">
+              <span id="spam-score">0</span>
+              <span class="score-label">垃圾指數</span>
+            </div>
+          </div>
+          
+          <!-- 詳細分析結果 -->
+          <div class="details-container">
+            <h3>詳細分析結果</h3>
+            <div id="rule-matches"></div>
+          </div>
+        </div>
+
+        <!-- 自定義規則區域 -->
+        <div class="custom-rules-section">
+          <h3>自定義規則</h3>
+          <div class="custom-rule-input">
+            <input type="text" id="rule-pattern" placeholder="輸入正則表達式模式">
+            <input type="text" id="rule-description" placeholder="規則描述">
+            <input type="number" id="rule-weight" placeholder="權重(1-10)" min="1" max="10">
+            <button class="btn secondary" id="add-rule-btn">
+              <span class="material-icons">add</span>
+              添加規則
+            </button>
+          </div>
+          <!-- 自定義規則列表 -->
+          <div id="custom-rules-list"></div>
+        </div>
+
+        <!-- 檢查歷史區域 -->
+        <div class="history-section">
+          <h3>檢查歷史</h3>
+          <div id="history-list"></div>
+        </div>
+      </main>
+
+      <!-- 頁腳 -->
+      <footer class="footer">
+        <p>&copy; 2025 進階垃圾郵件過濾器</p>
+      </footer>
+    </div>
+
+    <!-- 引入 JavaScript 文件 -->
+    <script src="script.js"></script>
+  </body>
+</html>
