@@ -1,0 +1,20 @@
+/* 設置主容器的網格佈局 */
+#container {
+  display: grid;
+  /* 定義列寬：第一列50px，其餘10列各200px */
+  grid-template-columns: 50px repeat(10, 200px);
+  /* 定義11行，每行高30px */
+  grid-template-rows: repeat(11, 30px);
+}
+
+/* 設置標籤元素的樣式 */
+.label {
+  /* 設置背景顏色為淺灰色 */
+  background-color: lightgray;
+  /* 文字居中對齊 */
+  text-align: center;
+  /* 垂直居中對齊 */
+  vertical-align: middle;
+  /* 設置行高與元素高度相同，實現垂直居中 */
+  line-height: 30px;
+}
