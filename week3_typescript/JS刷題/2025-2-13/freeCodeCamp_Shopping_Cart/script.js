@@ -1,4 +1,4 @@
-// 獲取DOM元素
+// 獲取 DOM 元素
 const cartContainer = document.getElementById("cart-container");
 const productsContainer = document.getElementById("products-container");
 const dessertCards = document.getElementById("dessert-card-container");
@@ -11,7 +11,7 @@ const cartTotal = document.getElementById("total");
 const showHideCartSpan = document.getElementById("show-hide-cart");
 let isCartShowing = false;
 
-// 定義產品數據
+// 定義產品列表
 const products = [
   {
     id: 1,
@@ -104,33 +104,43 @@ products.forEach(
   }
 );
 
-// 購物車類
+// 定義購物車類
 class ShoppingCart {
+  // 構造函數初始化購物車
   constructor() {
-    this.items = [];
-    this.total = 0;
-    this.taxRate = 8.25;
+    this.items = [];        // 存儲購物車中的商品
+    this.total = 0;         // 購物車總金額
+    this.taxRate = 8.25;    // 稅率（百分比）
   }
 
   // 添加商品到購物車
   addItem(id, products) {
+    // 根據 id 在產品列表中查找對應的商品
     const product = products.find((item) => item.id === id);
     const { name, price } = product;
+
+    // 將商品添加到購物車
     this.items.push(product);
 
     // 計算每種商品的數量
     const totalCountPerProduct = {};
     this.items.forEach((dessert) => {
+      // 使用對象來統計每種商品的數量
       totalCountPerProduct[dessert.id] = (totalCountPerProduct[dessert.id] || 0) + 1;
     })
 
+    // 獲取當前添加商品的數量
     const currentProductCount = totalCountPerProduct[product.id];
+    // 獲取顯示當前商品數量的 DOM 元素
     const currentProductCountSpan = document.getElementById(`product-count-for-id${id}`);
 
     // 更新購物車顯示
-    currentProductCount > 1 
-      ? currentProductCountSpan.textContent = `${currentProductCount}x`
-      : productsContainer.innerHTML += `
+    if (currentProductCount > 1) {
+      // 如果商品數量大於 1，更新數量顯示
+      currentProductCountSpan.textContent = `${currentProductCount}x`;
+    } else {
+      // 如果是新添加的商品，創建新的 DOM 元素
+      productsContainer.innerHTML += `
       <div id="dessert${id}" class="product">
         <p>
           <span class="product-count" id="product-count-for-id${id}"></span>${name}
@@ -138,21 +148,50 @@ class ShoppingCart {
         <p>${price}</p>
       </div>
       `;
+    }
   }
 
-  // 獲取購物車中的商品數量
+  // 獲取購物車商品數量
   getCounts() {
     return this.items.length;
   }
 
+  // 清空購物車
+  clearCart() {
+    if (!this.items.length) {
+      alert("您的購物車已經是空的");
+      return;
+    }
+
+    const isCartCleared = confirm(
+      "您確定要清空購物車中的所有商品嗎？"
+    );
+
+    if (isCartCleared) {
+      this.items = [];
+      this.total = 0;
+      productsContainer.innerHTML = "";
+      totalNumberOfItems.textContent = 0;
+      cartSubTotal.textContent = 0;
+      cartTaxes.textContent = 0;
+      cartTotal.textContent = 0;
+    }
+  }
+
   // 計算稅金
   calculateTaxes(amount) {
-    return (this.taxRate / 100) * amount;
+    return parseFloat(((this.taxRate / 100) * amount).toFixed(2));
   }
 
   // 計算總價
   calculateTotal() {
     const subTotal = this.items.reduce((total, item) => total + item.price, 0);
+    const tax = this.calculateTaxes(subTotal);
+    this.total = subTotal + tax;
+    cartSubTotal.textContent = `$${subTotal.toFixed(2)}`;
+    cartTaxes.textContent = `$${tax.toFixed(2)}`;
+    cartTotal.textContent = `$${this.total.toFixed(2)}`;
+    return this.total;
   }
 };
 
@@ -160,19 +199,29 @@ class ShoppingCart {
 const cart = new ShoppingCart();
 const addToCartBtns = document.getElementsByClassName("add-to-cart-btn");
 
-// 為每個"加入購物車"按鈕添加點擊事件
-[...addToCartBtns].forEach(
-  (btn) => {
-    btn.addEventListener("click", (event) => {
-      cart.addItem(Number(event.target.id), products);
-      totalNumberOfItems.textContent = cart.getCounts();
-    })
-  }
-);
+// 為每個添加到購物車按鈕添加點擊事件
+[...addToCartBtns].forEach((btn) => {
+  btn.addEventListener("click", (event) => {
+    // 獲取被點擊按鈕的 ID，並轉換為數字
+    const productId = Number(event.target.id);
+    
+    // 將商品添加到購物車
+    cart.addItem(productId, products);
+    
+    // 更新購物車中的商品總數顯示
+    totalNumberOfItems.textContent = cart.getCounts();
+    
+    // 重新計算購物車總價並更新顯示
+    cart.calculateTotal();
+  });
+});
 
-// 購物車按鈕點擊事件
+// 切換購物車顯示/隱藏
 cartBtn.addEventListener("click", () => {
   isCartShowing = !isCartShowing;
   showHideCartSpan.textContent = isCartShowing ? "Hide" : "Show";
   cartContainer.style.display = isCartShowing ? "block" : "none";
 });
+
+// 清空購物車按鈕事件
+clearCartBtn.addEventListener("click", cart.clearCart.bind(cart));
