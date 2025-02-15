@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>通過建立平台遊戲學習中級物件導向程式設計</title>
+    <!-- 引入外部CSS樣式表 -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- 遊戲開始畫面 -->
+    <div class="start-screen">
+      <h1 class="main-title">freeCodeCamp 代碼戰士</h1>
+      <!-- 遊戲說明 -->
+      <p class="instructions">
+        幫助主角導航到黃色檢查點。
+      </p>
+      <p class="instructions">
+        使用鍵盤方向鍵移動角色。
+      </p>
+      <p class="instructions">你也可以使用空格鍵跳躍。</p>
+
+      <!-- 開始遊戲按鈕 -->
+      <div class="btn-container">
+        <button class="btn" id="start-btn">開始遊戲</button>
+      </div>
+    </div>
+
+    <!-- 到達終點畫面 -->
+    <div class="checkpoint-screen">
+      <h2>恭喜！</h2>
+      <p>你已到達最後一個檢查點。</p>
+    </div>
+
+    <!-- 遊戲畫布 -->
+    <canvas id="canvas"></canvas>
+
+    <!-- 引入遊戲邏輯腳本 -->
+    <script src="./script.js"></script>
+  </body>
+</html>
