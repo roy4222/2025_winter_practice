@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>進階骰子遊戲</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header>
+    <h1>進階骰子遊戲</h1>
+    <button class="btn" id="rules-btn" type="button">顯示規則</button>
+    <div class="rules-container">
+      <h2>規則</h2>
+      <ul>
+        <li>總共有六個回合</li>
+        <li>每回合只能擲骰子三次</li>
+        <li>要開始遊戲，請擲骰子</li>
+        <li>
+          然後，從選定的分數中選擇一個，或再次擲骰子
+        </li>
+        <li>
+          如果您選擇了一個選定的分數，那麼您將進入下一回合
+        </li>
+        <li>
+          如果您拒絕選擇選定的分數，那麼您可以再擲骰子兩次
+        </li>
+      </ul>
+      <h2 class="points">得分</h2>
+      <ul>
+        <li>三條：所有五個骰子的總和</li>
+        <li>四條：所有五個骰子的總和</li>
+        <li>葫蘆：三條加一對 - 25分</li>
+        <li>
+          小順：四個骰子有連續的值 - 30分
+        </li>
+        <li>
+          大順：所有五個骰子都有連續的值 - 40分
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <form id="game">
+      <div id="dice">
+        <div class="die"></div>
+        <div class="die"></div>
+        <div class="die"></div>
+        <div class="die"></div>
+        <div class="die"></div>
+      </div>
+
+      <p class="rounds-text">
+        <strong>擲骰次數：</strong> <span id="current-round-rolls">0</span> |
+        <strong>回合：</strong> <span id="current-round">1</span>
+      </p>
+
+      <div id="score-options">
+        <div>
+          <input type="radio" name="score-options" id="three-of-a-kind" value="three-of-a-kind" disabled />
+          <label for="three-of-a-kind">三條<span></span></label>
+        </div>
+        <div>
+          <input type="radio" name="score-options" id="four-of-a-kind" value="four-of-a-kind" disabled />
+          <label for="four-of-a-kind">四條<span></span></label>
+        </div>
+        <div>
+          <input type="radio" name="score-options" id="full-house" value="full-house" disabled />
+          <label for="full-house">葫蘆<span></span></label>
+        </div>
+        <div>
+          <input type="radio" name="score-options" id="small-straight" value="small-straight" disabled />
+          <label for="small-straight">小順<span></span></label>
+        </div>
+        <div>
+          <input type="radio" name="score-options" id="large-straight" value="large-straight" disabled />
+          <label for="large-straight">大順<span></span></label>
+        </div>
+
+        <div>
+          <input type="radio" name="score-options" id="none" value="none" disabled />
+          <label for="none">以上皆非<span></span></label>
+        </div>
+      </div>
+
+      <button class="btn" id="keep-score-btn" type="button">
+        保留上述選擇的分數
+      </button>
+      <button class="btn" id="roll-dice-btn" type="button">
+        擲骰子
+      </button>
+    </form>
+
+    <div id="scores">
+      <h3>得分記錄（總分：<span id="total-score">0</span>）</h3>
+      <ol id="score-history"></ol>
+    </div>
+  </main>
+  <script src="./script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+/* 重置所有元素的基本樣式 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* 定義全局顏色變量 */
+:root {
+  --dark-grey: #1b1b32;
+  --light-grey: #f5f6f7;
+  --black: #000;
+  --white: #fff;
+  --grey: #3b3b4f;
+  --golden-yellow: #fecc4c;
+  --yellow: #ffcc4c;
+  --gold: #feac32;
+  --orange: #ffac33;
+  --dark-orange: #f89808;
+}
+
+/* 設置頁面背景色 */
+body {
+  background-color: var(--dark-grey);
+}
+
+/* 頁頭樣式 */
+header {
+  color: var(--light-grey);
+  text-align: center;
+}
+
+/* 主標題樣式 */
+h1 {
+  font-size: 2.5rem;
+  margin: 25px 0;
+}
+
+/* 規則容器樣式 */
+.rules-container {
+  display: none;
+  background-color: var(--light-grey);
+  color: var(--black);
+  width: 50%;
+  margin: 20px auto;
+  height: 300px;
+  border-radius: 10px;
+  overflow-y: scroll;
+}
+
+/* 規則列表樣式 */
+.rules-container ul {
+  list-style-type: none;
+}
+
+/* 分數樣式 */
+.points {
+  margin-top: 15px;
+}
+
+/* 主要內容區域樣式 */
+main {
+  background-color: var(--light-grey);
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 1rem;
+  margin: auto;
+  justify-items: center;
+  width: 50%;
+  border-radius: 10px;
+}
+
+/* 骰子容器樣式 */
+#dice {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+/* 單個骰子樣式 */
+.die {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  margin-right: 15px;
+  border: 4px solid var(--black);
+  padding: 10px;
+}
+
+/* 回合文字樣式 */
+.rounds-text {
+  text-align: center;
+}
+
+/* 禁用的單選按鈕標籤樣式 */
+input[type="radio"]:disabled + label {
+  color: var(--grey);
+}
+
+/* 分數歷史記錄樣式 */
+#score-history {
+  margin-top: 15px;
+  text-align: center;
+  list-style-position: inside;
+}
+
+/* 按鈕基本樣式 */
+.btn {
+  cursor: pointer;
+  width: 200px;
+  margin: 10px 0 10px 0.5rem;
+  color: var(--black);
+  background-color: var(--gold);
+  background-image: linear-gradient(var(--golden-yellow), var(--orange));
+  border-color: var(--gold);
+  border-width: 3px;
+}
+
+/* 按鈕懸停效果 */
+.btn:hover:enabled {
+  background-image: linear-gradient(var(--yellow), var(--dark-orange));
+}
+
+/* 響應式設計：平板 */
+@media (max-width: 992px) {
+  main {
+    width: 100%;
+  }
+}
+
+/* 響應式設計：手機 */
+@media (max-width: 500px) {
+  .btn {
+    width: 120px;
+  }
+}
