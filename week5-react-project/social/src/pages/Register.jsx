@@ -1,28 +1,79 @@
 // 引入必要的 React 函式和組件
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import firebase from '../utils/firebase';
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 // 定義 Register 組件：用於處理用戶註冊的主要組件
 const Register = () => {
   // 使用 useState 鉤子來管理表單輸入的狀態
-  // 這允許我們在用戶輸入時實時更新這些值
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // 處理表單提交的函數
-  // 當用戶點擊註冊按鈕時觸發
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 阻止表單的默認提交行為，防止頁面刷新
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // 驗證密碼
     if (password !== confirmPassword) {
-      alert('密碼不一致!'); // 如果兩次輸入的密碼不一致，顯示警告
-      return; // 中止註冊過程
+      setError('兩次輸入的密碼不一致');
+      return;
     }
-    // 輸出註冊資訊到控制台（實際應用中應替換為 API 調用）
-    console.log('註冊資訊:', { email, password, username });
-    // 這裡應該添加實際的註冊邏輯，例如發送 API 請求到後端服務器
+
+    // 驗證密碼長度
+    if (password.length < 6) {
+      setError('密碼長度必須至少6個字符');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+
+    try {
+      const auth = getAuth(firebase);
+      // 創建用戶
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      
+      // 更新用戶資料
+      await updateProfile(user, {
+        displayName: username,
+        photoURL: `https://api.dicebear.com/7.x/initials/svg?seed=${username}` // 使用用戶名生成頭像
+      });
+
+      // 顯示成功提示
+      setShowSuccess(true);
+      // 3秒後導航到首頁
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (error) {
+      // 處理不同類型的錯誤
+      switch (error.code) {
+        case 'auth/email-already-in-use':
+          setError('此電子郵件已被註冊');
+          break;
+        case 'auth/invalid-email':
+          setError('無效的電子郵件地址');
+          break;
+        case 'auth/operation-not-allowed':
+          setError('此註冊方式目前不可用');
+          break;
+        case 'auth/weak-password':
+          setError('密碼強度太弱');
+          break;
+        default:
+          setError('註冊失敗，請稍後再試');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -135,9 +186,11 @@ const Register = () => {
           >
             <button 
               className="w-full px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
+              disabled={loading}
             >
-              註冊
+              {loading ? '註冊中...' : '註冊'}
             </button>
+            {error && <p className="text-red-600">{error}</p>}
             <Link 
               to="/sign" 
               className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition duration-200"
@@ -147,6 +200,19 @@ const Register = () => {
           </motion.div>
         </form>
       </motion.div>
+      {/* 成功提示 */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
+            註冊成功！
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

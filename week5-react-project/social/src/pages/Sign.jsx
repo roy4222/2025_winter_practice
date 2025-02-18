@@ -1,19 +1,55 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import firebase from '../utils/firebase';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 // 定義Sign組件：用於處理用戶登入的主要組件
 const Sign = () => {
   // 使用useState鉤子來管理email和password的狀態
-  // 這允許我們在用戶輸入時實時更新這些值
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const navigate = useNavigate();
 
   // 處理表單提交的函數
-  // 當用戶點擊登入按鈕時觸發
-  const handleSubmit = (e) => {
-    e.preventDefault(); // 防止表單的默認提交行為
-    console.log('登入資訊:', { email, password }); // 輸出登入資訊到控制台（實際應用中應替換為API調用）
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      const auth = getAuth(firebase);
+      await signInWithEmailAndPassword(auth, email, password);
+      // 顯示成功提示
+      setShowSuccess(true);
+      // 3秒後導航到首頁
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (error) {
+      // 處理不同類型的錯誤
+      switch (error.code) {
+        case 'auth/invalid-email':
+          setError('無效的電子郵件地址');
+          break;
+        case 'auth/user-disabled':
+          setError('此帳號已被停用');
+          break;
+        case 'auth/user-not-found':
+          setError('找不到此帳號');
+          break;
+        case 'auth/wrong-password':
+          setError('密碼錯誤');
+          break;
+        default:
+          setError('登入失敗，請稍後再試');
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -89,7 +125,7 @@ const Sign = () => {
             <button 
               className="w-full px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
             >
-              登入
+              {loading ? '登入中...' : '登入'}
             </button>
           </motion.div>
 
@@ -107,8 +143,33 @@ const Sign = () => {
               還沒有帳號?註冊
             </Link>
           </motion.div>
+
+          {/* 錯誤訊息 */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="text-center mt-4 text-red-600"
+            >
+              {error}
+            </motion.div>
+          )}
         </form>
       </motion.div>
+      {/* 成功提示 */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-20 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg"
+          >
+            登入成功！
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
