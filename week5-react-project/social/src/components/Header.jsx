@@ -4,8 +4,8 @@ import { ROUTES } from '../routes';
 
 export default function Header() {
     return (
-        // 導航欄容器，使用白色背景和陰影效果
-        <nav className="bg-white shadow-lg">
+        // 導航欄容器，使用白色背景和陰影效果，固定在頂部
+        <nav className="fixed top-0 left-0 right-0 bg-white z-50">
             {/* 內容限制寬度並置中 */}
             <div className="max-w-6xl mx-auto px-4">
                 {/* Flex 容器，用於排列導航欄內的元素 */}
@@ -43,20 +43,18 @@ export default function Header() {
                                     viewBox="0 0 24 24" 
                                     stroke="currentColor"
                                 >
-                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </button>
                         </div>
                     </div>
-                    
-                    {/* 右側登入和註冊按鈕 */}
-                    <div className="flex items-center">
-                        {/* 登入連結 */}
-                        <Link to={ROUTES.SIGN} className="text-gray-800 hover:text-blue-500 px-3 py-2 rounded-md text-sm font-medium">
+
+                    {/* 右側按鈕 */}
+                    <div className="flex items-center space-x-4">
+                        <Link to={ROUTES.SIGN} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">
                             登入
                         </Link>
-                        {/* 註冊按鈕 */}
-                        <Link to={ROUTES.REGISTER} className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium ml-2">
+                        <Link to={ROUTES.REGISTER} className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition duration-300">
                             註冊
                         </Link>
                     </div>
