@@ -41,10 +41,13 @@ const Register = () => {
       // 創建用戶
       const { user } = await createUserWithEmailAndPassword(auth, email, password);
       
+      // 生成隨機頭像URL
+      const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}-${Date.now()}`;
+      
       // 更新用戶資料
       await updateProfile(user, {
         displayName: username,
-        photoURL: `https://api.dicebear.com/7.x/initials/svg?seed=${username}` // 使用用戶名生成頭像
+        photoURL: avatarUrl // 使用用戶名生成頭像
       });
 
       // 顯示成功提示
