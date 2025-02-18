@@ -51,10 +51,16 @@ export default function Header() {
 
                     {/* 右側按鈕 */}
                     <div className="flex items-center space-x-4">
-                        <Link to={ROUTES.SIGN} className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300">
+                        <Link 
+                            to={ROUTES.SIGN} 
+                            className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-6 py-2 rounded-full hover:from-indigo-600 hover:to-purple-700 transition duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        >
                             登入
                         </Link>
-                        <Link to={ROUTES.REGISTER} className="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 transition duration-300">
+                        <Link 
+                            to={ROUTES.REGISTER} 
+                            className="border-2 border-indigo-500 text-indigo-500 px-6 py-2 rounded-full hover:bg-indigo-50 transition duration-300 shadow-sm hover:shadow-md"
+                        >
                             註冊
                         </Link>
                     </div>

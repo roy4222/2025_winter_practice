@@ -79,23 +79,32 @@ const Sign = () => {
             />
           </motion.div>
 
-          {/* 登入按鈕和註冊連結：使用Framer Motion添加上滑效果 */}
+          {/* 登入按鈕：使用Framer Motion添加上滑效果 */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex items-center justify-between pt-4"
+            className="flex justify-center pt-4"
           >
             <button 
-              className="px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
+              className="w-full px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
             >
               登入
             </button>
+          </motion.div>
+
+          {/* 註冊連結：使用Framer Motion添加淡入效果 */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 }}
+            className="text-center mt-4"
+          >
             <Link 
               to="/register" 
-              className="text-lg text-blue-600 hover:text-blue-800 font-medium hover:underline transition duration-200"
+              className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition duration-200"
             >
-              註冊新帳戶
+              還沒有帳號?註冊
             </Link>
           </motion.div>
         </form>

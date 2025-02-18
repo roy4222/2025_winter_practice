@@ -74,7 +74,7 @@ function Footer() {
                 <FaInstagram size={24} />
               </a>
               {/* GitHub 連結 */}
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+              <a href="https://github.com/roy4222" target="_blank" rel="noopener noreferrer"
                 className="text-indigo-200 hover:text-pink-300 transform hover:scale-110 transition duration-300">
                 <FaGithub size={24} />
               </a>

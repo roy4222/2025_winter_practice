@@ -131,16 +131,16 @@ const Register = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
-            className="flex items-center justify-between pt-4"
+            className="flex flex-col items-center space-y-4 pt-4"
           >
             <button 
-              className="px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
+              className="w-full px-8 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform hover:scale-105 transition duration-200"
             >
               註冊
             </button>
             <Link 
               to="/sign" 
-              className="text-lg text-blue-600 hover:text-blue-800 font-medium hover:underline transition duration-200"
+              className="text-blue-600 hover:text-blue-800 font-medium hover:underline transition duration-200"
             >
               已有帳戶？登入
             </Link>
