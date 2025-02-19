@@ -140,9 +140,10 @@ export default function Header() {
                                             initial={{ opacity: 0, y: -10 }}
                                             animate={{ opacity: 1, y: 0 }}
                                             exit={{ opacity: 0, y: -10 }}
-                                            className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50"
+                                            className="absolute right-0 mt-2 w-50 bg-white rounded-lg shadow-xl py-2 z-50"
                                         >
-                                            <div className="px-4 py-2 border-b border-gray-100">
+                                            {/* 用戶資訊區塊 */}
+                                            <div className="px-4 py-2 border-b border-gray-100 ">
                                                 <p className="text-sm font-semibold text-gray-700">
                                                     {user.displayName || '使用者'}
                                                 </p>
@@ -150,6 +151,7 @@ export default function Header() {
                                                     {user.email}
                                                 </p>
                                             </div>
+                                            {/* 個人資料連結 */}
                                             <Link 
                                                 to="/profile" 
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200"
@@ -157,6 +159,7 @@ export default function Header() {
                                             >
                                                 個人資料
                                             </Link>
+                                            {/* 登出按鈕 */}
                                             <button 
                                                 onClick={() => {
                                                     handleSignOut();
@@ -230,7 +233,7 @@ export default function Header() {
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
                             transition={{ type: 'tween', duration: 0.3 }}
-                            className="fixed top-0 right-0 h-full w-64 bg-white shadow-xl lg:hidden z-50"
+                            className="fixed top-0 right-0 h-full w-68 bg-white shadow-xl lg:hidden z-50"
                         >
                             {/* 側邊欄內容 */}
                             <div className="flex flex-col h-full">
