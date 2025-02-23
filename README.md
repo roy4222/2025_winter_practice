@@ -71,7 +71,7 @@
 - **完成專案**:
 
 1. **圈圈叉叉（Tic-Tac-Toe）**
-    - [React 圈圈叉叉展示](https://tic-tac-toe.roy422.us.kg/)
+    - [React 圈圈叉叉展示](https://tic-tac-toe.roy422.ggff.net/)
     - 3x3 遊戲棋盤
     - 玩家輪流下棋
     - AI對戰功能
@@ -83,7 +83,7 @@
     ```
 
 2. **貪吃蛇（Snake Game）**
-    - [React 貪吃蛇展示](https://snake.roy422.us.kg/)
+    - [React 貪吃蛇展示](https://snake.roy422.ggff.net/)
     - 30x30 遊戲棋盤
     - 玩家鍵盤或虛擬方向鍵控制蛇移動
     - 可控制的蛇
@@ -96,7 +96,7 @@
     ```
 
 3. **記憶方塊（Memory Cube）**
-    - [React 記憶方塊展示](https://memoryblocks.roy422.us.kg/)
+    - [React 記憶方塊展示](https://memoryblocks.roy422.ggff.net/)
     - 光影效果
     - 隨機排列的方塊
     - 翻牌記憶機制
@@ -106,6 +106,26 @@
     ```tsx
     // 技術重點：React 動畫、陣列操作、計時器實現
     ```
+## **React 購物網站**
+- [React 購物網站展示](https://react-sale-product.roy422.ggff.net/)
+- 使用 React Hooks 進行狀態管理
+- 實現響應式設計，適配多種設備
+- 主要功能：
+  - 商品列表展示
+  - 購物車功能
+  - 用戶登入/註冊
+  - 商品搜索與篩選
+  - 訂單管理系統
+
+```tsx
+// 技術重點：React Router, Context API, 自定義 Hooks
+```
+
+- **學習心得**：
+  - 深入理解了 React 組件的組織和重用
+  - 掌握了狀態管理的最佳實踐
+  - 提升了前端性能優化技能
+
 
 - **學習心得**：
     - 通過實作遊戲專案，加深了對 React 組件生命週期的理解。
