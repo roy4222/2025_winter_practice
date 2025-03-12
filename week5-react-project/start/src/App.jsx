@@ -2,6 +2,8 @@ import './App.css'
 import MyButton from './component/MyButton'
 import Greeting from './component/Greeting'
 import Counter from './component/Counter'
+import CatImage from './component/CatImage'
+
 function App() {
   return (
     <div>
@@ -10,6 +12,7 @@ function App() {
       <MyButton />
       <Greeting />
       <Counter />
+      <CatImage />
     </div>
   );
 }
