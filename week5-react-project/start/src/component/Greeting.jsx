@@ -1,20 +1,20 @@
-// Greeting 元件：用於顯示問候語和當前日期
+import { useState } from "react";
+
 function Greeting() {
-    // 定義使用者名稱
-    const name = "Roy";
-    // 獲取當前日期並格式化為本地字符串
-    const today = new Date().toLocaleDateString();
-  
-    // 渲染問候語和日期
-    return (
-      <div>
-        {/* 顯示問候語，並插入使用者名稱 */}
-        <h2>你好，{name}！</h2>
-        {/* 顯示當前日期 */}
-        <p>今天是 {today}</p>
-      </div>
-    );
+  const [count, setCount] = useState(0);
+  const [name, setName] = useState("Roy422");
+
+  function handleClick() {
+    setCount(count + 1);
   }
-  
-  // 導出 Greeting 元件，使其可以在其他檔案中被引用
-  export default Greeting;
+
+  return (
+    <div>
+      <h2>你好，{name}！</h2>
+      <p>你按了 {count} 次</p>
+      <button onClick={handleClick}>點我一下</button>
+    </div>
+  );
+}
+
+export default Greeting;
