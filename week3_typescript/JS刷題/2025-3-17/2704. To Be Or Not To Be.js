@@ -1,4 +1,5 @@
 /**
+ * * 自製測試函式 expect，模擬測試框架的 expect 斷言功能
  * @param {string} val
  * @return {Object}
  */
