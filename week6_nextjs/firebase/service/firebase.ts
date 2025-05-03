@@ -1,5 +1,6 @@
 // 從 SDK 中引入所需的函數
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // 待辦：添加你想使用的 Firebase 產品的 SDK
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -17,7 +18,9 @@ const firebaseConfig = {
 // 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 
+const auth=getAuth(app);
+
 // 初始化 Cloud Firestore 並獲取服務的引用
 const db = getFirestore(app);
 
-export { app, db };
+export { app, db, auth };
