@@ -1,23 +1,32 @@
-'use client';
+'use client'; // 聲明這是客戶端元件，允許使用React hooks和瀏覽器API
 
-import { useState, useEffect, useRef } from 'react';
-import { CharacterImage } from './components/character/CharacterImage';
-import { ChatBubble } from './components/chat/ChatBubble';
-import { motion } from 'framer-motion';
-import { AnimatedElement } from './components/animations/AnimatedElement';
+import { useState, useEffect, useRef } from 'react'; // 引入React hooks
+import { CharacterImage } from './components/character/CharacterImage'; // 引入角色圖片元件
+import { ChatBubble } from './components/chat/ChatBubble'; // 引入聊天氣泡元件
+import { motion } from 'framer-motion'; // 引入動畫庫
+import { AnimatedElement } from './components/animations/AnimatedElement'; // 引入自定義動畫元件
 
+/**
+ * 對話項目介面
+ * 定義對話內容的資料結構
+ */
 interface DialogueItem {
-  message: string;
+  message: string; // 對話訊息內容
 }
 
+/**
+ * 首頁元件
+ * 展示角色互動頁面，包含角色圖片、對話氣泡和角色資訊
+ */
 export default function Home() {
-  const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0);
-  const [showChat, setShowChat] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const [animationTriggered, setAnimationTriggered] = useState(false);
-  const characterRef = useRef<HTMLDivElement>(null);
+  // 狀態管理
+  const [currentDialogueIndex, setCurrentDialogueIndex] = useState(0); // 當前對話索引
+  const [showChat, setShowChat] = useState(false); // 控制是否顯示對話氣泡
+  const [hasInteracted, setHasInteracted] = useState(false); // 追蹤用戶是否已與角色互動
+  const [animationTriggered, setAnimationTriggered] = useState(false); // 追蹤驚喜動畫是否已觸發
+  const characterRef = useRef<HTMLDivElement>(null); // 角色元素的DOM引用
 
-  // 對話內容
+  // 對話內容陣列 - 角色的傲嬌台詞
   const dialogues: DialogueItem[] = [
     { message: '哼！才不是因為想見你才來的呢！' },
     { message: '只是剛好經過而已，別誤會了！' },
@@ -28,79 +37,91 @@ export default function Home() {
     { message: '你、你是不是覺得我很有趣啊？才不是為了你開心才這樣做的！' },
   ];
 
-  // 初始化顯示
+  /**
+   * 初始化顯示效果
+   * 頁面載入後延遲顯示聊天氣泡，創造漸進式的用戶體驗
+   */
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowChat(true);
+      setShowChat(true); // 1秒後顯示聊天氣泡
     }, 1000);
 
+    // 清理函數 - 組件卸載時清除計時器
     return () => clearTimeout(timer);
   }, []);
 
-  // 使用CSS動畫觸發驚喜動畫
+  /**
+   * 觸發角色驚喜動畫
+   * 當用戶點擊角色時，添加CSS動畫類並在動畫結束後移除
+   */
   const triggerSurpriseAnimation = () => {
     if (characterRef.current && !animationTriggered) {
-      setAnimationTriggered(true);
+      setAnimationTriggered(true); // 設置動畫已觸發狀態，防止重複觸發
       
-      characterRef.current.classList.add('animate-surprise');
+      characterRef.current.classList.add('animate-surprise'); // 添加驚喜動畫CSS類
       
-      // 動畫完成後移除類名
+      // 動畫完成後移除類名，重置動畫狀態
       setTimeout(() => {
         if (characterRef.current) {
           characterRef.current.classList.remove('animate-surprise');
-          setAnimationTriggered(false);
+          setAnimationTriggered(false); // 重置動畫觸發狀態，允許再次觸發
         }
-      }, 1200);
+      }, 1200); // 動畫持續1.2秒
     }
   };
 
-  // 處理角色點擊
+  /**
+   * 處理角色點擊事件
+   * 觸發動畫並更新對話內容
+   */
   const handleCharacterClick = () => {
-    triggerSurpriseAnimation();
+    triggerSurpriseAnimation(); // 觸發驚喜動畫
     
     if (!hasInteracted) {
-      setHasInteracted(true);
+      setHasInteracted(true); // 首次互動，設置互動狀態
     } else {
+      // 非首次互動，循環顯示下一句對話
       setCurrentDialogueIndex((prev) => (prev + 1) % dialogues.length);
     }
   };
 
-  // 確保對話索引有效
+  // 確保對話索引有效，防止數組越界
   const safeDialogueIndex = Math.min(currentDialogueIndex, dialogues.length - 1);
-  const currentDialogue = dialogues[safeDialogueIndex];
+  const currentDialogue = dialogues[safeDialogueIndex]; // 獲取當前要顯示的對話
 
   return (
     <div className="min-h-screen pb-16 bg-gradient-to-b from-blue-50 to-purple-50">
-      {/* 頂部裝飾條 */}
+      {/* 頂部裝飾條 - 添加視覺層次感 */}
       <div className="w-full h-10 bg-gradient-to-r from-indigo-500 via-purple-400 to-pink-400 mb-6 md:mb-8"></div>
       
       <div className="container mx-auto px-4 md:px-6">
+        {/* 標題區域 - 使用淡入動畫 */}
         <AnimatedElement
           animation="fadeIn"
           duration={800}
           className="text-center mb-6 md:mb-8"
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-indigo-800 mb-2">馬剃天愛星 - 傲嬌版</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-indigo-800 mb-2">馬剃天愛星</h1>
           <p className="text-gray-500 text-md md:text-lg">「口是心非的學生會副會長」</p>
         </AnimatedElement>
 
         <div className="flex flex-col items-center justify-center mb-10">
-          {/* 聊天氣泡區域 - 放在最上方，添加足夠的高度 */}
+          {/* 聊天氣泡區域 - 固定高度確保布局穩定 */}
           <div className="w-full max-w-lg mb-10 min-h-24 flex items-center justify-center">
             {showChat && currentDialogue && (
               <ChatBubble 
-                message={currentDialogue.message}
+                message={currentDialogue.message} // 傳遞當前對話內容
               />
             )}
           </div>
 
-          {/* 角色圖片 - 放在中間 */}
+          {/* 角色圖片區域 - 添加浮動動畫和點擊互動 */}
           <div ref={characterRef} className="relative">
             <AnimatedElement animation="float" duration={4000} loop={true}>
               <CharacterImage onClick={handleCharacterClick} />
             </AnimatedElement>
             
-            {/* 互動提示 */}
+            {/* 互動提示 - 引導用戶點擊角色 */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -112,8 +133,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* 角色資訊卡片區域 - 使用網格布局 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
-          {/* 角色資料卡片 */}
+          {/* 角色基本資料卡片 - 使用上滑動畫 */}
           <AnimatedElement
             animation="slideUp"
             delay={300}
@@ -124,6 +146,7 @@ export default function Home() {
               <h2 className="text-xl">角色基本資料</h2>
             </div>
             <div className="character-card-body">
+              {/* 角色屬性表格 - 使用網格布局 */}
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="col-span-1 text-gray-600">本名</div>
                 <div className="col-span-2 font-medium">馬剃（ばそり）天愛星（てぃあら）</div>
@@ -144,6 +167,7 @@ export default function Home() {
                 <div className="col-span-2">石蕗高中 學生會副會長</div>
               </div>
               
+              {/* 萌點標籤區域 - 使用彈性布局 */}
               <div className="mb-4">
                 <h3 className="text-lg font-bold text-purple-800 mb-2">萌點</h3>
                 <div className="flex flex-wrap gap-2">
@@ -157,6 +181,7 @@ export default function Home() {
             </div>
           </AnimatedElement>
           
+          {/* 角色性格介紹卡片 - 使用上滑動畫，稍微延遲顯示 */}
           <AnimatedElement
             animation="slideUp"
             delay={400}
@@ -175,6 +200,7 @@ export default function Home() {
                 作為石蕗高中的學生會副會長，她十分認真負責，但同時也有著有些冒失的一面。當被人讚美或靠近時，
                 往往會表現出害羞和傲嬌的態度，這也是她最大的魅力所在。
               </p>
+              {/* 引用區塊 - 展示角色經典台詞 */}
               <blockquote className="border-l-4 border-purple-300 pl-4 italic text-gray-600 my-4">
                 「才、才不是因為想見你才特地來的呢！這種誤會絕對不允許！」
               </blockquote>
@@ -183,6 +209,7 @@ export default function Home() {
         </div>
       </div>
       
+      {/* 頁腳區域 - 顯示資料來源和版權信息 */}
       <footer className="text-center mt-12 md:mt-16 text-gray-500 text-sm">
         <p>資料來源: <a href="https://zh.moegirl.org.cn/zh-tw/%E9%A9%AC%E5%89%83%E5%A4%A9%E7%88%B1%E6%98%9F" 
           className="text-indigo-600 hover:underline" target="_blank" rel="noopener noreferrer">
