@@ -269,11 +269,11 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
         {/* 切換登入/註冊模式的連結 */}
         <div className="mt-6 text-center">
           {isLogin ? (
-            <Link href="/auth/signup" className="text-blue-600 hover:underline text-sm">
+            <Link href="/signup" className="text-blue-600 hover:underline text-sm">
               還沒有帳戶？註冊
             </Link>
           ) : (
-            <Link href="/auth/signin" className="text-blue-600 hover:underline text-sm">
+            <Link href="/signin" className="text-blue-600 hover:underline text-sm">
               已有帳戶？登入
             </Link>
           )}

@@ -6,6 +6,7 @@ import Footer from "../components/Footer"; // 導入頁面底部的Footer組件
 /**
  * 身份驗證頁面佈局組件
  * 為所有身份驗證相關頁面（登入、註冊等）提供一致的佈局結構
+ * 位於 (auth) 路由群組中，此資料夾名稱不會反映在URL路徑中
  * 
  * @param {Object} props - 組件屬性
  * @param {React.ReactNode} props.children - 子組件，將在佈局中央區域渲染

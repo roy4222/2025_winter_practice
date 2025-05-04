@@ -53,13 +53,13 @@ export default function Header() {
           <div className="hidden sm:ml-6 sm:flex sm:items-center"> {/* 右側區域：登入和註冊按鈕，在小螢幕上隱藏 */}
             <div className="flex space-x-4"> {/* 按鈕容器，設定間距 */}
               <Link 
-                href="/auth/signin" // 登入頁連結
+                href="/signin" // 登入頁連結
                 className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium"
               >
                 登入
               </Link>
               <Link 
-                href="/auth/signup" // 註冊頁連結
+                href="/signup" // 註冊頁連結
                 className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm font-medium"
               >
                 註冊
@@ -128,14 +128,14 @@ export default function Header() {
             </div>
             <div className="mt-3 space-y-1"> {/* 用戶操作按鈕區域 */}
               <Link 
-                href="/auth/signin" // 登入頁連結
+                href="/signin" // 登入頁連結
                 className="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => setMobileMenuOpen(false)} // 點擊後關閉選單
               >
                 登入
               </Link>
               <Link 
-                href="/auth/signup" // 註冊頁連結
+                href="/signup" // 註冊頁連結
                 className="block px-4 py-2 text-base font-medium text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
                 onClick={() => setMobileMenuOpen(false)} // 點擊後關閉選單
               >
