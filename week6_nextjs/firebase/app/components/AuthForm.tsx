@@ -141,6 +141,7 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
             alt="Next.js logo" // 圖片替代文字
             width={120} // 圖片寬度
             height={30} // 圖片高度
+            style={{ height: 'auto' }} // 保持圖片比例
             priority // 優先加載此圖片
           />
         </div>
