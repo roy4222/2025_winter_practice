@@ -1,185 +1,126 @@
-"use client";
+"use client"; // 聲明這是客戶端組件，允許使用React hooks和瀏覽器API
 
-import { useState } from "react";
-import Image from "next/image";
-import { auth } from "../service/firebase";
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword 
-} from "firebase/auth";
+import Link from "next/link"; // 導入Next.js的Link組件用於客戶端導航
+import Image from "next/image"; // 導入Next.js的Image組件用於優化圖片加載
+import Header from "./components/Header"; // 導入頁面頂部的Header組件
+import Footer from "./components/Footer"; // 導入頁面底部的Footer組件
 
+/**
+ * 首頁組件
+ * 展示網站的主要內容，包括英雄區塊、特色功能和號召行動區塊
+ * @returns {JSX.Element} 渲染的首頁內容
+ */
 export default function Home() {
-  const [isLogin, setIsLogin] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  /**
-   * 處理表單提交的函數
-   * 根據當前模式（登入/註冊）執行相應的 Firebase 身份驗證操作
-   * @param e - 表單提交事件
-   */
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // 阻止表單的默認提交行為
-    setError(""); // 清空之前的錯誤訊息
-    setLoading(true); // 設置載入狀態為 true，顯示載入中
-
-    try {
-      // 如果是註冊模式且密碼與確認密碼不匹配，拋出錯誤
-      if (!isLogin && password !== confirmPassword) {
-        throw new Error("密碼不匹配");
-      }
-
-      if (isLogin) {
-        // 登入模式：使用 Firebase 的登入功能
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("登入成功！");
-      } else {
-        // 註冊模式：使用 Firebase 的創建用戶功能
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("註冊成功！");
-      }
-    } catch (err) {
-      // 錯誤處理
-      let errorMessage = "發生錯誤"; // 預設錯誤訊息
-      if (err instanceof Error) {
-        // 根據 Firebase 返回的錯誤代碼提供更具體的錯誤訊息
-        if (err.message.includes("auth/email-already-in-use")) {
-          errorMessage = "此電子郵件已被使用";
-        } else if (err.message.includes("auth/weak-password")) {
-          errorMessage = "密碼強度不足";
-        } else if (err.message.includes("auth/invalid-email")) {
-          errorMessage = "無效的電子郵件地址";
-        } else if (err.message.includes("auth/user-not-found") || 
-                  err.message.includes("auth/wrong-password")) {
-          errorMessage = "電子郵件或密碼錯誤";
-        } else {
-          // 如果是其他錯誤，直接使用錯誤訊息
-          errorMessage = err.message;
-        }
-      }
-      setError(errorMessage); // 設置錯誤訊息以顯示給用戶
-    } finally {
-      setLoading(false); // 無論成功或失敗，都將載入狀態設為 false
-    }
-  };
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 dark:bg-gray-900">
-      {/* 主容器，設置最小高度為螢幕高度，使用 flex 布局居中內容，並添加背景色 */}
-      <div className="w-full max-w-md">
-        {/* 限制內容寬度，確保在大螢幕上不會過寬 */}
-        <div className="mb-10 flex justify-center">
-          {/* Logo 容器，底部外邊距為 10，水平居中 */}
-          <Image
-            className="dark:invert"
-            src="/next.svg"
-            alt="Next.js logo"
-            width={120}
-            height={30}
-            priority
-          />
-          {/* Next.js logo 圖片，在暗模式下反轉顏色，設置優先加載 */}
-        </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
-          {/* 主要表單卡片，白色背景（暗模式為深灰色），圓角和陰影效果 */}
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            {isLogin ? "登入帳戶" : "註冊新帳戶"}
-          </h2>
-          {/* 標題，根據當前模式（登入/註冊）顯示不同文字 */}
-          
-          {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
-              {error}
+    <div className="flex flex-col min-h-screen"> {/* 主容器，使用flex佈局確保頁面至少佔滿整個視窗高度 */}
+      <Header /> {/* 渲染頁面頂部的Header組件 */}
+      
+      <main className="flex-grow"> {/* 主要內容區域，flex-grow確保它佔用所有可用空間 */}
+        {/* 英雄區塊 - 網站頂部的主要宣傳區域 */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white"> {/* 使用漸變背景色 */}
+          <div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8 flex flex-col items-center text-center"> {/* 內容容器，居中對齊 */}
+            <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl mb-6">
+              Next.js 與 Firebase 整合範例 {/* 主標題 */}
+            </h1>
+            <p className="max-w-2xl text-xl mb-10">
+              快速打造功能完整的網頁應用程式，享受 Next.js 的強大功能和 Firebase 的靈活後端服務。 {/* 副標題說明 */}
+            </p>
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4"> {/* 按鈕容器，在小螢幕上垂直排列，大螢幕上水平排列 */}
+              <Link href="/auth/signup" className="bg-white text-blue-600 hover:bg-gray-100 font-medium py-3 px-6 rounded-md shadow-md transition-colors">
+                立即註冊 {/* 主要行動按鈕 */}
+              </Link>
+              <Link href="/features" className="bg-transparent border border-white hover:bg-white/10 text-white font-medium py-3 px-6 rounded-md transition-colors">
+                了解更多 {/* 次要行動按鈕 */}
+              </Link>
             </div>
-          )}
-          {/* 錯誤訊息顯示區域，僅在有錯誤時顯示，使用紅色背景和邊框突出顯示 */}
-          
-          <form onSubmit={handleSubmit}>
-            {/* 表單元素，提交時觸發 handleSubmit 函數 */}
-            <div className="mb-4">
-              {/* 電子郵件輸入區塊 */}
-              <label htmlFor="email" className="block mb-2 text-sm font-medium">
-                電子郵件
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="your@email.com"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              {/* 電子郵件輸入框，綁定到 email 狀態，並在變更時更新狀態 */}
-            </div>
-            
-            <div className="mb-4">
-              {/* 密碼輸入區塊 */}
-              <label htmlFor="password" className="block mb-2 text-sm font-medium">
-                密碼
-              </label>
-              <input
-                id="password"
-                type="password"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="••••••••"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              {/* 密碼輸入框，綁定到 password 狀態，並在變更時更新狀態 */}
-            </div>
-            
-            {!isLogin && (
-              <div className="mb-4">
-                {/* 確認密碼區塊，僅在註冊模式下顯示 */}
-                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium">
-                  確認密碼
-                </label>
-                <input
-                  id="confirm-password"
-                  type="password"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="••••••••"
-                  required
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                {/* 確認密碼輸入框，綁定到 confirmPassword 狀態 */}
-              </div>
-            )}
-            
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
-            >
-              {loading ? "處理中..." : isLogin ? "登入" : "註冊"}
-            </button>
-            {/* 提交按鈕，在載入中時禁用，並根據當前模式和載入狀態顯示不同文字 */}
-          </form>
-          
-          <div className="mt-6 text-center">
-            {/* 切換登入/註冊模式的按鈕容器 */}
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-600 hover:underline text-sm"
-            >
-              {isLogin ? "還沒有帳戶？註冊" : "已有帳戶？登入"}
-            </button>
-            {/* 切換按鈕，點擊時反轉 isLogin 狀態，並根據當前模式顯示相應文字 */}
           </div>
         </div>
-        
-        <div className="mt-8 text-center text-sm text-gray-500">
-          {/* 頁面底部的說明文字 */}
-          <p>此頁面僅作展示用途</p>
-          <p className="mt-1">需要實際功能請整合 Firebase Authentication</p>
+
+        {/* 特色功能區塊 - 展示網站的主要功能特點 */}
+        <div className="py-16 bg-white dark:bg-gray-900"> {/* 支援深色模式的背景 */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> {/* 內容容器 */}
+            <div className="text-center mb-12"> {/* 區塊標題部分 */}
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+                特色功能 {/* 區塊標題 */}
+              </h2>
+              <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500 dark:text-gray-300">
+                探索我們平台所提供的強大功能 {/* 區塊描述 */}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"> {/* 功能卡片網格，響應式佈局 */}
+              {/* 功能卡片 1 - 安全身份驗證 */}
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"> {/* 卡片容器，懸停時增加陰影效果 */}
+                <div className="h-12 w-12 rounded-md bg-blue-500 flex items-center justify-center mb-4"> {/* 圖標容器 */}
+                  <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg> {/* 鎖定圖標，代表安全性 */}
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">安全身份驗證</h3> {/* 功能標題 */}
+                <p className="text-gray-500 dark:text-gray-400">
+                  使用 Firebase Authentication 提供安全且易於使用的身份驗證系統，支援電子郵件/密碼、Google、Facebook 等多種登入方式。 {/* 功能描述 */}
+                </p>
+              </div>
+
+              {/* 功能卡片 2 - 即時數據庫 */}
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div className="h-12 w-12 rounded-md bg-blue-500 flex items-center justify-center mb-4">
+                  <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg> {/* 數據同步圖標 */}
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">即時數據庫</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  利用 Firebase Realtime Database 或 Firestore 提供即時數據同步，讓你的應用程式能夠即時反映數據變化。
+                </p>
+              </div>
+
+              {/* 功能卡片 3 - 快速開發 */}
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                <div className="h-12 w-12 rounded-md bg-blue-500 flex items-center justify-center mb-4">
+                  <svg className="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg> {/* 勾選圖標，代表完成/效率 */}
+                </div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">快速開發</h3>
+                <p className="text-gray-500 dark:text-gray-400">
+                  結合 Next.js 的開發效率和 Firebase 的後端服務，大幅縮短開發時間，讓你能夠專注於產品功能而非基礎架構。
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-12 text-center"> {/* 查看更多按鈕容器 */}
+              <Link href="/features" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+                查看所有功能 {/* 功能區塊的行動按鈕 */}
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
+
+        {/* 號召行動區塊 - 鼓勵用戶註冊或登入 */}
+        <div className="bg-blue-600"> {/* 藍色背景突出顯示 */}
+          <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between"> {/* 在大螢幕上使用flex佈局 */}
+            <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              <span className="block">準備好開始了嗎？</span> {/* 主要號召文字 */}
+              <span className="block text-blue-200">立即加入我們的平台</span> {/* 次要號召文字，使用較淺的顏色 */}
+            </h2>
+            <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0"> {/* 按鈕容器，在大螢幕上不換行 */}
+              <div className="inline-flex rounded-md shadow">
+                <Link href="/auth/signup" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-blue-50 transition-colors">
+                  立即註冊 {/* 註冊按鈕 */}
+                </Link>
+              </div>
+              <div className="ml-3 inline-flex rounded-md shadow">
+                <Link href="/auth/signin" className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-700 hover:bg-blue-800 transition-colors">
+                  登入 {/* 登入按鈕 */}
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      
+      <Footer /> {/* 渲染頁面底部的Footer組件 */}
     </div>
   );
 }
