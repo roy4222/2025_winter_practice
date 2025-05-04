@@ -15,7 +15,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white dark:bg-gray-900 shadow-sm"> {/* 頂部導航欄容器，支援深色模式 */}
+    <header className="bg-white dark:bg-gray-900 shadow-sm fixed top-0 w-full z-10"> {/* 頂部導航欄容器，支援深色模式，固定在頂部 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"> {/* 內容容器，設定最大寬度和內邊距 */}
         <div className="flex justify-between h-16"> {/* 導航欄主要內容區，使用flex佈局 */}
           <div className="flex"> {/* 左側區域：logo和導航連結 */}

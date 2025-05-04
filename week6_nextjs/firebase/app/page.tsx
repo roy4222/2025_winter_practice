@@ -2,9 +2,9 @@
 
 import Link from "next/link"; // 導入Next.js的Link組件用於客戶端導航
 import Image from "next/image"; // 導入Next.js的Image組件用於優化圖片加載
-import Header from "./components/Header"; // 導入頁面頂部的Header組件
 import Footer from "./components/Footer"; // 導入頁面底部的Footer組件
 import ScrollAnimation from "./components/ScrollAnimation"; // 導入滾動觸發動畫組件
+import { useScrollToTop } from "./components/useScrollToTop"; // 導入滾動到頂部的Hook
 
 /**
  * 首頁組件
@@ -13,10 +13,11 @@ import ScrollAnimation from "./components/ScrollAnimation"; // 導入滾動觸�
  * @returns {JSX.Element} 渲染的首頁內容
  */
 export default function Home() {
+  // 使用自定義Hook確保頁面導航時正確滾動到頂部
+  useScrollToTop();
+
   return (
     <div className="flex flex-col min-h-screen"> {/* 主容器，使用flex佈局確保頁面至少佔滿整個視窗高度 */}
-      <Header /> {/* 渲染頁面頂部的Header組件 */}
-      
       <main className="flex-grow"> {/* 主要內容區域，flex-grow確保它佔用所有可用空間 */}
         {/* 英雄區塊 - 網站頂部的主要宣傳區域 */}
         <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white"> {/* 使用漸變背景色 */}

@@ -8,6 +8,8 @@ import "./globals.css";
 import { Suspense } from "react";
 // 導入自定義的 Loading 組件，作為加載狀態的顯示
 import Loading from "./loading";
+// 導入 Header 組件
+import Header from "./components/Header";
 
 // 配置 Geist Sans 字體
 // variable: 定義 CSS 變數名稱，可在全局樣式中引用
@@ -50,14 +52,19 @@ export default function RootLayout({
         - min-h-screen: 確保 body 至少與視窗一樣高
       */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}>
-        {/* 
-          Suspense 組件用於處理異步加載的內容：
-          - 當內容正在加載時，顯示 fallback 中的 Loading 組件
-          - 加載完成後，顯示 children（頁面主要內容）
-        */}
-        <Suspense fallback={<Loading />}>
-          {children}
-        </Suspense>
+        {/* 固定在頂部的導航欄 */}
+        <Header />
+        {/* 添加頂部間距避免內容被Header覆蓋 */}
+        <div className="pt-16">
+          {/* 
+            Suspense 組件用於處理異步加載的內容：
+            - 當內容正在加載時，顯示 fallback 中的 Loading 組件
+            - 加載完成後，顯示 children（頁面主要內容）
+          */}
+          <Suspense fallback={<Loading />}>
+            {children}
+          </Suspense>
+        </div>
       </body>
     </html>
   );
