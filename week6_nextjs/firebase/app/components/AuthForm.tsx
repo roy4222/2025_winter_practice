@@ -280,11 +280,6 @@ export default function AuthForm({ isLogin }: AuthFormProps) {
         </div>
       </div>
       
-      {/* 頁面底部的提示訊息 */}
-      <div className="mt-8 text-center text-sm text-gray-500">
-        <p>此頁面僅作展示用途</p>
-        <p className="mt-1">需要實際功能請整合 Firebase Authentication</p>
-      </div>
     </div>
   );
 }
