@@ -23,6 +23,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../../service/firebase";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 /**
  * 定義認證上下文的類型
@@ -108,6 +109,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("登入成功！");
       router.push('/');
     } catch (err) {
       handleAuthError(err);
@@ -129,6 +131,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     
     try {
       await createUserWithEmailAndPassword(auth, email, password);
+      toast.success("註冊成功！");
       router.push('/');
     } catch (err) {
       handleAuthError(err);
@@ -153,6 +156,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         : new GithubAuthProvider();
       
       await signInWithPopup(auth, provider);
+      toast.success(`${providerName === "google" ? "Google" : "GitHub"} 登入成功！`);
       router.push('/');
     } catch (err) {
       handleSocialAuthError(err);
@@ -168,8 +172,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signOut = async () => {
     try {
       await firebaseSignOut(auth);
+      toast.success("已成功登出");
     } catch (err) {
       console.error("登出錯誤:", err);
+      toast.error("登出時發生錯誤");
     }
   };
 
@@ -196,6 +202,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     }
     setError(errorMessage);
+    toast.error(errorMessage);
   };
 
   /**
@@ -220,6 +227,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     }
     setError(errorMessage);
+    toast.error(errorMessage);
   };
 
   // 提供上下文值

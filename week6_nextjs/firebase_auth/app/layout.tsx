@@ -11,6 +11,7 @@ import Loading from "./loading";
 // 導入 HeaderRefactored 組件
 import HeaderRefactored from "./components/HeaderRefactored";
 import { AuthProvider } from './(auth)/context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 // 配置 Geist Sans 字體
 // variable: 定義 CSS 變數名稱，可在全局樣式中引用
@@ -59,6 +60,29 @@ export default function RootLayout({
               {children}
             </Suspense>
           </div>
+          
+          {/* Toast 通知組件 */}
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 3000,
+              style: {
+                background: '#363636',
+                color: '#fff',
+                fontWeight: 500,
+              },
+              success: {
+                style: {
+                  background: '#22c55e',
+                },
+              },
+              error: {
+                style: {
+                  background: '#ef4444',
+                },
+              },
+            }}
+          />
         </AuthProvider>
       </body>
     </html>
