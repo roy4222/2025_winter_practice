@@ -8,8 +8,9 @@ import "./globals.css";
 import { Suspense } from "react";
 // 導入自定義的 Loading 組件，作為加載狀態的顯示
 import Loading from "./loading";
-// 導入 Header 組件
-import Header from "./components/Header";
+// 導入 HeaderRefactored 組件
+import HeaderRefactored from "./components/HeaderRefactored";
+import { AuthProvider } from './(auth)/context/AuthContext';
 
 // 配置 Geist Sans 字體
 // variable: 定義 CSS 變數名稱，可在全局樣式中引用
@@ -38,33 +39,27 @@ export const metadata: Metadata = {
 // Readonly 表示這個參數是只讀的，不應該被修改
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    // 設定 HTML 文檔的語言為英文
-    <html lang="en">
+    <html lang="zh-Hant" suppressHydrationWarning>
       {/* 
-        body 標籤應用了以下類名：
-        - geistSans.variable 和 geistMono.variable: 使字體變數在全局可用
-        - antialiased: 使文字渲染更平滑
-        - relative: 設置相對定位，作為子元素的定位參考
-        - min-h-screen: 確保 body 至少與視窗一樣高
+        suppressHydrationWarning 屬性用於抑制由於客戶端和服務器端渲染差異導致的警告
+        通常用於有動態內容的頁面，例如使用了瀏覽器API或有用戶特定內容的頁面
       */}
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased relative min-h-screen`}>
-        {/* 固定在頂部的導航欄 */}
-        <Header />
-        {/* 添加頂部間距避免內容被Header覆蓋 */}
-        <div className="pt-16">
-          {/* 
-            Suspense 組件用於處理異步加載的內容：
-            - 當內容正在加載時，顯示 fallback 中的 Loading 組件
-            - 加載完成後，顯示 children（頁面主要內容）
-          */}
-          <Suspense fallback={<Loading />}>
-            {children}
-          </Suspense>
-        </div>
+        <AuthProvider>
+          {/* 固定在頂部的導航欄 */}
+          <HeaderRefactored />
+          
+          {/* 主要內容區域，添加頂部內邊距以避免被固定的導航欄覆蓋 */}
+          <div className="pt-16 pb-12">
+            <Suspense fallback={<p className="text-center py-4">載入中...</p>}>
+              {children}
+            </Suspense>
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

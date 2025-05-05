@@ -1,7 +1,7 @@
 "use client";
 
-import AuthForm from "../../components/AuthForm";
+import AuthFormRefactored from "../components/AuthFormRefactored";
 
 export default function SignUp() {
-  return <AuthForm isLogin={false} />;
+  return <AuthFormRefactored isLogin={false} />;
 } 

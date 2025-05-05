@@ -1,7 +1,7 @@
 "use client";
 
-import AuthForm from "../../components/AuthForm";
+import AuthFormRefactored from "../components/AuthFormRefactored";
 
 export default function SignIn() {
-  return <AuthForm isLogin={true} />;
+  return <AuthFormRefactored isLogin={true} />;
 } 

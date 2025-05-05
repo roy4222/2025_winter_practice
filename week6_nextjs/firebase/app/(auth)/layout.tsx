@@ -2,6 +2,7 @@
 
 import Footer from "../components/Footer"; // 導入頁面底部的Footer組件
 import { useScrollToTop } from "../components/useScrollToTop"; // 導入滾動到頂部的Hook
+import { AuthProvider } from "./context/AuthContext"; // 導入認證上下文提供者
 
 /**
  * 身份驗證頁面佈局組件
@@ -21,13 +22,15 @@ export default function AuthLayout({
   useScrollToTop();
 
   return (
-    <div className="flex flex-col min-h-screen"> {/* 主容器，使用flex佈局確保頁面至少佔滿整個視窗高度 */}
-      <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12"> {/* 主要內容區域，居中對齊，支援深色模式 */}
-        <div className="w-full max-w-md px-4"> {/* 內容容器，限制最大寬度並添加水平內邊距 */}
-          {children} {/* 渲染子組件（登入表單或註冊表單等） */}
-        </div>
-      </main>
-      <Footer /> {/* 渲染頁面底部的Footer組件 */}
-    </div>
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen"> {/* 主容器，使用flex佈局確保頁面至少佔滿整個視窗高度 */}
+        <main className="flex-grow flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12"> {/* 主要內容區域，居中對齊，支援深色模式 */}
+          <div className="w-full max-w-md px-4"> {/* 內容容器，限制最大寬度並添加水平內邊距 */}
+            {children} {/* 渲染子組件（登入表單或註冊表單等） */}
+          </div>
+        </main>
+        <Footer /> {/* 渲染頁面底部的Footer組件 */}
+      </div>
+    </AuthProvider>
   );
 } 
