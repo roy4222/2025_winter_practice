@@ -82,7 +82,10 @@ export const createTodo = async (content: string): Promise<Todo> => {
  * @returns {Promise<void>}
  */
 export const toggleTodoCompletion = async (id: string, completed: boolean): Promise<void> => {
+  // 獲取待辦事項文件的引用
   const todoRef = doc(db, COLLECTION_NAME, id);
+  
+  // 更新完成狀態
   await updateDoc(todoRef, { completed });
 };
 
@@ -92,6 +95,11 @@ export const toggleTodoCompletion = async (id: string, completed: boolean): Prom
  * @returns {Promise<void>}
  */
 export const deleteTodo = async (id: string): Promise<void> => {
+  // 獲取待辦事項文件的引用
   const todoRef = doc(db, COLLECTION_NAME, id);
+  
+  // 從資料庫中刪除文件
   await deleteDoc(todoRef);
-}; 
+};
+
+
