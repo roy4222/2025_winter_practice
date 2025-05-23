@@ -127,3 +127,45 @@
 5. **QR Code 生成**：為每個短網址生成對應的 QR Code，方便行動裝置掃描
 6. **批量處理**：支援一次處理多個長網址的批量轉換
 7. **API 金鑰**：提供 API 金鑰機制，讓開發者能透過 API 整合此服務
+
+## 🚀 快速開始
+
+### 安裝與設定
+
+1. 克隆專案:
+   ```bash
+   git clone https://github.com/yourusername/short_url.git
+   cd short_url
+   ```
+
+2. 安裝相依套件:
+   ```bash
+   npm install
+   # 或
+   yarn
+   ```
+
+3. 設定 Firebase:
+   - 前往 [Firebase 主控台](https://console.firebase.google.com/) 建立專案
+   - 啟用 Firestore 資料庫
+   - 在專案設定中獲取 Web 應用程式的設定
+
+4. 建立 `.env.local` 檔案，填入 Firebase 設定:
+   ```
+   NEXT_PUBLIC_FIREBASE_API_KEY="your-api-key"
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="your-project-id.firebaseapp.com"
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID="your-project-id"
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="your-project-id.appspot.com"
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="your-messaging-sender-id"
+   NEXT_PUBLIC_FIREBASE_APP_ID="your-app-id"
+   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
+   ```
+
+5. 啟動開發伺服器:
+   ```bash
+   npm run dev
+   # 或
+   yarn dev
+   ```
+
+6. 在瀏覽器中開啟 [http://localhost:3000](http://localhost:3000) 查看應用程式
